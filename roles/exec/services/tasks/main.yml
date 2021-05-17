@@ -1,0 +1,16 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: 'Enable service {{ item }}'
+  service:
+    name: '{{ item }}'
+    enabled: yes
+    state: started
+  loop: '{{ services["start"] }}'
+
+- name: 'Disable service {{ item }}'
+  service:
+    name: '{{ item }}'
+    enabled: no
+    state: stopped
+  loop: '{{ services["stop"] }}'

@@ -1,0 +1,13 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Update pf.conf
+  template:
+    src: pf.conf.j2
+    dest: /etc/pf.conf
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0600
+    validate: /sbin/pfctl -nf %s
+  notify:
+    - reload pf

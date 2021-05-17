@@ -1,0 +1,19 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+sshd_iptables_rules:
+  - action: append
+    chain: INPUT
+    ip_version: ipv4
+    protocol: tcp
+    destination_port: '22'
+    jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv6
+    protocol: tcp
+    destination_port: '22'
+    jump: ACCEPT
+
+sshd_pf_rules:
+  - 'pass in on $if_lan proto tcp from ($if_lan:network) to ($if_lan) port 22 modulate state'

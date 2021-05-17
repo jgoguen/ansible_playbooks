@@ -1,0 +1,10 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Queue SSHd iptables rules
+  set_fact:
+    iptables_rules: '{{ iptables_rules + sshd_iptables_rules }}'
+
+- name: Queue SSHd PF rules
+  set_fact:
+    pf_rules: '{{ pf_rules + sshd_pf_rules }}'

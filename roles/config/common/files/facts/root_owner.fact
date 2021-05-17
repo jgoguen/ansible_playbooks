@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+
+OS="$(command -p uname)"
+
+GRPNAME="nobody"
+SUDO_GROUP="wheel"
+
+if [ "${OS}" = "Darwin" ]; then
+	GRPNAME="wheel"
+	SUDO_GROUP="admin"
+elif [ "${OS}" = "OpenBSD" ]; then
+  GRPNAME="wheel"
+  SUDO_GROUP="wheel"
+else
+	GRPNAME="root"
+	SUDO_GROUP="wheel"
+fi
+
+printf '{"user": "root", "group": "%s", "sudo": "%s"}' "${GRPNAME}" "${SUDO_GROUP}"

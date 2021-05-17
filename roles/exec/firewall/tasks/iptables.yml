@@ -1,0 +1,9 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Update iptables
+  iptables: '{{ item }}'
+  notify:
+    - save iptables
+    - save ip6tables
+  loop: '{{ iptables_rules }}'

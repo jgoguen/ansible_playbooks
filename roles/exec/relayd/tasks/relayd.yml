@@ -1,0 +1,19 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Install relayd.conf
+  template:
+    src: relayd.conf.j2
+    dest: /etc/relayd.conf
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+    validate: /usr/sbin/relayd -n -f %s
+  notify:
+    - reload relayd
+
+- name: Start relayd
+  service:
+    name: relayd
+    enabled: yes
+    state: started

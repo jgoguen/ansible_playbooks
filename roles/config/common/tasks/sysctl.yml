@@ -1,0 +1,6 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Queue sysctl changes
+  set_fact:
+    sysctls: '{{ sysctls + sysctl[ansible_facts["system"]|lower] }}'

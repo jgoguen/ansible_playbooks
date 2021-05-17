@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+
+{% for host in ntp_servers %}
+server {{ host }}
+{% endfor %}
+
+sensor *

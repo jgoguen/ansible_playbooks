@@ -1,0 +1,6 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Add UniFi Controller PF rules
+  set_fact:
+    pf_rules: '{{ pf_rules + pf_unifi_rules }}'

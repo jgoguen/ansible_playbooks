@@ -1,0 +1,35 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Install acme-client.conf
+  template:
+    src: acme-client.conf.j2
+    dest: /etc/acme-client.conf
+    owner: 'root'
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+
+- name: Create ACME directory
+  file:
+    path: /etc/acme
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0700
+    state: directory
+
+- name: Create ACME certificate directories
+  file:
+    path: '/etc/ssl/{{ item }}'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0700
+    state: directory
+  loop: '{{ certbot_hosts }}'
+
+- name: Renew certificates cron tasks
+  cron:
+    name: 'Renew certs for {{ item }}'
+    minute: '{{ 59 | random(seed=item) }}'
+    hour: '{{ 9 | random(seed=item) }}'
+    job: '/usr/sbin/acme-client {{ item }} && /usr/sbin/rcctl reload httpd && /usr/local/bin/unifi_cert_update.sh'
+  loop: '{{ certbot_hosts }}'

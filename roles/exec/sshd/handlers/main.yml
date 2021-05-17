@@ -1,0 +1,8 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: reload sshd
+  service:
+    name: sshd
+    state: restarted
+  changed_when: false

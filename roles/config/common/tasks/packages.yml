@@ -1,0 +1,144 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Queue COPRs to enable
+  set_fact:
+    coprs: '{{ coprs + coprs_wanted }}'
+  when: ansible_facts["distribution"] == "Fedora"
+
+- name: Queue common packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + common_packages["common"] }) }}'
+
+- name: Queue common desktop packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + common_packages["desktop"] }) }}'
+  when: roles["desktop"]
+
+- name: Queue common development packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + common_packages["devel"] }) }}'
+  when: roles["devel"]
+
+- name: Queue linux packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + linux_packages["common"] }) }}'
+  when: ansible_facts["system"] == "Linux"
+
+- name: Queue linux desktop packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + linux_packages["desktop"] }) }}'
+  when:
+    - ansible_facts["system"] == "Linux"
+    - roles["desktop"]
+
+- name: Queue linux development packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + linux_packages["devel"] }) }}'
+  when:
+    - ansible_facts["system"] == "Linux"
+    - roles["devel"]
+
+- name: Queue OpenBSD packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + openbsd_packages["common"] }) }}'
+  when: ansible_facts["system"] == "OpenBSD"
+
+- name: Queue OpenBSD desktop packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + openbsd_packages["desktop"] }) }}'
+  when:
+    - ansible_facts["system"] == "OpenBSD"
+    - roles["desktop"]
+
+- name: Queue OpenBSD development packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + openbsd_packages["devel"] }) }}'
+  when:
+    - ansible_facts["system"] == "OpenBSD"
+    - roles["devel"]
+
+- name: Queue Arch packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + arch_packages["common"] }) }}'
+  when: ansible_facts["distribution"] == "Archlinux"
+
+- name: Queue Arch desktop packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + arch_packages["desktop"] }) }}'
+  when:
+    - ansible_facts["distribution"] == "Archlinux"
+    - roles["desktop"]
+
+- name: Queue Arch development packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + arch_packages["devel"] }) }}'
+  when:
+    - ansible_facts["distribution"] == "Archlinux"
+    - roles["devel"]
+
+- name: Queue Arch AUR packages for install
+  set_fact:
+    packages: '{{ packages | combine({"aur": packages["aur"] + arch_packages["aur"]}) }}'
+  when: ansible_facts["distribution"] == "Archlinux"
+
+- name: Queue Fedora packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + fedora_packages["common"] }) }}'
+  when: ansible_facts["distribution"] == "Fedora"
+
+- name: Queue Fedora desktop packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + fedora_packages["desktop"] }) }}'
+  when:
+    - ansible_facts["distribution"] == "Fedora"
+    - roles["desktop"]
+
+- name: Queue Fedora development packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + fedora_packages["devel"] }) }}'
+  when:
+    - ansible_facts["distribution"] == "Fedora"
+    - roles["devel"]
+
+- name: Queue adding local user to mock group
+  set_fact:
+    unix_groups: '{{ unix_groups + ["mock"] }}'
+  when:
+    - ansible_facts["distribution"] == "Fedora"
+    - roles["devel"]
+
+- name: Queue ShellCheck for install on Arch (x86 only)
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + ["shellcheck"]}) }}'
+  when:
+    - ansible_facts["distribution"] == "Archlinux"
+    - not ansible_facts["machine"].startswith("arm")
+    - roles["devel"]
+
+- name: Queue vale for install on Arch (x86 only)
+  set_fact:
+    packages: '{{ packages | combine({"aur": packages["aur"] + ["vale"]}) }}'
+  when:
+    - ansible_facts["distribution"] == "Archlinux"
+    - not ansible_facts["machine"].startswith("arm")
+
+- name: Queue macOS packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + macos_packages }) }}'
+  when: ansible_facts["system"] == "Darwin"
+
+- name: Queue desktop Snap packages for install
+  set_fact:
+    packages: '{{ packages | combine({"snap": packages["snap"] + snap_packages}) }}'
+  when: roles["desktop"]
+
+- name: Queue removal of distro packages replaced by Snaps
+  set_fact:
+    packages: '{{ packages | combine({"remove": packages["remove"] + ["gimp", "libreoffice"]}) }}'
+  when: roles["desktop"]
+
+- name: Queue desktop Flatpak packages for install
+  set_fact:
+    packages: '{{ packages | combine({"flatpak": packages["flatpak"] + flatpak_packages}) }}'
+  when: roles["desktop"]

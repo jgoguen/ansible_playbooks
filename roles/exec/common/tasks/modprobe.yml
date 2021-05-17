@@ -1,0 +1,14 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Install modprobe config
+  template:
+    src: '{{ item }}.conf'
+    dest: '/etc/modprobe.d/{{ item }}.conf'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  with_items:
+    - hid_apple
+    - pcspkr
+    - snd_hda_intel

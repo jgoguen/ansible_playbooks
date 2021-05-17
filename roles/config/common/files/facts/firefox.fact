@@ -1,0 +1,19 @@
+#!/bin/sh
+
+set -e
+
+FF_BASE_DIR=''
+
+if [ -d /usr/local/lib64/firefox ]; then
+	FF_BASE_DIR=/usr/local/lib64/firefox
+elif [ -d /usr/local/lib/firefox ]; then
+	FF_BASE_DIR=/usr/local/lib/firefox
+elif [ -d /usr/lib64/firefox ]; then
+	FF_BASE_DIR=/usr/lib64/firefox
+elif [ -d /usr/lib/firefox ]; then
+	FF_BASE_DIR=/usr/lib/firefox
+elif [ -d /Applications/Firefox.app ]; then
+	FF_BASE_DIR=/Applications/Firefox.app/Contents/Resources
+fi
+
+printf '{"basedir": "%s"}' "${FF_BASE_DIR}"

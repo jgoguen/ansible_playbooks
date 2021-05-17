@@ -1,0 +1,55 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Ensure sudoers group is present
+  group:
+    name: '{{ ansible_local.root_owner.sudo }}'
+    state: present
+
+- name: Add local user to sudoers group
+  user:
+    name: '{{ user }}'
+    groups:
+      - '{{ ansible_local.root_owner.sudo }}'
+    append: yes
+
+- name: Configure sudoers
+  template:
+    src: sudoers.j2
+    dest: /etc/sudoers
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0440
+    validate: /usr/sbin/visudo --check --file=%s
+
+- name: stat pam_watchid.so
+  stat:
+    path: /usr/local/lib/pam/pam_watchid.so.2
+  register: watchid_so
+  changed_when: false
+
+- name: Add pam_tid to sudo
+  lineinfile:
+    path: /etc/pam.d/sudo
+    state: present
+    create: yes
+    owner: root
+    group: wheel
+    mode: 0444
+    insertbefore: BOF
+    line: 'auth sufficient pam_tid.so'
+  when: ansible_facts["system"] == "Darwin"
+
+- name: Add pam_watchid to sudo
+  lineinfile:
+    path: /etc/pam.d/sudo
+    state: present
+    create: yes
+    owner: root
+    group: wheel
+    mode: 0444
+    insertbefore: BOF
+    line: 'auth sufficient pam_watchid.so'
+  when:
+    - ansible_facts["system"] == "Darwin"
+    - watchid_so.stat.exists

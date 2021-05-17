@@ -1,0 +1,6 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Configure SSHd
+  import_tasks: sshd.yml
+  when: not roles["desktop"]

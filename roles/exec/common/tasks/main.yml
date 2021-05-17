@@ -1,0 +1,39 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: 'Add local user {{ user }} to groups'
+  user:
+    name: '{{ user }}'
+    shell: '{{ ansible_local.zsh.bin }}'
+    append: yes
+    groups: '{{ unix_groups }}'
+
+- name: Install fonts
+  import_tasks: fonts.yml
+
+- name: Update /etc/hosts
+  template:
+    src: hosts.j2
+    dest: /etc/hosts
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+
+- name: Install udev profiles
+  import_tasks: udev.yml
+  when: ansible_facts["system"] == "Linux"
+
+- name: Install modprobe configs
+  import_tasks: modprobe.yml
+  when: ansible_facts["system"] == "Linux"
+
+- name: Stat antibody
+  stat:
+    path: /usr/local/bin/antibody
+  register: antibody_stat
+
+- name: Install ZSH Antibody
+  import_tasks: zsh-antibody.yml
+  when:
+    - not antibody_stat.stat.exists
+    - ansible_facts["system"] == "Linuxs"

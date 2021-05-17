@@ -1,0 +1,17 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: 'Set macOS plist entries for {{ item.key }}'
+  osx_defaults:
+    domain: '{{ item.key }}'
+    key: '{{ setting.key }}'
+    type: '{{ setting.type }}'
+    value: '{{ setting.value }}'
+    state: present
+  become: '{{ setting.become|default("yes")|bool }}'
+  become_user: '{{ user }}'
+  notify:
+    - reload controlstrip
+  with_items: '{{ item.value }}'
+  loop_control:
+    loop_var: setting

@@ -1,0 +1,114 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Create AUR builder user
+  user:
+    name: aur_builder
+    group: wheel
+  when: ansible_facts["distribution"] == "Archlinux"
+
+- name: Ensure AUR builder user is in sudoers
+  lineinfile:
+    path: /etc/sudoers
+    line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+    validate: /usr/sbin/visudo --check --file=%s
+  when: ansible_facts["distribution"] == "Archlinux"
+
+- name: Enabling repos
+  debug: var=repos
+
+# RPMFusion packages need to come from the upstream URL since they won't be
+# accessible on initial install. But then the appstream packages can come from
+# the installed repos.
+- name: Install RPMFusion packages
+  command:
+    argv:
+      - /usr/bin/dnf
+      - install
+      - '-y'
+      - "http://download1.rpmfusion.org/{{ item }}/fedora/rpmfusion-{{ item }}-release-{{ ansible_facts['lsb']['major_release'] }}.noarch.rpm"
+    creates: '/etc/yum.repos.d/rpmfusion-{{ item }}.repo'
+  loop:
+    - free
+    - nonfree
+  when: ansible_facts["distribution"] == "Fedora"
+
+- name: Install RPMFusion appstream packages
+  package:
+    name:
+      - rpmfusion-free-appstream-data
+      - rpmfusion-nonfree-appstream-data
+    state: present
+  when: ansible_facts["distribution"] == "Fedora"
+
+- name: Enabling COPRs
+  debug: var=coprs
+
+- name: 'Enable COPR {{ item.user }}/{{ item.name }}'
+  command:
+    argv:
+      - /usr/bin/dnf
+      - copr
+      - enable
+      - '-y'
+      - '{{ item.user }}/{{ item.name }}'
+    creates: '/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:{{ item.user }}:{{ item.name }}.repo'
+    warn: false
+  when: ansible_facts["distribution"] == "Fedora"
+  loop: '{{ coprs }}'
+
+- name: Installing packages
+  debug: var=packages.install
+
+- name: Install packages
+  package:
+    name: '{{ packages.install }}'
+    state: present
+  when: ansible_facts["system"] != "Darwin"
+
+- name: Install packages via Homebrew
+  homebrew:
+    name: '{{ packages.install }}'
+    state: present
+  become: yes
+  become_user: '{{ user }}'
+  when: ansible_facts["system"] == "Darwin"
+
+- name: Installing AUR packages
+  debug: var=packages.aur
+
+- name: Install AUR packages
+  aur:
+    name: '{{ packages.aur }}'
+    state: present
+  become: yes
+  become_user: aur_builder
+  when: ansible_facts["distribution"] == "Archlinux"
+
+- name: Installing Snap packages
+  debug: var=packages.snap
+
+- name: Install Snap packages
+  snap:
+    name: '{{ item.name }}'
+    channel: '{{ item.channel }}'
+    state: present
+  when: ansible_facts["system"] == "Linux"
+  loop: '{{ packages["snap"] }}'
+
+- name: Removing packages
+  debug: var=packages.remove
+
+- name: Remove packages
+  package:
+    name: '{{ packages.remove }}'
+    state: absent
+  when: ansible_facts["system"] != "Darwin"
+
+- name: Remove packages via Homebrew
+  homebrew:
+    name: '{{ packages.remove }}'
+    state: absent
+  become: yes
+  become_user: '{{ user }}'
+  when: ansible_facts["system"] == "Darwin"

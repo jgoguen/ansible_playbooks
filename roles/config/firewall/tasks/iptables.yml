@@ -1,0 +1,29 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Queue iptables installation
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + ["iptables"] }) }}'
+
+- name: Queue iptables-services installation
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + ["iptables-services"] }) }}'
+  when: ansible_facts["distribution"] == "Fedora"
+
+- name: Queue removal of conflicting packages
+  set_fact:
+    packages: '{{ packages | combine({"remove": packages["remove"] + ["ufw", "firewalld"] }) }}'
+
+- name: 'Queue starting {{ item }} service'
+  set_fact:
+    services: '{{ services | combine({"star": services["start"] + [item]}) }}'
+  loop:
+    - iptables
+    - ip6tables
+
+- name: 'Set FW DROP policy for {{ item }} chain'
+  set_fact:
+    iptables_policies: '{{ iptables_policies | combine({"{{ item }}": "DROP"}) }}'
+  loop:
+    - INPUT
+    - FORWARD

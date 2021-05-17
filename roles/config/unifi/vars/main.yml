@@ -1,0 +1,7 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+pf_unifi_rules:
+  - 'pass in on $if_lan proto tcp from any to ($if_lan) port 8443 modulate state'
+  - 'pass in on $if_lan proto tcp from ($if_lan:network) to ($if_lan) port 8080 modulate state'
+  - 'pass in on $if_lan proto udp from ($if_lan:network) to ($if_lan) port 3478'

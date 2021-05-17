@@ -1,0 +1,26 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Configure sshd_config
+  template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+    validate: /usr/sbin/sshd -t -f %s
+  notify:
+    - reload sshd
+
+- name: Ensure ED25519 host key is present
+  command: /usr/bin/ssh-keygen -q -t ed25519 -N '' -f /etc/ssh/ssh_host_ed25519_key
+  args:
+    creates: /etc/ssh/ssh_host_ed25519_key
+  notify:
+    - reload sshd
+
+- name: Start sshd
+  service:
+    name: sshd
+    enabled: true
+    state: started

@@ -1,0 +1,11 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Install facts scripts
+  import_tasks: facts.yml
+
+- name: Queue package installations
+  import_tasks: packages.yml
+
+- name: Queue sysctls
+  import_tasks: sysctl.yml

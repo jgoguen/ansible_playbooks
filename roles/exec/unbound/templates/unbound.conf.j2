@@ -1,0 +1,28 @@
+# {{ ansible_managed }}
+
+{% for section in unbound_config %}
+{% if section == "auth-zone" %}
+{% for cfg in unbound_config[section] %}
+{{ section }}:
+	name: {{ cfg["name"] }}
+	zonefile: {{ cfg["zonefile"] }}
+{% endfor %}
+{% else %}
+{% if section == "include" %}
+{% for path in unbound_config[section] %}
+{{ section }}: {{ path }}
+{% endfor %}
+{% else %}
+{{ section }}:
+{% for key in unbound_config[section] %}
+{% if unbound_config[section][key] is not string and unbound_config[section][key] is iterable %}
+{% for val in unbound_config[section][key] %}
+	{{ key }}: {{ val }}
+{% endfor %}
+{% else %}
+	{{ key }}: {{ unbound_config[section][key] }}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endif %}
+{% endfor %}

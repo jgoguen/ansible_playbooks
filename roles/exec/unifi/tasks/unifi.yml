@@ -1,0 +1,22 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Install UniFi Controller package
+  community.general.openbsd_pkg:
+    name: 'unifi-6.1.71p0'
+    state: present
+    build: yes
+
+- name: Start UniFi Controller
+  service:
+    name: unifi
+    enabled: yes
+    state: started
+
+- name: Install UniFi TLS certificate update script
+  template:
+    src: unifi_cert_update.sh
+    dest: /usr/local/bin/unifi_cert_update.sh
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755

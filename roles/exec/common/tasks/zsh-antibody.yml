@@ -1,0 +1,17 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Set antibody installer download location
+  set_fact:
+    antibody_installer: "{{ lookup('env', 'TMPDIR') | default('/tmp', True) }}/antibody_install"
+
+- name: Fetch antibody installer
+  get_url:
+    url: https://git.io/antibody
+    dest: '{{ antibody_installer|quote }}'
+    mode: 0700
+
+- name: Install antibody
+  command:
+    cmd: '{{ antibody_installer|quote }} -b /usr/local/bin'
+    creates: /usr/local/bin/antibody

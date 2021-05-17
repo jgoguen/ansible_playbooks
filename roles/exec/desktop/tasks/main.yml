@@ -1,0 +1,27 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Install X.org keymap config
+  import_tasks: xorg-keymap.yml
+  when:
+    - ansible_facts["system"] == "Linux"
+    - roles["desktop"]
+
+- name: Set macOS user defaults
+  include_tasks: macos_plist.yml
+  with_dict: '{{ macos_defaults }}'
+  when:
+    - ansible_facts["system"] == "Darwin"
+    - roles["desktop"]
+
+- name: Configure NetworkManager
+  import_tasks: networkmanager.yml
+  when:
+    - ansible_facts["system"] == "Linux"
+    - roles["desktop"]
+
+- name: Install VS Code
+  import_tasks: vscode.yml
+  when:
+    - ansible_facts["distribution"] == "Fedora"
+    - roles["desktop"]

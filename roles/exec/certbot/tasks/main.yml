@@ -1,0 +1,6 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Configure certbot
+  import_tasks: certbot.yml
+  when: certbot_hosts|length > 0

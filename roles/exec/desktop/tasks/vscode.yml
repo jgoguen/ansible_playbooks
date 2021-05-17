@@ -1,0 +1,22 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Install MS package key
+  rpm_key:
+    key: https://packages.microsoft.com/keys/microsoft.asc
+    state: present
+
+- name: Install MS VS Code RPM repo
+  yum_repository:
+    name: code
+    file: vscode
+    description: Visual Studio Code
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    enabled: 1
+    gpgcheck: 1
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+
+- name: Install VS Code Insiders
+  package:
+    name: code-insiders
+    state: present

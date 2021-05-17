@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+
+import json
+import os
+import platform
+import shutil
+import subprocess
+
+INFO = {
+    "bin": "",
+    "insiders_bin": "",
+    "extensions": [],
+    "insiders_extensions": [],
+}
+
+if platform.platform().startswith("macOS"):
+    code_bin = "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+    code_insiders_bin = (
+        "/Applications/Visual Studio Code - Insiders.app/Contents"
+        + "/Resources/app/bin/code"
+    )
+
+    if os.access(code_bin, os.X_OK | os.R_OK):
+        INFO["bin"] = code_bin
+
+    if os.access(code_insiders_bin, os.X_OK | os.R_OK):
+        INFO["insiders_bin"] = code_insiders_bin
+else:
+    INFO["bin"] = shutil.which("code")
+    INFO["insiders_bin"] = shutil.which("code-insiders")
+
+if INFO["bin"] != "":
+    cmd = subprocess.run([INFO["bin"], "--list-extensions"], capture_output=True)
+    INFO["extensions"] = [
+        e for e in cmd.stdout.decode("UTF-8").split("\n") if e.strip() != ""
+    ]
+
+if INFO["insiders_bin"] != "":
+    cmd = subprocess.run(
+        [INFO["insiders_bin"], "--list-extensions"], capture_output=True
+    )
+    INFO["insiders_extensions"] = [
+        e for e in cmd.stdout.decode("UTF-8").split("\n") if e.strip() != ""
+    ]
+
+print(json.dumps(INFO))

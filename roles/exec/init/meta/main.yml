@@ -1,0 +1,23 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+dependencies:
+  - role: exec/packages
+  - role: exec/firewall
+  - role: exec/relayd
+  - role: exec/dns
+  - role: exec/networking
+  - role: exec/common
+  - role: exec/dhcpd
+  - role: exec/certbot
+  - role: exec/dyndns
+  - role: exec/sysctl
+  - role: exec/sudo
+  - role: exec/sshd
+  - role: exec/desktop
+  - role: exec/firefox
+  - role: exec/unbound
+  - role: exec/unifi
+  - role: exec/dyndns
+  - role: exec/ntp
+  - role: exec/services

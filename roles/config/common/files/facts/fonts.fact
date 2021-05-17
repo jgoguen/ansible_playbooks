@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -e
+
+OS="$(command -p uname)"
+
+FONT_DIR=''
+
+if [ "${OS}" = "Darwin" ]; then
+	FONT_DIR=/Library/Fonts
+else
+	FONT_DIR=/usr/local/share/fonts
+fi
+
+printf '{"dir": "%s"}' "${FONT_DIR}"

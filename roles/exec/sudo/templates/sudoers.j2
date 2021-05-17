@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+
+{% for flag in sudo_config.defaults_flags %}
+Defaults {{ flag }}
+{% endfor %}
+{% for k in sudo_config.defaults %}
+{% if k in ["env_keep"] %}
+Defaults {{ k }} = "{{ sudo_config.defaults[k]|join(", ") }}"
+{% else %}
+Defaults {{ k }} = "{{sudo_config.defaults[k] }}"
+{% endif %}
+{% endfor %}
+
+{% for user in sudo_config.users %}
+{{ user.username }} {{ user.from }}=({{ user.as_user }}) {% if user.commands.passwd|default([]) %}{% if user.setenv|default(false) %}SETENV:{% endif %}{{ user.commands.passwd|join(", ") }}{% endif %} {% if user.commands.nopasswd|default([]) %}NOPASSWD:{% if user.setenv|default(false) %}SETENV:{% endif %} {{ user.commands.nopasswd|join(", ") }}{% endif %}
+
+{# This blank line is needed here to force a newline in the output #}
+{% endfor %}

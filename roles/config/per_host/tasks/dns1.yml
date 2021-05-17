@@ -1,0 +1,13 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: dns1 is a DNS system
+  set_fact:
+    roles: '{{ roles | combine({"dns": true, "ssh": true}) }}'
+
+- name: Load dns1 vars
+  include_vars: dns1.yml
+
+- name: Set PF LAN interface
+  set_fact:
+    pf_variables: '{{ pf_variables | combine({"if_lan": "smsc0"}) }}'

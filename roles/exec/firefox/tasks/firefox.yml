@@ -1,0 +1,73 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: 'stat Firefox base directory'
+  stat:
+    path: '{{ ansible_local.firefox.basedir }}'
+  register: ff_dir
+  changed_when: false
+
+- name: Ensure Firefox defaults preferences directory exists
+  file:
+    path: '{{ ansible_local.firefox.basedir }}/defaults/pref'
+    state: directory
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+  when: ff_dir.stat.exists
+
+- name: Ensure Firefox distribution directory exists
+  file:
+    path: '{{ ansible_local.firefox.basedir }}/distribution'
+    state: directory
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+  when: ff_dir.stat.exists
+
+- name: stat Firefox prefs directory
+  stat:
+    path: '{{ ansible_local.firefox.basedir }}/defaults/pref'
+  register: ff_prefs_dir
+  changed_when: false
+  when: ff_dir.stat.exists
+
+- name: stat Firefox distribution directory
+  stat:
+    path: '{{ ansible_local.firefox.basedir }}/distribution'
+  register: ff_dist_dir
+  changed_when: false
+  when: ff_dir.stat.exists
+
+- name: Install Firefox policies.json
+  template:
+    src: policies.json
+    dest: '{{ ff_dist_dir.stat.path }}/policies.json'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  when:
+    - ff_dir.stat.exists
+    - ff_dist_dir.stat.path is defined
+    - ff_dist_dir.stat.exists
+
+- name: Install Firefox autoconfig.js
+  template:
+    src: autoconfig.js
+    dest: '{{ ff_prefs_dir.stat.path }}/autoconfig.js'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  when:
+    - ff_dir.stat.exists
+    - ff_prefs_dir.stat.path is defined
+    - ff_prefs_dir.stat.exists
+
+- name: Install firefox.cfg
+  template:
+    src: firefox.cfg
+    dest: '{{ ansible_local.firefox.basedir }}/firefox.cfg'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  when: ff_dir.stat.exists

@@ -1,0 +1,49 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+bsd_interfaces:
+  em0:
+    - 'dhcp'
+    - 'inet6 autoconf'
+  em1:
+    - 'inet 10.0.0.1 255.255.255.0 10.0.0.255'
+    - 'inet6 fd01:2345:6789:abcd::1 64'
+    - 'up'
+
+sample_sysctls:
+  - name: 'net.inet.ip.forwarding'
+    value: '1'
+  - name: 'net.inet6.ip6.forwarding'
+    value: '1'
+
+sample_relayd_tables:
+  firsthost:
+    - '10.0.0.2'
+    - 'fd01:2345:6789:abcd::2'
+  secondhost:
+    - '10.0.0.3'
+    - 'fd01:2345:6789:abcd::3'
+
+sample_relayd_protocols:
+  acme:
+    type: http
+    rules:
+      - 'pass forward to <firsthost>'
+      - 'pass header Host value "second.example.com" forward to <secondhost>'
+
+sample_relayd_relays:
+  'http':
+    - 'listen on 0.0.0.0 port 80'
+    - 'listen on :: port 80'
+    - 'protocol "acmematch"'
+    - 'transparent forward to <firsthost> port 80'
+    - 'transparent forward to <secondhost> port 80'
+  'https':
+    - 'listen on 0.0.0.0 port 443'
+    - 'transparent forward to <secondhost> port 443'
+
+ipv4_address: '10.0.0.4'
+ipv6_address: 'fd01:2345:6789:abcd::4'
+
+sample_pf_rules:
+  - 'pass in on $if_lan proto tcp from any to ($if_lan) port { 80 443 } modulate state'

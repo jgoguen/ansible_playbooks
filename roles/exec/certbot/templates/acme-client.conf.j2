@@ -1,0 +1,16 @@
+# {{ ansible_managed }}
+
+authority letsencrypt {
+	api url "https://acme-v02.api.letsencrypt.org/directory"
+	account key "/etc/acme/letsencrypt-privkey.pem"
+}
+
+{% for hostname in certbot_hosts %}
+domain {{ hostname }} {
+	domain key "/etc/ssl/{{ hostname }}/privkey.pem"
+	domain certificate "/etc/ssl/{{ hostname }}/cert.pem"
+	domain chain certificate "/etc/ssl/{{ hostname }}/chain.pem"
+	domain full chain certificate "/etc/ssl/{{ hostname }}/fullchain.pem"
+	sign with letsencrypt
+}
+{% endfor %}

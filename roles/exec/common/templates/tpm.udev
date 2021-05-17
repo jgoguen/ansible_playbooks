@@ -1,0 +1,4 @@
+# {{ ansible_managed }}
+
+SUBSYSTEM="tpm", ACTION=="add", TAG+="uaccess"
+SUBSYSTEM="tpmrm", ACTION=="add", TAG+="uaccess"

@@ -1,0 +1,17 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Install dynv6 update script
+  template:
+    src: dynv6.sh.j2
+    dest: /usr/local/bin/dynv6.sh
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0700
+
+- name: Send dynamic DNS updates
+  cron:
+    name: 'Update dynamic DNS for {{ item }}'
+    minute: '*/5'
+    job: '/usr/local/bin/dynv6.sh {{ item }}'
+  loop: '{{ dyndns_hosts }}'

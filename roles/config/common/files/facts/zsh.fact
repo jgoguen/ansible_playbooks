@@ -1,0 +1,9 @@
+#!/bin/sh
+
+ZSH_BIN=/usr/bin/zsh
+
+if [ -f /usr/local/bin/zsh ]; then
+	ZSH_BIN=/usr/local/bin/zsh
+fi
+
+printf '{"bin": "%s"}' "${ZSH_BIN}"

@@ -1,0 +1,61 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: 'Create {{ item }}'
+  file:
+    path: '/var/unbound/etc/{{ item }}'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+    state: directory
+  loop:
+    - unbound.conf.d
+    - zones
+
+- name: 'Install {{ item }}.conf'
+  template:
+    src: '{{ item }}.conf.j2'
+    dest: '/var/unbound/etc/unbound.conf.d/{{ item }}.conf'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  loop:
+    - access-control
+    - forward-zone
+    - private-lan
+  notify:
+    - reload unbound
+
+- name: 'Install {{ item }} zone'
+  copy:
+    src: '{{ item }}.zone'
+    dest: '/var/unbound/etc/zones/{{ item }}.zone'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  loop:
+    - dns1.jgoguen.ca
+    - ha.jgoguen.ca
+    - intern.jgoguen.ca
+    - iot.jgoguen.ca
+    - nuc.jgoguen.ca
+    - thor.jgoguen.ca
+    - unifi.jgoguen.ca
+  notify:
+    - reload unbound
+
+- name: Install unbound.conf
+  template:
+    src: unbound.conf.j2
+    dest: /var/unbound/etc/unbound.conf
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload unbound
+
+- name: Start unbound
+  service:
+    name: unbound
+    enabled: yes
+    state: started

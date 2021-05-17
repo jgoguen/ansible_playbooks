@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -e
+
+IPTABLES_DIR=''
+IPTABLES_SUFFIX=''
+IPTABLES_FILE_V4=''
+IPTABLES_FILE_V6=''
+
+if [ -d /etc/iptables ]; then
+    IPTABLES_DIR='/etc/iptables'
+    IPTABLES_SUFFIX='.rules'
+elif [ -d /etc/sysconfig ]; then
+    IPTABLES_DIR='/etc/sysconfig'
+fi
+
+if [ -f /etc/debian-release ]; then
+    IPTABLES_FILE_V4='rules.v4'
+    IPTABLES_FILE_V6='rules.v6'
+else
+    IPTABLES_FILE_V4="iptables${IPTABLES_SUFFIX}"
+    IPTABLES_FILE_V6="ip6tables${IPTABLES_SUFFIX}"
+fi
+
+printf '{"rules_v4": "%s/%s", "rules_v6": "%s/%s"}' "${IPTABLES_DIR}" "${IPTABLES_FILE_V4}" "${IPTABLES_DIR}" "${IPTABLES_FILE_V6}"

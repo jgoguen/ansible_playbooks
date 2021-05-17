@@ -1,0 +1,25 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: nuc is a DNS system
+  set_fact:
+    roles: '{{ roles | combine({"dns": true, "ssh": true, "unifi": true}) }}'
+
+- name: Load nuc vars
+  include_vars: nuc.yml
+
+- name: Set PF LAN interface
+  set_fact:
+    pf_variables: '{{ pf_variables | combine({"if_lan": "re0"}) }}'
+
+- name: Queue nuc PF rules
+  set_fact:
+    pf_rules: '{{ pf_rules + nuc_pf_rules }}'
+
+- name: Set certbot hosts
+  set_fact:
+    certbot_hosts: '{{ certbot_hosts + ["unifi.jgoguen.ca"] }}'
+
+- name: Set dynamic DNS hosts
+  set_fact:
+    dyndns_hosts: '{{ dyndns_hosts + ["unifi.jgoguen.ca"] }}'

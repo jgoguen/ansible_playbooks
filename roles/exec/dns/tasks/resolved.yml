@@ -1,0 +1,19 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Configure systemd-resolved
+  template:
+    src: resolved.conf.j2
+    dest: /etc/systemd/resolved.conf
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  when: dns_servers|length > 0
+  notify:
+    - reload resolved
+
+- name: Start systemd-resolved
+  service:
+    name: systemd-resolved
+    enabled: yes
+    state: started

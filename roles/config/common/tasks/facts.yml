@@ -1,0 +1,77 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Create facts directory
+  file:
+    path: '/etc/ansible/facts.d'
+    owner: root
+    mode: 0755
+    state: directory
+  notify:
+    - rerun setup
+
+- name: Install root_owner fact script
+  copy:
+    src: facts/root_owner.fact
+    dest: /etc/ansible/facts.d/root_owner.fact
+    owner: root
+    mode: 0755
+  notify:
+    - rerun setup
+
+- name: Install package names fact script
+  copy:
+    src: facts/packages.fact
+    dest: /etc/ansible/facts.d/packages.fact
+    owner: root
+    mode: 0755
+  notify:
+    - rerun setup
+
+- name: Install firefox facts script
+  copy:
+    src: facts/firefox.fact
+    dest: /etc/ansible/facts.d/firefox.fact
+    owner: root
+    mode: 0755
+  notify:
+    - rerun setup
+
+- name: Install fonts facts script
+  copy:
+    src: facts/fonts.fact
+    dest: /etc/ansible/facts.d/fonts.fact
+    owner: root
+    mode: 0755
+  notify:
+    - rerun setup
+
+- name: Install iptables facts script
+  copy:
+    src: facts/iptables.fact
+    dest: /etc/ansible/facts.d/iptables.fact
+    owner: root
+    mode: 0755
+  notify:
+    - rerun setup
+
+- name: Install zsh facts script
+  copy:
+    src: facts/zsh.fact
+    dest: /etc/ansible/facts.d/zsh.fact
+    owner: root
+    mode: 0755
+  notify:
+    - rerun setup
+
+- name: Install VS Code facts script
+  copy:
+    src: facts/vscode.fact
+    dest: /etc/ansible/facts.d/vscode.fact
+    owner: root
+    mode: 0755
+  notify:
+    - rerun setup
+
+- name: Flush handlers
+  meta: flush_handlers

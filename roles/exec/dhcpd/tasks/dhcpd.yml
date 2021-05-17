@@ -1,0 +1,18 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Configure dhcpd.conf
+  template:
+    src: dhcpd.conf.j2
+    dest: /etc/dhcpd.conf
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload dhcpd
+
+- name: Start dhcpd
+  service:
+    name: dhcpd
+    enabled: yes
+    state: started

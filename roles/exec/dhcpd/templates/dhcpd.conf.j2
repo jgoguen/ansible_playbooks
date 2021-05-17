@@ -1,0 +1,22 @@
+# {{ ansible_managed }}
+
+option domain-name-servers {{ dhcpd_config["dns"] | join(", ") }};
+{% if dhcpd_config["domain_name"] != "" %}option domain-name "{{ dhcpd_config["domain_name"] }}";{% endif %}
+
+default-lease-time {{ dhcpd_config["lease"]["default"] }};
+max-lease-time {{ dhcpd_config["lease"]["max"] }};
+
+{% for subnet in dhcpd_config["subnets"] %}
+subnet {{ subnet["base"] }} netmask {{ subnet["subnet"] }} {
+	option routers {{ subnet["router"] }};
+	range {{ subnet["start"] }} {{ subnet["end"] }};
+
+{% for host in subnet["hosts"] %}
+	host {{ host }} {
+		hardware ethernet {{ subnet["hosts"][host]["mac"] }};
+		fixed-address {{ subnet["hosts"][host]["address"] }};
+	}
+{% endfor %}
+}
+
+{% endfor %}

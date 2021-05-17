@@ -1,0 +1,6 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: heimdaller is a desktop system
+  set_fact:
+    roles: '{{ roles | combine({"desktop": true, "devel": true}) }}'

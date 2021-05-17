@@ -1,0 +1,265 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+common_packages:
+  common:
+    - htop
+    - jq
+    - neovim
+    - nmap
+    - pinentry
+    - ripgrep
+    - wget
+    - xz
+    - zsh
+    - zsh-syntax-highlighting
+  desktop:
+    - youtube-dl
+  devel: []
+
+linux_packages:
+  common:
+    - adobe-source-code-pro-fonts
+    - adobe-source-sans-pro-fonts
+    - adobe-source-serif-pro-fonts
+    - cpio
+    - ethtool
+    - fontconfig
+    - fortune-mod
+    - gnupg
+    - mtr
+    - nodejs
+    - rsync
+    - sudo
+    - sysstat
+    - tcpdump
+    - tmux
+    - unzip
+    - xdg-user-dirs
+    - xdg-utils
+    - zsh-autosuggestions
+  desktop:
+    - bluez
+    - bluez-tools
+    - cups
+    - cups-filters
+    - cups-pdf
+    - cups-pk-helper
+    - firefox
+    - fontconfig
+    - foomatic-db
+    - foomatic-db-ppds
+  devel:
+    - clang
+
+openbsd_packages:
+  common:
+    - 'gnupg--%gnupg2'
+    - 'mtr--'
+    - node
+    - 'python%3.8'
+    - 'rsync--'
+    - sqlite3
+    - 'unzip--'
+    - xdg-user-dirs
+    - xdg-utils
+    - zip
+  desktop: []
+  devel:
+    - shellcheck
+
+arch_packages:
+  common:
+    # Normally this is a development package, but it's needed for AUR packages
+    - base-devel
+    - iptables
+    - jq
+    - lsb-release
+    - man-db
+    - python
+    - python-colorama
+    - python-msgpack
+    - python-pycryptodomex
+    - sqlite
+    - zsh-completions
+  desktop:
+    - flatpak
+    - foomatic-db-nonfree
+    - foomatic-db-nonfree-ppds
+    - imagemagick
+  devel:
+    - go
+    - go-tools
+    - npm
+    - python-black
+  aur:
+    - snapd
+
+fedora_packages:
+  common:
+    - bind-utils
+    - lsb
+    - onedrive
+    - python3
+    - python3-ansible-lint
+    - python3-colorama
+    - python3-flake8
+    - python3-msgpack
+    - python3-pycryptodomex
+    - snapd
+    - sqlite
+  desktop:
+    - desktop-file-utils
+    - fedora-workstation-repositories
+    - gstreamer1
+    - gstreamer1-libav
+    - gstreamer1-plugins-bad-free
+    - gstreamer1-plugins-bad-free-extras
+    - gstreamer1-plugins-base
+    - gstreamer1-plugins-good
+    - gstreamer1-plugins-good-extras
+    - gstreamer1-plugins-ugly
+    - gstreamer1-plugins-ugly-free
+    - gvfs-afc
+    - gvfs-fuse
+    - gvfs-goa
+    - gvfs-gphoto2
+    - gvfs-mtp
+    - gvfs-smb
+    - ImageMagick
+    - inotify-tools
+    - libnotify
+    - PackageKit-gstreamer-plugin
+    - wl-clipboard
+    - xclip
+    - xdg-user-dirs-gtk
+  devel:
+    - golang
+    - golang-godoc
+    - mock
+    - python3-black
+    - rpm-build
+    - rpmdevtools
+    - rpmlint
+    - ShellCheck
+
+macos_packages:
+  - antibody
+  - black
+  - flake8
+  - fortune
+  - golang
+  - gpg2
+  - lunchy
+  - mtr
+  - nodejs
+  - python3
+  - shellcheck
+  - sqlite
+  - vale
+  - zsh-autosuggestions
+  - zsh-completions
+
+flatpak_packages:
+  - com.github.marktext.marktext
+  - com.valvesoftware.Steam
+
+snap_packages:
+  - name: 1password
+    channel: beta
+  - name: discord
+    channel: stable
+  - name: glimpse-editor
+    channel: stable
+  - name: libreoffice
+    channel: stable
+  - name: slack
+    channel: stable
+  - name: snap-store
+    channel: stable
+
+sysctl:
+  linux:
+    - name: 'fs.inotify.max_user_watches'
+      value: 5000000
+    - name: 'fs.protected_hardlinks'
+      value: 1
+    - name: 'fs.protected_symlinks'
+      value: 1
+    - name: 'fs.suid_dumpable'
+      value: 0
+    - name: 'kernel.dmesg_restrict'
+      value: 1
+    - name: 'kernel.hardlockup_panic'
+      value: 1
+    - name: 'kernel.kptr_restrict'
+      value: 1
+    - name: 'kernel.nmi_watchdog'
+      value: 0
+    - name: 'kernel.sysrq'
+      value: 1
+    - name: 'net.ipv4.conf.all.accept_redirects'
+      value: 0
+    - name: 'net.ipv4.conf.all.accept_source_route'
+      value: 0
+    - name: 'net.ipv4.conf.all.rp_filter'
+      value: 0
+    - name: 'net.ipv4.conf.all.secure_redirects'
+      value: 0
+    - name: 'net.ipv4.conf.all.send_redirects'
+      value: 0
+    - name: 'net.ipv4.conf.default.accept_redirects'
+      value: 0
+    - name: 'net.ipv4.conf.default.accept_source_route'
+      value: 0
+    - name: 'net.ipv4.conf.default.rp_filter'
+      value: 0
+    - name: 'net.ipv4.conf.default.secure_redirects'
+      value: 0
+    - name: 'net.ipv4.conf.default.send_redirects'
+      value: 0
+    - name: 'net.ipv4.icmp_echo_ignore_broadcasts'
+      value: 1
+    - name: 'net.ipv4.icmp_ignore_bogus_error_responses'
+      value: 1
+    - name: 'net.ipv4.tcp_mtu_probing'
+      value: 1
+    - name: 'net.ipv4.tcp_syncookies'
+      value: 1
+    - name: 'net.ipv4.tcp_tw_reuse'
+      value: 1
+    - name: 'net.ipv4.ip_forward'
+      value: 0
+    - name: 'net.ipv4.tcp_fastopen'
+      value: 3
+    - name: 'net.ipv6.conf.all.accept_redirects'
+      value: 0
+    - name: 'net.ipv6.conf.all.accept_source_route'
+      value: 0
+    - name: 'net.ipv6.conf.all.addr_gen_mode'
+      value: 3
+    - name: 'net.ipv6.conf.all.use_tempaddr'
+      value: 2
+    - name: 'net.ipv6.conf.default.accept_redirects'
+      value: 0
+    - name: 'net.ipv6.conf.default.accept_source_route'
+      value: 0
+    - name: 'net.ipv6.conf.default.addr_gen_mode'
+      value: 3
+    - name: 'net.ipv6.conf.default.use_tempaddr'
+      value: 2
+    - name: 'vm.dirty_bytes'
+      value: 4194304
+    - name: 'vm.dirty_background_bytes'
+      value: 4194304
+    - name: 'vm.min_free_kbytes'
+      value: 209715
+    - name: 'vm.swappiness'
+      value: 5
+    - name: 'vm.vfs_cache_pressure'
+      value: 50
+  darwin: []
+  openbsd: []
+
+coprs_wanted:
+  - user: jgoguen
+    name: universal-ctags

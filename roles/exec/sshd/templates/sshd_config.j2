@@ -1,0 +1,23 @@
+# {{ ansible_managed }}
+
+ListenAddress 0.0.0.0
+ListenAddress ::
+Port 22
+Protocol 2
+HostKey /etc/ssh/ssh_host_ed25519_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+
+LoginGraceTime 30s
+PermitRootLogin no
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+ChallengeResponseAuthentication no
+{% if ansible_facts["system"] != "OpenBSD" %}UsePAM yes{% endif %}
+PrintMotd no
+
+AllowAgentForwarding yes
+AllowTcpForwarding yes
+AllowStreamLocalForwarding yes
+GatewayPorts yes
+
+Subsystem sftp /usr/libexec/sftp-server

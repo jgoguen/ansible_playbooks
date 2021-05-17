@@ -1,0 +1,18 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Install ntpd.conf
+  template:
+    src: ntpd.conf.j2
+    dest: /etc/ntpd.conf
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload ntpd
+
+- name: Start ntpd
+  service:
+    name: ntpd
+    enabled: yes
+    state: started
