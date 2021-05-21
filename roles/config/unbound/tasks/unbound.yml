@@ -23,4 +23,4 @@
 
 - name: Set auth zones configs
   set_fact:
-    unbound_config: '{{ unbound_config | combine(default_auth_zones, recursive=True) }}'
+    unbound_config: '{{ unbound_config | combine({"auth-zone": unbound_config["auth-zone"] + default_auth_zones}, recursive=True) }}'
