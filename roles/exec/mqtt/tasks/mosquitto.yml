@@ -15,7 +15,7 @@
   copy:
     src: mosquitto.passwd
     dest: /etc/mosquitto.passwd
-    owner: mosquitto
+    owner: _mosquitto
     group: '{{ ansible_local.root_owner.group }}'
     mode: 0600
   notify:
