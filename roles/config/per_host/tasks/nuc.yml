@@ -3,7 +3,7 @@
 
 - name: nuc is a DNS system
   set_fact:
-    roles: '{{ roles | combine({"dns": true, "ssh": true, "unifi": true}) }}'
+    roles: '{{ roles | combine({"dns": true, "ssh": true, "unifi": true, "mqttd": true}) }}'
 
 - name: Load nuc vars
   include_vars: nuc.yml
