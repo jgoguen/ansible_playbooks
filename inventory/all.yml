@@ -16,6 +16,7 @@ all:
           dhcpd: false
           dns: false
           gw: false
+          mqttd: false
           unifi: false
         certbot_hosts: []
         dyndns_hosts: []

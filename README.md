@@ -107,6 +107,7 @@ currently defined:
 - `gw`: This host will be an Internet gateway. OpenBSD is assumed. This will
   also configure `rad` for SLAAC advertisement and `relayd` for internal service
   access.
+- `mqttd`: This host will be a MQTT server. Mosquitto on OpenBSD is assumed.
 - `unifi`: This host will be a UniFi controller. It is assumed that the OpenBSD
   `unifi` port will be built.
 

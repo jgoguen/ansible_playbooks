@@ -1,0 +1,6 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Configure Mosquitto
+  import_tasks: mosquitto.yml
+  when: roles["mqttd"]

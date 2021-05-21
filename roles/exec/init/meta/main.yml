@@ -17,6 +17,7 @@ dependencies:
   - role: exec/desktop
   - role: exec/firefox
   - role: exec/unbound
+  - role: exec/mqtt
   - role: exec/unifi
   - role: exec/dyndns
   - role: exec/ntp
