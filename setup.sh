@@ -3,48 +3,12 @@
 
 set -eux
 
-OP_ADDR="${1}"
-OP_EMAIL="${2}"
+OP_ADDR="${1:-""}"
+OP_EMAIL="${2:-""}"
 
 if [ -z "${OP_ADDR}" ] || [ -z "${OP_EMAIL}" ]; then
 	printf 'Usage: %s op_hostname op_email\n' "${0}"
 	exit 1
-fi
-
-UNAME_BIN="$(command -pv uname)"
-if [ -z "${UNAME_BIN}" ]; then
-	printf 'Required tool uname not found\n' >&2
-	exit 1
-fi
-
-MKTEMP_BIN="$(command -pv mktemp)"
-if [ -z "${MKTEMP_BIN}" ]; then
-	printf 'Required tool mktemp not found\n' >&2
-	exit 1
-fi
-
-TAR_BIN="$(command -pv tar)"
-if [ -z "${TAR_BIN}" ]; then
-	printf 'Requiored tool tar not found\n' >&2
-	exit 1
-fi
-
-CHOWN_BIN="$(command -pv chown)"
-if [ -z "${CHOWN_BIN}" ]; then
-	printf 'Required tool chown not found\n' >&2
-	exit 1
-fi
-
-CHMOD_BIN="$(command -pv chmod)"
-if [ -z "${CHMOD_BIN}" ]; then
-	printf 'Required tool chmod not found\n' >&2
-	exit 1
-fi
-
-if [ "${OSTYPE}" = "openbsd" ]; then
-	SUDO_CMD=/usr/bin/doas
-else
-	SUDO_CMD=/usr/bin/sudo
 fi
 
 cleanup() {
@@ -56,7 +20,19 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM HUP
 
+UNAME_BIN="$(command -pv uname)"
+if [ -z "${UNAME_BIN}" ]; then
+	printf 'Required tool uname not found\n' >&2
+	exit 1
+fi
+
 OSTYPE="$("${UNAME_BIN}" | /usr/bin/tr '[:upper:]' '[:lower:]')"
+if [ "${OSTYPE}" = "openbsd" ]; then
+	SUDO_CMD=/usr/bin/doas
+else
+	SUDO_CMD=/usr/bin/sudo
+fi
+
 if [ "${OSTYPE}" = "darwin" ]; then
 	if ! xcode-select --print-path >/dev/null 2>&1; then
 		printf 'Installing XCode CLI tools\n'
@@ -92,9 +68,33 @@ if [ -z "${ANSIBLE_GALAXY_BIN}" ]; then
 	exit 1
 fi
 
+CHOWN_BIN="$(command -pv chown)"
+if [ -z "${CHOWN_BIN}" ]; then
+	printf 'Required tool chown not found\n' >&2
+	exit 1
+fi
+
 CURL_BIN="$(command -pv curl)"
 if [ -z "${CURL_BIN}" ]; then
 	printf 'Required tool curl not found\n' >&2
+	exit 1
+fi
+
+MKTEMP_BIN="$(command -pv mktemp)"
+if [ -z "${MKTEMP_BIN}" ]; then
+	printf 'Required tool mktemp not found\n' >&2
+	exit 1
+fi
+
+TAR_BIN="$(command -pv tar)"
+if [ -z "${TAR_BIN}" ]; then
+	printf 'Required tool tar not found\n' >&2
+	exit 1
+fi
+
+UNZIP_BIN="$(command -pv unzip)"
+if [ -z "${UNZIP_BIN}" ]; then
+	printf 'Required tool unzip not found\n' >&2
 	exit 1
 fi
 
@@ -130,7 +130,7 @@ if [ "${OSTYPE}" = "darwin" ]; then
 	/bin/mv "${TEMPDIR}/op.zip" "${TEMPDIR}/op.pkg"
 	${SUDO_CMD} /usr/sbin/installer -package "${TEMPDIR}/op.pkg" -target /
 else
-	/usr/bin/unzip "${TEMPDIR}/op.zip" op
+	${UNZIP_BIN} "${TEMPDIR}/op.zip" op
 	${SUDO_CMD} /bin/mv ./op /usr/local/bin/op
 fi
 
