@@ -118,6 +118,7 @@ esac
 
 ${SUDO_CMD} "${ANSIBLE_GALAXY_BIN}" install kewlfft.aur
 ${SUDO_CMD} "${ANSIBLE_GALAXY_BIN}" collection install community.general
+${SUDO_CMD} "${ANSIBLE_GALAXY_BIN}" collection install community.postgresql
 
 if [ "${OSTYPE}" = "openbsd" ] && [ ! -d /usr/ports ]; then
 	${CURL_BIN} "https://cdn.openbsd.org/pub/OpenBSD/$("${UNAME_BIN}" -r)/ports.tar.gz" | ${SUDO_CMD} "${TAR_BIN}" zxphf - -C /usr

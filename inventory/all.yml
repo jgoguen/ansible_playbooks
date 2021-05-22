@@ -632,3 +632,16 @@ all:
           - time3.facebook.com
           - time4.facebook.com
           - time5.facebook.com
+        psql_conf:
+          listen_addresses: "'*'"
+          password_encryption: "'scram-sha-256'"
+          max_connections: '100'
+          ssl: 'off'
+          ssl_cert_file: "'/etc/ssl/{{ ansible_fqdn }}/fullchain.pem'"
+          ssl_key_file: "'/etc/ssl/{{ ansible_fqdn }}/privkey.pem'"
+          shared_buffers: '512MB'
+          dynamic_shared_memory_type: 'posix'
+          min_wal_size: '80MB'
+          max_wal_size: '1GB'
+          log_timezone: "'America/Los_Angeles'"
+          timezone: "'America/Los_Angeles'"

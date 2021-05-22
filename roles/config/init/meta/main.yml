@@ -9,3 +9,4 @@ dependencies:
   - role: config/mqtt
   - role: config/sshd
   - role: config/unifi
+  - role: config/db

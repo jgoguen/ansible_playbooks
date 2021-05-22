@@ -22,3 +22,4 @@ dependencies:
   - role: exec/dyndns
   - role: exec/ntp
   - role: exec/services
+  - role: exec/db
