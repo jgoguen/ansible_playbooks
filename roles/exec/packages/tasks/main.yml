@@ -95,6 +95,7 @@
     owner: root
     group: '{{ ansible_local.root_owner.group }}'
     state: link
+  when: ansible_facts["system"] == "Linux"
 
 - name: Install Snap packages
   snap:
