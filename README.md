@@ -130,8 +130,9 @@ and the IPv6 address is assumed to have a `/64` netmask.
   present, they will not be upgraded to the latest version.
 - `remove`: A list of packages which will be removed.
 - `aur`: A list of packages to install from the Arch User Repository.
-- `snap` A list of hashes defining a Snap name and the channel to install from.
-  - Example: `[{"name": "1password", "channel": "beta"}, {"name": "wesnoth", "channel": "stable"}]`
+- `snap` A list of hashes defining a Snap name, the channel to install from, and
+  whether to allow classic confinement.
+  - Example: `[{"name": "1password", "channel": "beta", "classic": false}, {"name": "wesnoth", "channel": "stable", "classic": true}]`
 - `flatpak`: A list of Flatpak package identifiers to install. Packages are
   assumed to be available on Flathub.
 

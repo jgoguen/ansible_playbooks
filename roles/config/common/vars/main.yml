@@ -166,16 +166,22 @@ flatpak_packages:
 snap_packages:
   - name: 1password
     channel: beta
+    classic: no
   - name: discord
     channel: stable
+    classic: no
   - name: glimpse-editor
     channel: stable
+    classic: no
   - name: libreoffice
     channel: stable
+    classic: no
   - name: slack
     channel: stable
+    classic: yes
   - name: snap-store
     channel: stable
+    classic: no
 
 sysctl:
   linux:

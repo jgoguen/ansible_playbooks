@@ -88,10 +88,19 @@
 - name: Installing Snap packages
   debug: var=packages.snap
 
+- name: Create Snap classic confinement symlink
+  file:
+    src: /var/lib/snapd/snap
+    dest: /snap
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    state: link
+
 - name: Install Snap packages
   snap:
     name: '{{ item.name }}'
     channel: '{{ item.channel }}'
+    classic: '{{ item.classic }}'
     state: present
   when: ansible_facts["system"] == "Linux"
   loop: '{{ packages["snap"] }}'
