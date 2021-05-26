@@ -36,4 +36,4 @@
   import_tasks: zsh-antibody.yml
   when:
     - not antibody_stat.stat.exists
-    - ansible_facts["system"] == "Linuxs"
+    - ansible_facts["system"] == "Linux"
