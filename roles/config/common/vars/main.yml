@@ -55,6 +55,8 @@ openbsd_packages:
   common:
     - 'gnupg--%gnupg2'
     - 'mtr--'
+    - neovim
+    - py3-neovim
     - node
     - 'python%3.8'
     - 'rsync--'
@@ -79,6 +81,7 @@ arch_packages:
     - python-colorama
     - python-msgpack
     - python-pycryptodomex
+    - python-pynvim
     - sqlite
     - zsh-completions
   desktop:
@@ -105,6 +108,7 @@ fedora_packages:
     - python3-flake8
     - python3-msgpack
     - python3-pycryptodomex
+    - python3-neovim
     - snapd
     - sqlite
   desktop:
