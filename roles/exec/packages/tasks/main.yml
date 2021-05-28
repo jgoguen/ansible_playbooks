@@ -106,6 +106,21 @@
   when: ansible_facts["system"] == "Linux"
   loop: '{{ packages["snap"] }}'
 
+- name: Installing Flatpak packages
+  debug: var=packages.flatpak
+
+- name: Installing Flathub remote
+  community.general.flatpak_remote:
+    flatpakrepo_url: 'https://flathub.org/repo/flathub.flatpakrepo'
+    name: flathub
+  when: ansible_facts["system"] == "Linux"
+
+- name: Install Flatpak packages
+  community.general.flatpak:
+    name: '{{ item }}'
+  when: ansible_facts["system"] == "Linux"
+  loop: '{{ packages["flatpak"] }}'
+
 - name: Removing packages
   debug: var=packages.remove
 
