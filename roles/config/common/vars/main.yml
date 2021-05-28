@@ -160,25 +160,17 @@ macos_packages:
   - zsh-completions
 
 flatpak_packages:
+  - com.discordapp.Discord
   - com.github.marktext.marktext
+  - com.slack.Slack
   - com.valvesoftware.Steam
+  - org.glimpse_editor.Glimpse
+  - org.libreoffice.LibreOffice
 
 snap_packages:
   - name: 1password
     channel: beta
     classic: no
-  - name: discord
-    channel: stable
-    classic: no
-  - name: glimpse-editor
-    channel: stable
-    classic: no
-  - name: libreoffice
-    channel: stable
-    classic: no
-  - name: slack
-    channel: stable
-    classic: yes
   - name: snap-store
     channel: stable
     classic: no
