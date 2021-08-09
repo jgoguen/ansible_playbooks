@@ -15,11 +15,3 @@
 - name: Queue nuc PF rules
   set_fact:
     pf_rules: '{{ pf_rules + nuc_pf_rules }}'
-
-- name: Set certbot hosts
-  set_fact:
-    certbot_hosts: '{{ certbot_hosts + ["unifi.jgoguen.ca"] }}'
-
-- name: Set dynamic DNS hosts
-  set_fact:
-    dyndns_hosts: '{{ dyndns_hosts + ["unifi.jgoguen.ca"] }}'

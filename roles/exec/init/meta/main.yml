@@ -5,6 +5,7 @@ dependencies:
   - role: exec/packages
   - role: exec/firewall
   - role: exec/relayd
+  - role: exec/gw
   - role: exec/dns
   - role: exec/networking
   - role: exec/common

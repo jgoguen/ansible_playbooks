@@ -1,0 +1,30 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Install speedtest post script
+  template:
+    src: speedtest-post.py.j2
+    dest: /usr/local/bin/speedtest-post.py
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+
+- name: Install data stats post script
+  template:
+    src: pfctl_stats.py.j2
+    dest: /usr/local/bin/pfctl_stats.py
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+
+- name: Install speedtest post cron task
+  cron:
+    name: Post speedtest results to HomeAssistant
+    minute: '*/57'
+    job: /usr/local/bin/speedtest-post.py
+
+- name: Install data usage post cron task
+  cron:
+    name: Post data usage to HomeAssistant
+    minute: '*/5'
+    job: /usr/local/bin/pfctl_stats.py

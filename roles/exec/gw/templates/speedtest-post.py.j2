@@ -1,0 +1,13 @@
+#!/usr/local/bin/python3
+
+import json
+import subprocess
+
+from urllib.request import urlopen
+
+proc = subprocess.run(['/usr/local/bin/speedtest-cli', '--json', '--server', '1783'], capture_output=True, check=True)
+obj = json.loads(proc.stdout.decode())
+
+s = f'download={obj["download"]}&upload={obj["upload"]}&ping={obj["ping"]}'
+
+urlopen('http://{{ homeassistant_vars["ip"] }}/api/webhook/{{ homeassistant_vars["webhooks"]["speedtest"] }}', data=s.encode())
