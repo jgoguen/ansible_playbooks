@@ -6,3 +6,9 @@
     name: rad
     state: restarted
   changed_when: false
+
+- name: reload dhcpcd
+  service:
+    name: dhcpcd
+    state: restarted
+  changed_when: false
