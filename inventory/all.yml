@@ -147,6 +147,9 @@ all:
         rad_config:
           dns: []
           interface: ''
+        dhcpcd_config:
+          allowinterfaces: ''
+          interfaces: {}
         doas_rules:
           - 'permit nopass setenv { FTPMODE PKG_CACHE PKG_PATH SM_PATH SSH_AUTH_SOCK DESTDIR DISTDIR FETCH_CMD FLAVOR GROUP MAKE MAKECONF MULTI_PACKAGES NOMAN OKAY_FILES OWNER PKG_DBDIR PKG_DESTDIR PKG_TMPDIR PORTSDIR RELEASEDIR SHARED_ONLY SUBPACKAGE WRKOBJDIR SUDO_PORT_V1 } :wsrc'
           - 'permit persist :wheel'
@@ -250,7 +253,7 @@ all:
               value: false
             - key: AppleTemperatureUnit
               type: string
-              value: Celsius
+              value: Fahrenheit
             - key: AppleWindowTabbingMode
               type: string
               value: always
@@ -645,3 +648,6 @@ all:
           max_wal_size: '1GB'
           log_timezone: "'America/Los_Angeles'"
           timezone: "'America/Los_Angeles'"
+        homeassistant_vars:
+          ip: ''
+          webhooks: {}
