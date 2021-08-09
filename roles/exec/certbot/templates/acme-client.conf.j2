@@ -7,10 +7,10 @@ authority letsencrypt {
 
 {% for hostname in certbot_hosts %}
 domain {{ hostname }} {
-	domain key "/etc/ssl/{{ hostname }}/privkey.pem"
-	domain certificate "/etc/ssl/{{ hostname }}/cert.pem"
-	domain chain certificate "/etc/ssl/{{ hostname }}/chain.pem"
-	domain full chain certificate "/etc/ssl/{{ hostname }}/fullchain.pem"
+	domain key "/etc/ssl/private/{{ hostname }}.key"
+	domain full chain certificate "/etc/ssl/{{ hostname }}.pem"
+	domain certificate "/etc/ssl/{{ hostname }}-cert.crt"
+	domain chain certificate "/etc/ssl/{{ hostname }}-chain.pem"
 	sign with letsencrypt
 }
 {% endfor %}

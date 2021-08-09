@@ -17,19 +17,18 @@
     mode: 0700
     state: directory
 
-- name: Create ACME certificate directories
-  file:
-    path: '/etc/ssl/{{ item }}'
-    owner: root
+- name: Install ACME account key
+  copy:
+    src: acme.key
+    dest: /etc/acme/letsencrypt-privkey.pem
+    owner: 'root'
     group: '{{ ansible_local.root_owner.group }}'
-    mode: 0700
-    state: directory
-  loop: '{{ certbot_hosts }}'
+    mode: 0400
 
 - name: Renew certificates cron tasks
   cron:
     name: 'Renew certs for {{ item }}'
     minute: '{{ 59 | random(seed=item) }}'
     hour: '{{ 9 | random(seed=item) }}'
-    job: '/usr/sbin/acme-client {{ item }} && /usr/sbin/rcctl reload httpd && /usr/local/bin/unifi_cert_update.sh'
+    job: '/usr/sbin/acme-client {{ item }} && /usr/sbin/rcctl reload relayd'
   loop: '{{ certbot_hosts }}'
