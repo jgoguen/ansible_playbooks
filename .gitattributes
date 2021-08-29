@@ -1,0 +1,7 @@
+**/*.passwd filter=crypt
+**/*.key filter=crypt
+/roles/**/*.jgoguen.ca.zone filter=crypt
+/roles/config/per_host/vars/* filter=crypt
+/roles/config/per_host/vars/sample_vars.yml -filter
+/roles/config/unbound/vars/main.yml filter=crypt
+/roles/exec/dyndns/vars/main.yml filter=crypt
