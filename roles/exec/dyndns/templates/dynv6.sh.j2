@@ -5,13 +5,18 @@ set -eu
 
 hostname=$1
 TOKEN="{{ dynv6_token }}"
+STATE_DIR="${STATE_DIRECTORY:-/etc/dynv6}"
 
-v4file="${STATE_DIRECTORY}/${hostname}.v4"
-v6file="${STATE_DIRECTORY}/${hostname}.v6"
+v4file="${STATE_DIR}/${hostname}.v4"
+v6file="${STATE_DIR}/${hostname}.v6"
 
 if [ -z "${hostname}" ] || [ -z "${TOKEN:-""}" ]; then
 	printf 'Usage: TOKEN=<token> %s hostname\n' "$0"
 	exit 1
+fi
+
+if [ ! -d "${STATE_DIR}" ]; then
+  /bin/mkdir -p "${STATE_DIR}"
 fi
 
 CURL_BIN="$(command -v curl)"

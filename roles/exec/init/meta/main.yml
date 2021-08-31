@@ -4,13 +4,13 @@
 dependencies:
   - role: exec/packages
   - role: exec/firewall
+  - role: exec/certbot
   - role: exec/relayd
   - role: exec/gw
   - role: exec/dns
   - role: exec/networking
   - role: exec/common
   - role: exec/dhcpd
-  - role: exec/certbot
   - role: exec/dyndns
   - role: exec/sysctl
   - role: exec/sudo
