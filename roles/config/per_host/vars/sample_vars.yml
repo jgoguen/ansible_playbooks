@@ -16,32 +16,6 @@ sample_sysctls:
   - name: 'net.inet6.ip6.forwarding'
     value: '1'
 
-sample_relayd_tables:
-  firsthost:
-    - '10.0.0.2'
-    - 'fd01:2345:6789:abcd::2'
-  secondhost:
-    - '10.0.0.3'
-    - 'fd01:2345:6789:abcd::3'
-
-sample_relayd_protocols:
-  acme:
-    type: http
-    rules:
-      - 'pass forward to <firsthost>'
-      - 'pass header Host value "second.example.com" forward to <secondhost>'
-
-sample_relayd_relays:
-  'http':
-    - 'listen on 0.0.0.0 port 80'
-    - 'listen on :: port 80'
-    - 'protocol "acmematch"'
-    - 'transparent forward to <firsthost> port 80'
-    - 'transparent forward to <secondhost> port 80'
-  'https':
-    - 'listen on 0.0.0.0 port 443'
-    - 'transparent forward to <secondhost> port 443'
-
 ipv4_address: '10.0.0.4'
 ipv6_address: 'fd01:2345:6789:abcd::4'
 

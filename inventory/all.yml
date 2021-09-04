@@ -119,10 +119,7 @@ all:
         pf_variables: {}
         # Maps table name to contents
         pf_tables: {}
-        relayd_tables: {}
         pf_rules: []
-        relayd_protocols: {}
-        relayd_relays: {}
         services:
           start: []
           stop: []

@@ -30,5 +30,5 @@
     name: 'Renew certs for {{ item }}'
     minute: '{{ 59 | random(seed=item) }}'
     hour: '{{ 9 | random(seed=item) }}'
-    job: '/usr/sbin/acme-client {{ item }} && /usr/sbin/rcctl reload relayd'
+    job: '/usr/sbin/acme-client {{ item }}'
   loop: '{{ certbot_hosts }}'

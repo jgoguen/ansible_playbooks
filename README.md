@@ -105,8 +105,7 @@ currently defined:
 - `dhcpd`: This host will be a DHCP server. OpenBSD `dhcpd` is assumed.
 - `dns`: This host will be a DNS server. OpenBSD `unbound` is assumed.
 - `gw`: This host will be an Internet gateway. OpenBSD is assumed. This will
-  also configure `rad` for SLAAC advertisement and `relayd` for internal service
-  access.
+  also configure `rad` for SLAAC advertisement.
 - `mqttd`: This host will be a MQTT server. Mosquitto on OpenBSD is assumed.
 - `unifi`: This host will be a UniFi controller. It is assumed that the OpenBSD
   `unifi` port will be built.
@@ -181,57 +180,6 @@ OpenBSD systems.
 
 `pf_tables` maps PF table names to a list of table contents. Tables defined here
 may be referenced in `pf_rules` as `&lt;name&gt;`.
-
-### `relayd_tables`
-
-`relayd_tables` is the same as `pf_tables`, except these tables will be defined
-in `relayd.conf(5)` and can be referenced in `relayd_protocols` and/or
-`relayd_relays`.
-
-### `pf_rules`
-
-`pf_rules` defines a list of `pf.conf(5)` rules to include.
-
-### `relayd_protocols`
-
-`relayd_protocols` defines a map of protocol names to type and rules. This YAML
-hash:
-
-```yaml
-httpblock:
-  type: http
-  rules:
-    - 'block all'
-```
-
-Will result in this `relayd.conf(5)` section:
-
-```cfg
-http protocol "httpblock" {
-  block all
-}
-```
-
-### `relayd_relays`
-
-`relayd_relays` defines a map of relay names to rules. This YAML hash:
-
-```yaml
-my_https:
-  - 'listen on 0.0.0.0 port 80'
-  - 'protocol "httpblock"'
-  - 'transparent forward to <http_servers>'
-```
-
-Will result in this `relayd.conf(5)` section:
-
-```cfg
-relay "my_https" {
-  listen on 0.0.0.0 port 80
-  protocol "httpblock"
-  transparent forward to <http_servers>
-}
-```
 
 ### `services`
 

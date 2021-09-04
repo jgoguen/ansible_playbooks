@@ -44,18 +44,6 @@
   set_fact:
     sysctls: '{{ sysctls + gw_sysctls }}'
 
-- name: Set relayd tables
-  set_fact:
-    relayd_tables: '{{ relayd_tables | combine(gw_relayd_tables) }}'
-
-- name: Set relayd protocols
-  set_fact:
-    relayd_protocols: '{{ relayd_protocols | combine(gw_relayd_protocols) }}'
-
-- name: Set relayd relays
-  set_fact:
-    relayd_relays: '{{ relayd_relays | combine(gw_relayd_relays) }}'
-
 - name: Set certbot hosts
   set_fact:
     certbot_hosts: '{{ certbot_hosts + gw_hosts }}'
