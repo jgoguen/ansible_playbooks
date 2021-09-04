@@ -609,6 +609,7 @@ all:
         unbound_config:
           server:
             include:
+              - /var/unbound/etc/unbound.conf.d/adblock.conf
               - /var/unbound/etc/unbound.conf.d/access-control.conf
               - /var/unbound/etc/unbound.conf.d/private-lan.conf
             interface:

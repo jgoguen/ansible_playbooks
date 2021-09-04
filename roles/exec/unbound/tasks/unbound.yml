@@ -46,6 +46,25 @@
   notify:
     - reload unbound
 
+- name: Install adblock generator script
+  copy:
+    src: 'unbound-adhosts.sh'
+    dest: '/usr/local/bin/unbound-adhosts.sh'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+
+- name: Run adblock generator on cron
+  cron:
+    name: 'Update unbound adblock lists'
+    minute: '{{ 59 | random(seed="unbound-adblock") }}'
+    job: '/usr/local/bin/unbound-adhosts.sh'
+
+- name: Ensure adblock.conf exists
+  command:
+    cmd: /usr/local/bin/unbound-adhosts.sh
+    creates: '/var/unbound/etc/unbound.conf.d/adblock.conf'
+
 - name: Install unbound.conf
   template:
     src: unbound.conf.j2
