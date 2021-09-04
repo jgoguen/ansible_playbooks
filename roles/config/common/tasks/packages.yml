@@ -131,14 +131,20 @@
 - name: Queue desktop Snap packages for install
   set_fact:
     packages: '{{ packages | combine({"snap": packages["snap"] + snap_packages}) }}'
-  when: roles["desktop"]
+  when:
+    - roles["desktop"]
+    - ansible_facts["system"] == "Linux"
 
 - name: Queue removal of distro packages replaced by Snaps
   set_fact:
     packages: '{{ packages | combine({"remove": packages["remove"] + ["gimp", "libreoffice"]}) }}'
-  when: roles["desktop"]
+  when:
+    - roles["desktop"]
+    - ansible_facts["system"] == "Linux"
 
 - name: Queue desktop Flatpak packages for install
   set_fact:
     packages: '{{ packages | combine({"flatpak": packages["flatpak"] + flatpak_packages}) }}'
-  when: roles["desktop"]
+  when:
+    - roles["desktop"]
+    - ansible_facts["system"] == "Linux"
