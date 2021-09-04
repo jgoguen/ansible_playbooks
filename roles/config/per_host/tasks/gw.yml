@@ -44,10 +44,6 @@
   set_fact:
     sysctls: '{{ sysctls + gw_sysctls }}'
 
-- name: Set certbot hosts
-  set_fact:
-    certbot_hosts: '{{ certbot_hosts + gw_hosts }}'
-
 - name: Set dynamic DNS hosts
   set_fact:
     dyndns_hosts: '{{ dyndns_hosts + gw_hosts }}'

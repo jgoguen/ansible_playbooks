@@ -9,22 +9,8 @@
     group: '{{ ansible_local.root_owner.group }}'
     mode: 0755
 
-- name: Install data stats post script
-  template:
-    src: pfctl_stats.py.j2
-    dest: /usr/local/bin/pfctl_stats.py
-    owner: root
-    group: '{{ ansible_local.root_owner.group }}'
-    mode: 0755
-
 - name: Install speedtest post cron task
   cron:
     name: Post speedtest results to HomeAssistant
     minute: '*/57'
     job: /usr/local/bin/speedtest-post.py
-
-- name: Install data usage post cron task
-  cron:
-    name: Post data usage to HomeAssistant
-    minute: '*/5'
-    job: /usr/local/bin/pfctl_stats.py
