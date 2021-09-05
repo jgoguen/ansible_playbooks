@@ -1,0 +1,29 @@
+---
+# {{ ansible_managed }}
+# vim: set filetype=yaml ts=2 sts=2 sw=2 expandtab autoindent:
+
+version: '3.8'
+
+services:
+  minecraft-java:
+    image: itzg/minecraft-server
+    container_name: minecraft-java
+    environment:
+      EULA: "TRUE"
+      ENABLE_ROLLING_LOGS: "true"
+      TZ: {{ timezone }}
+      ENABLE_AUTOPAUSE: "true"
+      OPS: "jtgoguen"
+      SERVER_NAME: {{ user }}
+      DIFFICULTY: peaceful
+      ENABLE_COMMAND_BLOCK: "true"
+      GENERATE_STRUCTURES: "true"
+      SNOOPER_ENABLED: "false"
+      MODE: creative
+      PVP: "false"
+    volumes:
+      - {{ storage_mnt_base }}/minecraft-java/data:/data
+    ports:
+      - 25565:25565
+    tty: true
+    stdin_open: true

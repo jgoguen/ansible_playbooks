@@ -1,0 +1,19 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Queue Docker common iptables rules
+  set_fact:
+    iptables_rules: '{{ iptables_rules + docker_common_iptables_rules }}'
+
+- name: Queue Docker iptables rules
+  set_fact:
+    iptables_rules: '{{ iptables_rules + docker_iptables_rules[item] }}'
+  loop: '{{ docker_services }}'
+
+- name: Queue caddy install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + ["caddy"]}) }}'
+
+- name: Queue caddy service for start
+  set_fact:
+    services: '{{ services | combine({"start": services["start"] + ["caddy"]}) }}'

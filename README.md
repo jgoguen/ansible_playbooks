@@ -97,6 +97,8 @@ facts are configured in `config` roles.
 `roles` defines a list of roles for a specific host. The following roles are
 currently defined:
 
+- `backup`: This host will be configured to serve a backup directory over Samba,
+  with Time Machine support enabled for macOS clients.
 - `db`: This host will be a PostgreSQL database server.
 - `desktop`: This host will be a client desktop/laptop system. Setting this
   `false` implies this host will be a server.
@@ -104,6 +106,8 @@ currently defined:
   packages installed.
 - `dhcpd`: This host will be a DHCP server. OpenBSD `dhcpd` is assumed.
 - `dns`: This host will be a DNS server. OpenBSD `unbound` is assumed.
+- `docker`: This host will run Docker containers using `docker-compose` and
+  systemd units to start containers on boot.
 - `gw`: This host will be an Internet gateway. OpenBSD is assumed. This will
   also configure `rad` for SLAAC advertisement.
 - `mqttd`: This host will be a MQTT server. Mosquitto on OpenBSD is assumed.

@@ -11,6 +11,11 @@
   notify:
     - reload timesyncd
 
+- name: Remove chrony
+  package:
+    name: chrony
+    state: absent
+
 - name: Start timesyncd
   service:
     name: systemd-timesyncd

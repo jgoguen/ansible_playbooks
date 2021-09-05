@@ -1,0 +1,69 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+docker_common_iptables_rules:
+  - action: append
+    chain: INPUT
+    ip_version: ipv4
+    protocol: tcp
+    destination_port: 80
+    jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv4
+    protocol: tcp
+    destination_port: 443
+    jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv6
+    protocol: tcp
+    destination_port: 80
+    jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv6
+    protocol: tcp
+    destination_port: 443
+    jump: ACCEPT
+
+docker_iptables_rules:
+  jellyfin:
+    - action: append
+      chain: INPUT
+      ip_version: ipv4
+      protocol: udp
+      destination_port: '7359'
+      jump: ACCEPT
+    - action: append
+      chain: INPUT
+      ip_version: ipv6
+      protocol: udp
+      destination_port: '7359'
+      jump: ACCEPT
+    - action: append
+      chain: INPUT
+      ip_version: ipv4
+      protocol: udp
+      destination_port: '1900'
+      jump: ACCEPT
+    - action: append
+      chain: INPUT
+      ip_version: ipv6
+      protocol: udp
+      destination_port: '1900'
+      jump: ACCEPT
+  massive-decks: []
+  minecraft-java:
+    - action: append
+      chain: INPUT
+      ip_version: ipv4
+      protocol: tcp
+      destination_port: '25565'
+      jump: ACCEPT
+    - action: append
+      chain: INPUT
+      ip_version: ipv6
+      protocol: tcp
+      destination_port: '25565'
+      jump: ACCEPT

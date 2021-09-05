@@ -17,3 +17,4 @@
     name: systemd-resolved
     enabled: yes
     state: started
+  when: dns_servers|length > 0

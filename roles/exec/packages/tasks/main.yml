@@ -78,7 +78,7 @@
   debug: var=packages.aur
 
 - name: Install AUR packages
-  aur:
+  kewlfft.aur.aur:
     name: '{{ packages.aur }}'
     state: present
   become: yes

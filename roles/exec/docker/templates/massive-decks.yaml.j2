@@ -1,0 +1,43 @@
+---
+# {{ ansible_managed }}
+# vim: set filetype=yaml ts=2 sts=2 sw=2 expandtab autoindent:
+
+version: "3"
+
+networks:
+  massivedecks:
+
+services:
+  storage:
+    container_name: storage
+    image: "postgres:13"
+    environment:
+      POSTGRES_USER: massivedecks
+      POSTGRES_PASSWORD: {{ massivedecks_pg_passwd }}
+    networks:
+      - massivedecks
+    volumes:
+      - {{ storage_mnt_base }}/massive-decks/pgdata:/var/lib/postgresql/data
+
+  server:
+    container_name: server
+    # Make sure you always deploy the same tag for client and server.
+    image: "massivedecks/server:latest"
+    depends_on:
+      - storage
+    environment:
+      - NODE_ENV=production
+    networks:
+      - massivedecks
+    volumes:
+      - {{ storage_mnt_base }}/massive-decks/config.json5:/md/config.json5:ro
+
+  client:
+    container_name: client
+    image: "massivedecks/client:latest"
+    depends_on:
+      - server
+    ports:
+      - "8080:8080"
+    networks:
+      - massivedecks

@@ -1,0 +1,25 @@
+# {{ ansible_managed }}
+
+[global]
+	workgroup = JGOGUEN
+	security = user
+
+	passdb backend = tdbsam
+
+	printing = cups
+	printcap name = cups
+	load printers = yes
+	cups options = raw
+
+[timemachine]
+	comment = Time Machine
+	path = {{ storage_mnt_base }}/backup
+	valid users = @remote_backup
+	browseable = yes
+	writable = yes
+	create mask = 0600
+	directory mask = 0700
+	spotlight = yes
+	vfs objects = catia fruit streams_xattr
+	fruit:aapl = yes
+	fruit:time machine = yes

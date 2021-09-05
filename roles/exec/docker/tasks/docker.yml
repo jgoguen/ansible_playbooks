@@ -1,0 +1,88 @@
+---
+# vim: set filetype=ansible syntax=yaml ts=2 sts=2 sw=2 expandtab autoindent:
+
+- name: Install dnf-plugins-core
+  package:
+    name: dnf-plugins-core
+    state: installed
+  when: ansible_facts["distribution"] == "Fedora"
+
+- name: Fetch Docker repo
+  command: 'dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo'
+  args:
+    creates: /etc/yum.repos.d/docker-ce.repo
+  when: ansible_facts["distribution"] == "Fedora"
+
+- name: Instal Docker packages
+  package:
+    name:
+      - docker-ce
+      - docker-compose
+    state: installed
+
+- name: Start Docker
+  service:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: Create systemd local unit directory
+  file:
+    path: /usr/local/lib/systemd/system
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+    state: directory
+
+- name: Install docker-compose service unit
+  copy:
+    src: docker-compose.service
+    dest: /usr/local/lib/systemd/system/docker-compose@.service
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+
+- name: Create docker-compose file storage directory
+  file:
+    path: '{{ storage_mnt_base }}/docker-compose'
+    owner: '{{ user }}'
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+    state: directory
+
+- name: Install docker-compose file
+  template:
+    src: '{{ item }}.yaml.j2'
+    dest: '{{ storage_mnt_base }}/docker-compose/{{ item }}.yaml'
+    owner: '{{ user }}'
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  loop: '{{ docker_services }}'
+
+- name: Install main Caddyfile
+  template:
+    src: caddyfile.j2
+    dest: /etc/caddy/Caddyfile
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload caddy
+
+- name: Install Docker proxy caddyfile
+  template:
+    src: '{{ item }}.caddyfile.j2'
+    dest: '/etc/caddy/Caddyfile.d/{{ item }}.caddyfile'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload caddy
+  loop: '{{ docker_caddyfiles }}'
+
+- name: Enable docker-compose services
+  service:
+    name: 'docker-compose@{{ item }}'
+    enabled: yes
+    state: started
+  loop: '{{ docker_services }}'

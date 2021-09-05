@@ -10,11 +10,13 @@ all:
         user: 'jgoguen'
         unix_groups: []
         roles:
+          backup: false
           db: false
           desktop: false
           devel: false
           dhcpd: false
           dns: false
+          docker: false
           gw: false
           mqttd: false
           unifi: false
@@ -626,7 +628,9 @@ all:
           # auth-zone is special, it is an array of name/zonefile pairings. Each
           # one needs to be its own auth-zone stanza in unbound.conf
           auth-zone: []
-        dns_servers: []
+        dns_servers:
+          - 10.10.0.20
+          - 10.10.0.21
         ntp_servers:
           - time1.facebook.com
           - time2.facebook.com
@@ -649,3 +653,5 @@ all:
         homeassistant_vars:
           ip: ''
           webhooks: {}
+        docker_services: []
+        docker_caddyfiles: []

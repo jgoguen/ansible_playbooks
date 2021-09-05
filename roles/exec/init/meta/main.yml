@@ -14,6 +14,7 @@ dependencies:
   - role: exec/sysctl
   - role: exec/sudo
   - role: exec/sshd
+  - role: exec/backup
   - role: exec/desktop
   - role: exec/firefox
   - role: exec/unbound
@@ -22,4 +23,5 @@ dependencies:
   - role: exec/dyndns
   - role: exec/ntp
   - role: exec/services
+  - role: exec/docker
   - role: exec/db
