@@ -99,13 +99,29 @@ all:
             chain: INPUT
             ip_version: ipv4
             protocol: udp
+            destination: 224.0.0.251
             destination_port: '5353'
             jump: ACCEPT
           - action: append
             chain: INPUT
             ip_version: ipv6
             protocol: udp
+            destination: 'ff02::fb'
             destination_port: '5353'
+            jump: ACCEPT
+          - action: append
+            chain: INPUT
+            ip_version: ipv4
+            protocol: udp
+            destination: 239.255.255.250
+            destination_port: '1900'
+            jump: ACCEPT
+          - action: append
+            chain: INPUT
+            ip_version: ipv6
+            protocol: udp
+            destination: 'ff02::c'
+            destination_port: '1900'
             jump: ACCEPT
           - action: append
             chain: INPUT
