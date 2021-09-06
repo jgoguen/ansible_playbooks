@@ -149,9 +149,9 @@ fi
 
 /usr/local/bin/op get document qukaq3aej2hftq6t2ojuwvpm6m | gpg --import
 
-$(command -v git) config filter.crypt.required ''
-$(command -v git) config filter.crypt.clean 'gpg -sea -r E9F9F8EA7E062F78 -u E9F9F8EA7E062F78 -o -'
-$(command -v git) config filter.crypt.smudge 'gpg -d -o -'
+$(command -v git) config --global filter.crypt.required ''
+$(command -v git) config --global filter.crypt.clean 'gpg -sea -r E9F9F8EA7E062F78 -u E9F9F8EA7E062F78 -o -'
+$(command -v git) config --global filter.crypt.smudge 'gpg -d -o -'
 
 /usr/bin/ssh-agent /bin/sh -c "/usr/bin/ssh-add \"${HOME}/.ssh/github\"; $(command -v git) clone git@github.com:jgoguen/ansible_playbooks.git"
 ${SUDO_CMD} /bin/mv ansible_playbooks /var/
