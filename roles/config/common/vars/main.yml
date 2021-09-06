@@ -165,16 +165,12 @@ macos_packages:
 
 flatpak_packages:
   - com.discordapp.Discord
-  - com.github.marktext.marktext
   - com.slack.Slack
   - com.valvesoftware.Steam
   - org.glimpse_editor.Glimpse
   - org.libreoffice.LibreOffice
 
 snap_packages:
-  - name: 1password
-    channel: beta
-    classic: no
   - name: snap-store
     channel: stable
     classic: no
