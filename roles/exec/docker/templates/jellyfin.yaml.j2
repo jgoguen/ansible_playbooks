@@ -20,9 +20,6 @@ services:
       - {{ storage_mnt_base }}/jellyfin/media/music:/data/music
       - {{ storage_mnt_base }}/jellyfin/media/photos:/data/photos
       - {{ storage_mnt_base }}/jellyfin/media/music_videos:/data/music_videos
-    ports:
-      - 8096:8096
-      - 7359:7359/udp
-      - 1900:1900/udp
+    network_mode: host
     devices:
       - /dev/dri:/dev/dri
