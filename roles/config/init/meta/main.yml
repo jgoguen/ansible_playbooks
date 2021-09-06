@@ -5,6 +5,7 @@ dependencies:
   - role: config/per_host
   - role: config/common
   - role: config/firewall
+  - role: config/backup
   - role: config/docker
   - role: config/unbound
   - role: config/mqtt
