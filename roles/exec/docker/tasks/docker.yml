@@ -41,6 +41,8 @@
     owner: root
     group: '{{ ansible_local.root_owner.group }}'
     mode: 0644
+  notify:
+    - reload systemd
 
 - name: Create docker-compose file storage directory
   file:

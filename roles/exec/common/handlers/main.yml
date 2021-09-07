@@ -1,6 +1,13 @@
 ---
 # vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
 
+- name: reload systemd
+  command:
+    argv:
+      - /usr/bin/systemctl
+      - daemon-reload
+  changed_when: false
+
 - name: reload udev
   command:
     argv:

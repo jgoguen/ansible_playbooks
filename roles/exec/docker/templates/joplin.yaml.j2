@@ -1,0 +1,37 @@
+---
+# {{ ansible_managed }}
+# vim: set filetype=yaml ts=2 sts=2 sw=2 expandtab autoindent:
+
+version: "3"
+
+networks:
+  joplin:
+
+services:
+  storage:
+    image: "postgres:13"
+    container_name: joplindb
+    environment:
+      POSTGRES_USER: joplin
+      POSTGRES_PASSWORD: {{ joplin_pg_passwd }}
+      POSTGRES_DB: joplin
+    networks:
+      - joplin
+    volumes:
+      - {{ storage_mnt_base }}/joplin/pgdata:/var/lib/postgresql/data
+  joplin:
+    image: joplin/server:latest
+    depends_on:
+      - storage
+    environment:
+      APP_PORT: '22300'
+      APP_BASE_URL: {{ joplin_base_url }}
+      DB_CLIENT: pg
+      POSTGRES_USER: joplin
+      POSTGRES_PASSWORD: {{ joplin_pg_passwd }}
+      POSTGRES_DATABASE: joplin
+      POSTGRES_HOST: joplindb
+    ports:
+      - '22300:22300'
+    networks:
+      - joplin
