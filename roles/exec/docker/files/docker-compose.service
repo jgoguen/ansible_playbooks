@@ -2,8 +2,8 @@
 
 [Unit]
 Description=Docker Compose Application Service
-Requires=docker.service
-After=docker.service
+Requires=docker.service mnt-storage.mount
+After=docker.service mnt-storage.mount
 
 [Service]
 DynamicUser=yes
