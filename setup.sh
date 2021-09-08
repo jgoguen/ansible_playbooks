@@ -116,10 +116,6 @@ case "${MACHINE}" in
 		;;
 esac
 
-${SUDO_CMD} "${ANSIBLE_GALAXY_BIN}" install kewlfft.aur
-${SUDO_CMD} "${ANSIBLE_GALAXY_BIN}" collection install community.general
-${SUDO_CMD} "${ANSIBLE_GALAXY_BIN}" collection install community.postgresql
-
 if [ "${OSTYPE}" = "openbsd" ] && [ ! -d /usr/ports ]; then
 	${CURL_BIN} "https://cdn.openbsd.org/pub/OpenBSD/$("${UNAME_BIN}" -r)/ports.tar.gz" | ${SUDO_CMD} "${TAR_BIN}" zxphf - -C /usr
 fi
@@ -156,5 +152,4 @@ $(command -v git) config --global filter.crypt.smudge 'gpg -d -o -'
 /usr/bin/ssh-agent /bin/sh -c "/usr/bin/ssh-add \"${HOME}/.ssh/github\"; $(command -v git) clone git@github.com:jgoguen/ansible_playbooks.git"
 ${SUDO_CMD} /bin/mv ansible_playbooks /var/
 
-cd /var/ansible_playbooks
-${SUDO_CMD} "$(command -v ansible-playbook)" -i inventory hosts.yml --diff
+/bin/sh /var/ansible_playbooks/run_ansible.sh
