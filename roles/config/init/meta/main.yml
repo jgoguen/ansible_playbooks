@@ -2,8 +2,8 @@
 # vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
 
 dependencies:
-  - role: config/per_host
   - role: config/common
+  - role: config/per_host
   - role: config/firewall
   - role: config/backup
   - role: config/docker
