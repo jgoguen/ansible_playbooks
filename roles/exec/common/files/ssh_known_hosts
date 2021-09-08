@@ -1,0 +1,1 @@
+@cert-authority *.jgoguen.ca,10.10.*,10.20.*,10.30.* ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAjJVRW92wNGwQ/ucqugnY9Vq2Fja2b2Zvrow7pUs2QG host_ca

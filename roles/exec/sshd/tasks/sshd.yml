@@ -1,6 +1,31 @@
 ---
 # vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
 
+- name: Ensure ED25519 host key is present
+  command: /usr/bin/ssh-keygen -q -t ed25519 -N '' -f /etc/ssh/ssh_host_ed25519_key
+  args:
+    creates: /etc/ssh/ssh_host_ed25519_key
+  notify:
+    - reload sshd
+
+- name: Install user CA cert
+  copy:
+    src: user_ca.pub
+    dest: /etc/ssh/user_ca.pub
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+
+- name: Check if SSH certificates may be used
+  stat:
+    path: /etc/ssh/ssh_host_ed25519_key-cert.pub
+  register: ssh_host_cert
+  changed_when: false
+
+- name: Set host cert present
+  set_fact:
+    ssh_host_cert_present: ssh_host_cert.stat.exists
+
 - name: Configure sshd_config
   template:
     src: sshd_config.j2
@@ -9,13 +34,6 @@
     group: '{{ ansible_local.root_owner.group }}'
     mode: 0644
     validate: /usr/sbin/sshd -t -f %s
-  notify:
-    - reload sshd
-
-- name: Ensure ED25519 host key is present
-  command: /usr/bin/ssh-keygen -q -t ed25519 -N '' -f /etc/ssh/ssh_host_ed25519_key
-  args:
-    creates: /etc/ssh/ssh_host_ed25519_key
   notify:
     - reload sshd
 

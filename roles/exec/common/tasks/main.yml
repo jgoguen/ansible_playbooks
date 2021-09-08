@@ -19,6 +19,14 @@
     group: '{{ ansible_local.root_owner.group }}'
     mode: 0644
 
+- name: Install SSH global known hosts
+  copy:
+    src: ssh_known_hosts
+    dest: /etc/ssh/ssh_known_hosts
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+
 - name: Install udev profiles
   import_tasks: udev.yml
   when: ansible_facts["system"] == "Linux"

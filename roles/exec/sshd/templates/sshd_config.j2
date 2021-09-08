@@ -6,6 +6,7 @@ Port 22
 Protocol 2
 HostKey /etc/ssh/ssh_host_ed25519_key
 HostKey /etc/ssh/ssh_host_ecdsa_key
+{% if ssh_host_cert_present %}HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub{% endif %}
 
 LoginGraceTime 30s
 PermitRootLogin no
@@ -13,6 +14,7 @@ PubkeyAuthentication yes
 AuthorizedKeysFile .ssh/authorized_keys
 ChallengeResponseAuthentication no
 PrintMotd no
+TrustedUserCAKeys /etc/ssh/user_ca.pub
 
 {% if ansible_facts["system"] != "OpenBSD" %}UsePAM yes{% endif %}
 
