@@ -1,0 +1,5 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: 'Execute host-specific tasks for {{ ansible_facts["hostname"] }}'
+  include_tasks: '{{ ansible_facts["hostname"] }}.yml'
