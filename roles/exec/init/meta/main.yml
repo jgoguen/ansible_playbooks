@@ -23,6 +23,6 @@ dependencies:
   - role: exec/mqtt
   - role: exec/unifi
   - role: exec/dyndns
-  - role: exec/services
   - role: exec/docker
   - role: exec/db
+  - role: exec/services
