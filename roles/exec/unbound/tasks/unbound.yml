@@ -76,6 +76,30 @@
   notify:
     - reload unbound
 
+- name: Add syslog.conf unbound tag
+  lineinfile:
+    path: /etc/syslog.conf
+    line: '!!unbound'
+    insertbefore: BOF
+  notify:
+    - reload syslogd
+
+- name: Send unbound logs to their own file
+  lineinfile:
+    path: /etc/syslog.conf
+    insertafter: '^\!\!unbound'
+    line: '*.*   @{{ unbound_syslog_dest }}'
+  notify:
+    - reload syslogd
+
+- name: Add syslog.conf tag for all apps
+  lineinfile:
+    path: /etc/syslog.conf
+    insertafter: '@{{ unbound_syslog_dest|regex_escape }}'
+    line: '!*'
+  notify:
+    - reload syslogd
+
 - name: Start unbound
   service:
     name: unbound

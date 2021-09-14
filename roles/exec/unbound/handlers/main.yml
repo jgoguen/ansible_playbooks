@@ -6,3 +6,9 @@
     name: unbound
     state: reloaded
   changed_when: no
+
+- name: reload syslogd
+  service:
+    name: syslogd
+    state: reloaded
+  changed_when: no

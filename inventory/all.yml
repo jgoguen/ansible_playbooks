@@ -636,6 +636,13 @@ all:
             val-log-level: '2'
             aggressive-nsec: 'yes'
             tls-cert-bundle: '"/etc/ssl/cert.pem"'
+            use-syslog: 'yes'
+            log-queries: 'no'
+            log-replies: 'yes'
+            log-local-actions: 'yes'
+            statistics-interval: '0'
+            statistics-cumulative: 'no'
+            extended-statistics: 'yes'
           remote-control:
             control-enable: 'yes'
             control-interface: /var/run/unbound.sock
