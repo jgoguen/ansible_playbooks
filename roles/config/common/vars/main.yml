@@ -225,8 +225,6 @@ sysctl:
       value: 1
     - name: 'net.ipv4.tcp_tw_reuse'
       value: 1
-    - name: 'net.ipv4.ip_forward'
-      value: 0
     - name: 'net.ipv4.tcp_fastopen'
       value: 3
     - name: 'net.ipv6.conf.all.accept_redirects'
