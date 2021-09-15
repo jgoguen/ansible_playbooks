@@ -1,0 +1,26 @@
+---
+# {{ ansible_managed }}
+# vim: set filetype=dockercompose syntax=yaml ts=2 sts=2 sw=2 expandtab:
+# vim: set autoindent:
+
+version: "3"
+
+services:
+  unifi-controller:
+    image: ghcr.io/linuxserver/unifi-controller
+    container_name: unifi-controller
+    environment:
+      PUID: 1000
+      PGID: 1000
+      MEM_LIMIT: 2048M
+      MEM_STARTUP: 512M
+    volumes:
+      - '{{ storage_mnt_base }}/unifi-controller:/config'
+    ports:
+      - '3478:3478/udp'
+      - '10001:10001/udp'
+      - '8080:8080'
+      - '8081:8443'
+      - '8843:8843'
+      - '8880:8880'
+      - '6789:6789'
