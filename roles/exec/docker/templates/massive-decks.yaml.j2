@@ -17,7 +17,7 @@ services:
     networks:
       - massivedecks
     volumes:
-      - {{ storage_mnt_base }}/massive-decks/pgdata:/var/lib/postgresql/data
+      - '{{ storage_mnt_base }}/massive-decks/pgdata:/var/lib/postgresql/data'
 
   server:
     container_name: server
@@ -30,7 +30,7 @@ services:
     networks:
       - massivedecks
     volumes:
-      - {{ storage_mnt_base }}/massive-decks/config.json5:/md/config.json5:ro
+      - '{{ storage_mnt_base }}/massive-decks/config.json5:/md/config.json5:ro'
 
   client:
     container_name: client
@@ -38,6 +38,6 @@ services:
     depends_on:
       - server
     ports:
-      - "8080:8080"
+      - "9989:8080"
     networks:
       - massivedecks
