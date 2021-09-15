@@ -1,9 +1,9 @@
-**/*.passwd filter=crypt diff=crypt
-**/*.key filter=crypt diff=crypt
-/roles/**/*.jgoguen.ca.zone filter=crypt diff=crypt
-/roles/config/per_host/vars/* filter=crypt diff=crypt
+**/*.passwd filter=git-crypt diff=git-crypt
+**/*.key filter=git-crypt diff=git-crypt
+/roles/**/*.jgoguen.ca.zone filter=git-crypt diff=git-crypt
+/roles/config/per_host/vars/* filter=git-crypt diff=git-crypt
 /roles/config/per_host/vars/sample_vars.yml -filter -diff
-/roles/config/unbound/vars/main.yml filter=crypt diff=crypt
-/roles/exec/docker/templates/*.caddyfile.j2 filter=crypt diff=crypt
-/roles/exec/dyndns/vars/main.yml filter=crypt diff=crypt
+/roles/config/unbound/vars/main.yml filter=git-crypt diff=git-crypt
+/roles/exec/docker/templates/*.caddyfile.j2 filter=git-crypt diff=git-crypt
+/roles/exec/dyndns/vars/main.yml filter=git-crypt diff=git-crypt
 .gitattributes !filter !diff
