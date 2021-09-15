@@ -20,6 +20,16 @@
       - docker-compose
     state: installed
 
+- name: Install Docker daemon config
+  template:
+    src: docker-daemon.json.j2
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload docker
+
 - name: Start Docker
   service:
     name: docker

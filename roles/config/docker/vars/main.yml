@@ -1,6 +1,8 @@
 ---
 # vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
 
+docker_ipv6_base: 'fd46:9f51:7547:cafe:bead'
+
 docker_common_iptables_rules:
   - action: append
     chain: INPUT
