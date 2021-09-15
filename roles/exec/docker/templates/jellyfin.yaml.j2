@@ -14,12 +14,12 @@ services:
       TZ: {{ timezone }}
       JELLYFIN_PublishedServerUrl: {{ jellyfin_ip }}
     volumes:
-      - {{ storage_mnt_base }}/jellyfin/config:/config
-      - {{ storage_mnt_base }}/jellyfin/media/tvseries:/data/tvshows
-      - {{ storage_mnt_base }}/jellyfin/media/movies:/data/movies
-      - {{ storage_mnt_base }}/jellyfin/media/music:/data/music
-      - {{ storage_mnt_base }}/jellyfin/media/photos:/data/photos
-      - {{ storage_mnt_base }}/jellyfin/media/music_videos:/data/music_videos
+      - '{{ storage_mnt_base }}/jellyfin/config:/config'
+      - '{{ storage_mnt_base }}/jellyfin/media/tvseries:/data/tvshows'
+      - '{{ storage_mnt_base }}/jellyfin/media/movies:/data/movies'
+      - '{{ storage_mnt_base }}/jellyfin/media/music:/data/music'
+      - '{{ storage_mnt_base }}/jellyfin/media/photos:/data/photos'
+      - '{{ storage_mnt_base }}/jellyfin/media/music_videos:/data/music_videos'
     network_mode: host
     devices:
       - /dev/dri:/dev/dri

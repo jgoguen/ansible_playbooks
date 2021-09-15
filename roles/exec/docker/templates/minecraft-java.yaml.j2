@@ -22,8 +22,8 @@ services:
       MODE: creative
       PVP: "false"
     volumes:
-      - {{ storage_mnt_base }}/minecraft-java/data:/data
+      - '{{ storage_mnt_base }}/minecraft-java/data:/data'
     ports:
-      - 25565:25565
+      - '25565:25565'
     tty: true
     stdin_open: true

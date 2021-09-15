@@ -8,7 +8,7 @@ networks:
   joplin:
 
 services:
-  storage:
+  joplindb:
     image: "postgres:13"
     container_name: joplindb
     environment:
@@ -18,11 +18,12 @@ services:
     networks:
       - joplin
     volumes:
-      - {{ storage_mnt_base }}/joplin/pgdata:/var/lib/postgresql/data
+      - '{{ storage_mnt_base }}/joplin/pgdata:/var/lib/postgresql/data'
   joplin:
     image: joplin/server:latest
+    container_name: joplin
     depends_on:
-      - storage
+      - joplindb
     environment:
       APP_PORT: '22300'
       APP_BASE_URL: {{ joplin_base_url }}
