@@ -1,5 +1,0 @@
----
-# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
-
-db_pf_rules:
-  - 'pass in on $if_lan proto tcp from ($if_lan:network) to ($if_lan) port 5432'

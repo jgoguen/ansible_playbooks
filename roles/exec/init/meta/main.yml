@@ -3,16 +3,15 @@
 
 dependencies:
   - role: exec/packages
-  - role: exec/sysctl
   - role: exec/firewall
+  - role: exec/common
+  - role: exec/sysctl
   - role: exec/networking
   - role: exec/ntp
-  - role: exec/per_host
   - role: exec/desktop
   - role: exec/certbot
   - role: exec/gw
   - role: exec/dns
-  - role: exec/common
   - role: exec/dhcpd
   - role: exec/dyndns
   - role: exec/sudo
@@ -21,8 +20,6 @@ dependencies:
   - role: exec/firefox
   - role: exec/unbound
   - role: exec/mqtt
-  - role: exec/unifi
   - role: exec/dyndns
   - role: exec/docker
-  - role: exec/db
   - role: exec/services

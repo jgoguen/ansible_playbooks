@@ -1,0 +1,13 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+vscode_yum_repo:
+  name: code
+  file: vscode
+  description: Visual Studio Code
+  baseurl: https://packages.microsoft.com/yumrepos/vscode
+  enabled: 1
+  gpgcheck: 1
+  gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+
+vscode_repo_key: 'https://packages.microsoft.com/keys/microsoft.asc'

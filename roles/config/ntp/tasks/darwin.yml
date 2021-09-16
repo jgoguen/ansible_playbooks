@@ -1,0 +1,28 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Get current network time server
+  command:
+    argv:
+      - /usr/sbin/systemsetup
+      - '-getnetworktimeserver'
+  register: ntp_server
+  changed_when: false
+  check_mode: false
+
+- name: Store current network time server for later
+  set_fact:
+    darwin_ntp_server: '{{ ntp_server.stdout | regex_findall("^Network Time Server: (.+)$") | first }}'
+
+- name: Get is network time being used
+  command:
+    argv:
+      - /usr/sbin/systemsetup
+      - '-getusingnetworktime'
+  register: using_ntp
+  changed_when: false
+  check_mode: false
+
+- name: Store if network time is being used for later
+  set_fact:
+    darwin_using_ntp: '{{ using_ntp.stdout | regex_findall("^Network Time: (.+)$") | first }}'

@@ -1,0 +1,19 @@
+---
+# {{ ansible_managed }}
+# vim: set filetype=yaml ts=2 sts=2 sw=2 expandtab autoindent:
+
+version: '3'
+
+services:
+  db:
+    image: postgres
+    container_name: pgsql
+    environment:
+      POSTGRES_PASSWORD: '{{ postgresql_passwd }}'
+      POSTGRES_HOST_AUTH_METHOD: 'scram-sha-256'
+      POSTGRES_INITDB_ARGS: '--auth-host=scram-sha-256'
+    shm_size: '1g'
+    volumes:
+      - '{{ storage_mnt_base }}/postgresql:/var/lib/postgresql/data'
+    ports:
+      - '5432:5432'

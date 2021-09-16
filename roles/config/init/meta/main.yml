@@ -4,11 +4,14 @@
 dependencies:
   - role: config/common
   - role: config/per_host
+  - role: config/sudo
+  - role: config/sshfs
+  - role: config/gw
+  - role: config/ntp
   - role: config/firewall
   - role: config/backup
   - role: config/docker
   - role: config/unbound
   - role: config/mqtt
   - role: config/sshd
-  - role: config/unifi
-  - role: config/db
+  - role: config/vscode

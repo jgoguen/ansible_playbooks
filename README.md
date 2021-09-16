@@ -111,6 +111,8 @@ currently defined:
 - `gw`: This host will be an Internet gateway. OpenBSD is assumed. This will
   also configure `rad` for SLAAC advertisement.
 - `mqttd`: This host will be a MQTT server. Mosquitto on OpenBSD is assumed.
+- `sshfs_client`: This host will mount a remote file system over SSH.
+- `storage`: This host will provide storage to other hosts.
 - `unifi`: This host will be a UniFi controller. It is assumed that the OpenBSD
   `unifi` port will be built.
 

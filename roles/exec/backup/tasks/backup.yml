@@ -1,11 +1,6 @@
 ---
 # vim: filetype=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
 
-- name: Install Samba
-  package:
-    name: samba
-    state: installed
-
 - name: Configure Samba
   template:
     src: smb.conf.j2
@@ -15,9 +10,3 @@
     mode: 0644
   notify:
     - reload smb
-
-- name: Start Samba
-  service:
-    name: smb
-    enabled: true
-    state: started

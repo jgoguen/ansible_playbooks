@@ -1,18 +1,6 @@
 ---
 # vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
 
-- name: Ensure sudoers group is present
-  group:
-    name: '{{ ansible_local.root_owner.sudo }}'
-    state: present
-
-- name: Add local user to sudoers group
-  user:
-    name: '{{ user }}'
-    groups:
-      - '{{ ansible_local.root_owner.sudo }}'
-    append: yes
-
 - name: Configure sudoers
   template:
     src: sudoers.j2

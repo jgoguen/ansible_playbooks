@@ -14,8 +14,24 @@
     validate: /usr/sbin/visudo --check --file=%s
   when: ansible_facts["distribution"] == "Archlinux"
 
+- name: Enabling repo keys
+  debug: var=repo_keys
+
+- name: Install Fedora repo keys
+  rpm_key:
+    key: '{{ item }}'
+    state: present
+  loop: '{{ repo_keys }}'
+  when: ansible_facts["distribution"] == "Fedora"
+  check_mode: false
+
 - name: Enabling repos
   debug: var=repos
+
+- name: Enable Fedora repositories
+  yum_repository: '{{ item }}'
+  loop: '{{ repos }}'
+  when: ansible_facts["distribution"] == "Fedora"
 
 # RPMFusion packages need to come from the upstream URL since they won't be
 # accessible on initial install. But then the appstream packages can come from
@@ -56,6 +72,22 @@
     warn: false
   when: ansible_facts["distribution"] == "Fedora"
   loop: '{{ coprs }}'
+
+- name: Fedora needs dnf-plugins-core
+  package:
+    name: dnf-plugins-core
+    state: installed
+  when: ansible_facts["distribution"] == "Fedora"
+
+- name: Enabling remote repos
+  debug: var=remote_repos
+
+- name: Enabling Fedora remote repositories
+  command: '/usr/bin/dnf config-manager --add-repo {{ item.url }}'
+  args:
+    creates: '/etc/yum.repos.d/{{ item.file }}'
+  loop: '{{ remote_repos }}'
+  when: ansible_facts["distribution"] == "Fedora"
 
 - name: Installing packages
   debug: var=packages.install

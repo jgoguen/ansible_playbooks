@@ -1,6 +1,6 @@
 # {{ ansible_managed }}
 
-option domain-name-servers {{ dhcpd_config["dns"] | join(", ") }};
+option domain-name-servers {{ dns_servers | join(", ") }};
 {% if dhcpd_config["domain_name"] != "" %}option domain-name "{{ dhcpd_config["domain_name"] }}";{% endif %}
 
 default-lease-time {{ dhcpd_config["lease"]["default"] }};

@@ -4,3 +4,11 @@
 - name: Queue backup server iptables rules
   set_fact:
     iptables_rules: '{{ iptables_rules + backup_iptables_rules }}'
+
+- name: Queue Samba install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + ["samba"]}) }}'
+
+- name: Queue Samba services
+  set_fact:
+    services: '{{ services | combine({"start": services["start"] + ["smb"]}) }}'

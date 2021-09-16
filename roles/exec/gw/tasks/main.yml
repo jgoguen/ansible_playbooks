@@ -3,4 +3,6 @@
 
 - name: Configure gateway
   import_tasks: gw.yml
-  when: roles["gw"]
+  when:
+    - roles["gw"]
+    - - ansible_facts["system"] == "OpenBSD"

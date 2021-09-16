@@ -1,8 +1,11 @@
 **/*.passwd filter=git-crypt diff=git-crypt
 **/*.key filter=git-crypt diff=git-crypt
 /roles/**/*.jgoguen.ca.zone filter=git-crypt diff=git-crypt
+/roles/config/joplin/vars/main.yml filter=git-crypt diff=git-crypt
+/roles/config/massive-decks/vars/main.yml filter=git-crypt diff=git-crypt
 /roles/config/per_host/vars/* filter=git-crypt diff=git-crypt
 /roles/config/per_host/vars/sample_vars.yml -filter -diff
+/roles/config/postgresql/vars/main.yml filter=git-crypt diff=git-crypt
 /roles/config/unbound/vars/main.yml filter=git-crypt diff=git-crypt
 /roles/exec/docker/templates/*.caddyfile.j2 filter=git-crypt diff=git-crypt
 /roles/exec/dyndns/vars/main.yml filter=git-crypt diff=git-crypt

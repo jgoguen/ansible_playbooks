@@ -1,0 +1,6 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Queue NTP services for start
+  set_fact:
+    services: '{{ services | combine({"start": services["start"] + ["ntpd"]}) }}'

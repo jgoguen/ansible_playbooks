@@ -5,6 +5,7 @@
   stat:
     path: /etc/X11/xorg.conf.d
   register: xorg_conf_stat
+  check_mode: false
 
 - name: Install XOrg key map config
   template:

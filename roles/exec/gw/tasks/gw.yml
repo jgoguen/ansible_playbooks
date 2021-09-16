@@ -1,6 +1,26 @@
 ---
 # vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
 
+- name: Configure dhcpcd.conf
+  template:
+    src: dhcpcd.conf.j2
+    dest: /etc/dhcpcd.conf
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload dhcpcd
+
+- name: Configure rad.conf
+  template:
+    src: rad.conf.j2
+    dest: /etc/rad.conf
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload rad
+
 - name: Install speedtest post script
   template:
     src: speedtest-post.py.j2

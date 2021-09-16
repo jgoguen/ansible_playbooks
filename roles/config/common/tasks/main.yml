@@ -9,3 +9,8 @@
 
 - name: Queue sysctls
   import_tasks: sysctl.yml
+
+- name: Queue systemd-resolved start
+  set_fact:
+    services: '{{ services | combine({"start": services["start"] + ["systemd-resolved"]}) }}'
+  when: ansible_facts["system"] == "Linux"

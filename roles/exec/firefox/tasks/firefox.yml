@@ -5,6 +5,7 @@
   stat:
     path: '{{ ansible_local.firefox.basedir }}'
   register: ff_dir
+  check_mode: false
   changed_when: false
 
 - name: Ensure Firefox defaults preferences directory exists

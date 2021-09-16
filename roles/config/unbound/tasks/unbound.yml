@@ -24,3 +24,7 @@
 - name: Set auth zones configs
   set_fact:
     unbound_config: '{{ unbound_config | combine({"auth-zone": unbound_config["auth-zone"] + default_auth_zones}, recursive=True) }}'
+
+- name: Queue unbound service start
+  set_fact:
+    services: '{{ services | combine({"start": services["start"] + ["unbound"]}) }}'

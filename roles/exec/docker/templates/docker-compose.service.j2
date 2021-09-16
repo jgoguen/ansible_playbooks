@@ -1,0 +1,19 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Docker Compose Application Service
+Requires=docker.service mnt-storage.mount
+After=docker.service mnt-storage.mount
+
+[Service]
+User={{ user }}
+SupplementaryGroups=docker
+ExecStart=/usr/bin/docker-compose -f /mnt/storage/docker-compose/%i.yaml up
+ExecStop=/usr/bin/docker-compose -f /mnt/storage/docker-compose/%i.yaml down
+TimeoutStartSec=0
+Restart=on-failure
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target

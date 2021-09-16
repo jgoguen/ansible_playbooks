@@ -11,7 +11,6 @@ all:
         unix_groups: []
         roles:
           backup: false
-          db: false
           desktop: false
           devel: false
           dhcpd: false
@@ -19,7 +18,9 @@ all:
           docker: false
           gw: false
           mqttd: false
-          unifi: false
+          sshfs_client: false
+          storage: false
+        antibody_installer: "{{ lookup('env', 'TMPDIR') | default('/tmp', True) }}/antibody_install"
         certbot_hosts: []
         dyndns_hosts: []
         packages:
@@ -28,7 +29,11 @@ all:
           aur: []
           snap: []
           flatpak: []
+        mounts: []
+        storage_mnt_base: /mnt/storage
         repos: []
+        repo_keys: []
+        remote_repos: []
         coprs: []
         networkmanager_config:
           main:
@@ -143,7 +148,6 @@ all:
           stop: []
         sysctls: []
         dhcpd_config:
-          dns: []
           domain_name: ''
           lease:
             default: 86400
@@ -282,11 +286,11 @@ all:
             # Set a fast initial key repeat
             - key: InitialKeyRepeat
               type: int
-              value: 10
+              value: 20
             # Set a fast key repeat
             - key: KeyRepeat
               type: int
-              value: 3
+              value: 10
             - key: NSAutomaticDashSubstitutionEnabled
               type: bool
               value: false
@@ -653,7 +657,6 @@ all:
           auth-zone: []
         dns_servers:
           - 10.10.0.20
-          - 10.10.0.21
         ntp_servers:
           - time1.facebook.com
           - time2.facebook.com
@@ -677,4 +680,3 @@ all:
           ip: ''
           webhooks: {}
         docker_services: []
-        docker_caddyfiles: []

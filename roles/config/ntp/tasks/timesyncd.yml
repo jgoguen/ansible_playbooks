@@ -1,0 +1,10 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Queue removal of legacy timesync/NTP packages
+  set_fact:
+    packages: '{{ packages | combine({"remove": packages["remove"] + ["chrony"]}) }}'
+
+- name: Queue NTP services for start
+  set_fact:
+    services: '{{ services | combine({"start": services["start"] + ["systemd-timesyncd"]}) }}'

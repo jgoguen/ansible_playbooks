@@ -7,6 +7,7 @@
     owner: root
     mode: 0755
     state: directory
+  check_mode: false
   notify:
     - rerun setup
 
@@ -16,6 +17,7 @@
     dest: /etc/ansible/facts.d/root_owner.fact
     owner: root
     mode: 0755
+  check_mode: false
   notify:
     - rerun setup
 
@@ -25,6 +27,7 @@
     dest: /etc/ansible/facts.d/packages.fact
     owner: root
     mode: 0755
+  check_mode: false
   notify:
     - rerun setup
 
@@ -34,6 +37,7 @@
     dest: /etc/ansible/facts.d/firefox.fact
     owner: root
     mode: 0755
+  check_mode: false
   notify:
     - rerun setup
 
@@ -43,6 +47,7 @@
     dest: /etc/ansible/facts.d/fonts.fact
     owner: root
     mode: 0755
+  check_mode: false
   notify:
     - rerun setup
 
@@ -52,6 +57,7 @@
     dest: /etc/ansible/facts.d/iptables.fact
     owner: root
     mode: 0755
+  check_mode: false
   notify:
     - rerun setup
 
@@ -61,6 +67,7 @@
     dest: /etc/ansible/facts.d/zsh.fact
     owner: root
     mode: 0755
+  check_mode: false
   notify:
     - rerun setup
 
@@ -70,8 +77,10 @@
     dest: /etc/ansible/facts.d/vscode.fact
     owner: root
     mode: 0755
+  check_mode: false
   notify:
     - rerun setup
 
 - name: Flush handlers
   meta: flush_handlers
+  check_mode: false

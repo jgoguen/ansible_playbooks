@@ -10,9 +10,3 @@
     mode: 0644
   notify:
     - reload dhcpd
-
-- name: Start dhcpd
-  service:
-    name: dhcpd
-    enabled: yes
-    state: started

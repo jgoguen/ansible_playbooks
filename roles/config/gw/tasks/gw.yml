@@ -1,0 +1,11 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+# Distributing IPv6 via rad needs dhcpcd to get IPv6 from upstream
+- name: Queue gateway packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + ["dhcpcd"] }) }}'
+
+- name: Queue gateway services for start
+  set_fact:
+    services: '{{ services | combine({"start": services["start"] + ["dhcpcd", "rad"]}) }}'

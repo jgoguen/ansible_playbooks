@@ -1,7 +1,7 @@
 #!/bin/sh
 # vim: syntax=sh:noexpandtab:sts=4:ts=4:sw=4
 
-set -eux
+set -ux
 
 UNAME_BIN="$(command -pv uname)"
 if [ -z "${UNAME_BIN}" ]; then
@@ -22,10 +22,17 @@ if [ -z "${ANSIBLE_GALAXY_BIN}" ]; then
 	exit 1
 fi
 
-${SUDO_CMD} "${ANSIBLE_GALAXY_BIN}" collection install ansible.posix
-${SUDO_CMD} "${ANSIBLE_GALAXY_BIN}" collection install kewlfft.aur
-${SUDO_CMD} "${ANSIBLE_GALAXY_BIN}" collection install community.general
-${SUDO_CMD} "${ANSIBLE_GALAXY_BIN}" collection install community.postgresql
+if [ "${OSTYPE}" = "darwin" ]; then
+	ROOT_HOME="$(${SUDO_CMD} /usr/bin/dscl . -read /Users/root NFSHomeDirectory | /usr/bin/awk '{print $NF}')"
+else
+	ROOT_HOME="$(/usr/bin/getent passwd root | /usr/bin/cut -d ':' -f 6)"
+fi
+for collection in ansible.posix kewlfft.aur community.general; do
+	${SUDO_CMD} /usr/bin/test -d "${ROOT_HOME}/.ansible/collections/ansible_collections/$(printf '%s' "${collection}" | tr '.' '/')"; rv=$?
+	if [ "${rv}" -ne 0 ]; then
+		${SUDO_CMD} "${ANSIBLE_GALAXY_BIN}" collection install "${collection}"
+	fi
+done
 
 cd "$(dirname "${0}")" || exit 1
 ${SUDO_CMD} "$(command -v ansible-playbook)" -i inventory hosts.yml --diff "$@"

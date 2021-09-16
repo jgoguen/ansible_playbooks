@@ -13,15 +13,3 @@
   when:
     - ansible_facts["system"] == "Darwin"
     - roles["desktop"]
-
-- name: Configure NetworkManager
-  import_tasks: networkmanager.yml
-  when:
-    - ansible_facts["system"] == "Linux"
-    - roles["desktop"]
-
-- name: Install VS Code
-  import_tasks: vscode.yml
-  when:
-    - ansible_facts["distribution"] == "Fedora"
-    - roles["desktop"]

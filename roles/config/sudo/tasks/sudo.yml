@@ -1,0 +1,6 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Add local user to sudoers group
+  set_fact:
+    unix_groups: '{{ unix_groups + [ansible_local.root_owner.sudo] }}'

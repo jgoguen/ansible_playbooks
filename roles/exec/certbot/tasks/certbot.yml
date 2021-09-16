@@ -16,6 +16,7 @@
     group: '{{ ansible_local.root_owner.group }}'
     mode: 0700
     state: directory
+  check_mode: false
 
 - name: Install ACME account key
   copy:

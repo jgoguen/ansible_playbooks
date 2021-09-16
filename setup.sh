@@ -53,13 +53,13 @@ if [ "${OSTYPE}" = "darwin" ]; then
 		/bin/bash -c "$(${CURL_BIN} -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 	fi
 
-	/usr/local/bin/brew install ansible git
+	/usr/local/bin/brew install ansible git git-crypt
 elif [ -f /etc/fedora-release ] || [ -f /etc/redhat-release ]; then
-	${SUDO_CMD} /usr/bin/dnf install --refresh -y ansible curl git-core libxml2 lsb unzip
+	${SUDO_CMD} /usr/bin/dnf install --refresh -y ansible curl git-core git-crypt libxml2 lsb unzip
 elif [ -f /etc/arch-release ]; then
-	${SUDO_CMD} /usr/bin/pacman -Sy --needed ansible curl git libxml2 unzip
+	${SUDO_CMD} /usr/bin/pacman -Sy --needed ansible curl git git-crypt libxml2 unzip
 elif [ "${OSTYPE}" = "openbsd" ]; then
-	${SUDO_CMD} /usr/sbin/pkg_add -ru ansible curl git gnupg libxml unzip
+	${SUDO_CMD} /usr/sbin/pkg_add -ru ansible curl git git-crypt gnupg libxml unzip
 fi
 
 ANSIBLE_GALAXY_BIN="$(command -pv ansible-galaxy)"
@@ -147,5 +147,7 @@ fi
 
 /usr/bin/ssh-agent /bin/sh -c "/usr/bin/ssh-add \"${HOME}/.ssh/github\"; $(command -v git) clone git@github.com:jgoguen/ansible_playbooks.git"
 ${SUDO_CMD} /bin/mv ansible_playbooks /var/
+cd /var/ansible_playbooks
+$(command -v git-crypt) unlock
 
 /bin/sh /var/ansible_playbooks/run_ansible.sh

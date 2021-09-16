@@ -65,6 +65,7 @@
   command:
     cmd: /usr/local/bin/unbound-adhosts.sh
     creates: '/var/unbound/etc/unbound.conf.d/adblock.conf'
+  check_mode: false
 
 - name: Install unbound.conf
   template:
@@ -99,9 +100,3 @@
     line: '!*'
   notify:
     - reload syslogd
-
-- name: Start unbound
-  service:
-    name: unbound
-    enabled: yes
-    state: started

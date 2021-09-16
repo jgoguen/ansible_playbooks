@@ -8,3 +8,7 @@
 - name: Queue SSHd PF rules
   set_fact:
     pf_rules: '{{ pf_rules + sshd_pf_rules }}'
+
+- name: Queue SSHd service start
+  set_fact:
+    services: '{{ services | combine({"start": services["start"] + ["sshd"]}) }}'

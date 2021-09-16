@@ -1,0 +1,14 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Queue ntpd configuration
+  import_tasks: ntpd.yml
+  when: ansible_facts["system"] == "OpenBSD"
+
+- name: Queue systemd-timesyncd configuration
+  import_tasks: timesyncd.yml
+  when: ansible_facts["system"] == "Linux"
+
+- name: Queue macOS time server configuration
+  import_tasks: darwin.yml
+  when: ansible_facts["system"] == "Darwin"

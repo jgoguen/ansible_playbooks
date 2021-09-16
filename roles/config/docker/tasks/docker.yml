@@ -1,19 +1,39 @@
 ---
 # vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
 
-- name: Queue Docker common iptables rules
-  set_fact:
-    iptables_rules: '{{ iptables_rules + docker_common_iptables_rules }}'
-
 - name: Queue Docker iptables rules
   set_fact:
-    iptables_rules: '{{ iptables_rules + docker_iptables_rules[item] }}'
+    iptables_rules: '{{ iptables_rules + docker_iptables_rules }}'
+  when: docker_services|selectattr("install_proxy")|select|list|length > 0
+
+- name: Queue Docker Fedora repo install
+  set_fact:
+    remote_repos: '{{ remote_repos + [{"url": "https://download.docker.com/linux/fedora/docker-ce.repo", "file": "docker-ce.repo"}] }}'
+  when: ansible_facts["distribution"] == "Fedora"
+
+- name: Queue packages needed for Docker
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + ["caddy", "docker-ce", "docker-compose"]}) }}'
+
+- name: Queue Docker Fedora repo install
+  set_fact:
+    remote_repos: '{{ remote_repos + [{"url": "https://download.docker.com/linux/fedora/docker-ce.repo", "file": "docker-ce.repo"}] }}'
+  when: ansible_facts["distribution"] == "Fedora"
+
+- name: 'Queue adding {{ user }} to Docker group'
+  set_fact:
+    unix_groups: '{{ unix_groups + ["docker"] }}'
+
+- name: Include Docker service config role
+  include_role:
+    name: 'config/{{ item.service }}'
+  vars:
+    install_proxy: '{{ item.install_proxy }}'
+    install_compose: '{{ item.install_compose }}'
   loop: '{{ docker_services }}'
 
-- name: Queue caddy install
+- name: Queue Docker services for start
   set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + ["caddy"]}) }}'
-
-- name: Queue caddy service for start
-  set_fact:
-    services: '{{ services | combine({"start": services["start"] + ["caddy"]}) }}'
+    services: '{{ services | combine({"start": services["start"] + ["docker-compose@" + item.service ]}) }}'
+  when: item.install_compose
+  loop: '{{ docker_services }}'

@@ -4,3 +4,9 @@
 - name: Configure BSD networking
   import_tasks: bsd.yml
   when: ansible_facts["system"] == "OpenBSD"
+
+- name: Configure NetworkManager for desktops
+  import_tasks: networkmanager.yml
+  when:
+    - ansible_facts["system"] == "Linux"
+    - roles["desktop"]

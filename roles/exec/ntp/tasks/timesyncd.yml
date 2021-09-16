@@ -10,14 +10,3 @@
     mode: 0644
   notify:
     - reload timesyncd
-
-- name: Remove chrony
-  package:
-    name: chrony
-    state: absent
-
-- name: Start timesyncd
-  service:
-    name: systemd-timesyncd
-    enabled: yes
-    state: started

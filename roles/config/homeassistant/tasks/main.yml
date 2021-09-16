@@ -1,0 +1,7 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Queue Home Assistant iptables rules
+  set_fact:
+    iptables_rules: '{{ iptables_rules + homeassistant_iptables_rules }}'
+  when: install_compose

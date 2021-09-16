@@ -1,0 +1,8 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Queue gateway config
+  import_tasks: gw.yml
+  when:
+    - roles["gw"]
+    - ansible_facts["system"] == "OpenBSD"

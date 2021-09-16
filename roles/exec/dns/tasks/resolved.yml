@@ -11,10 +11,3 @@
   when: dns_servers|length > 0
   notify:
     - reload resolved
-
-- name: Start systemd-resolved
-  service:
-    name: systemd-resolved
-    enabled: yes
-    state: started
-  when: dns_servers|length > 0

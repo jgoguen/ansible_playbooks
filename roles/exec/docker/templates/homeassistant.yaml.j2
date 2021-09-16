@@ -1,0 +1,14 @@
+---
+# {{ ansible_managed }}
+# vim: set filetype=yaml ts=2 sts=2 sw=2 expandtab autoindent:
+
+version: '3'
+
+services:
+  homeassistant:
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    container_name: homeassistant
+    volumes:
+      - '{{ storage_mnt_base }}/homeassistant/config:/config'
+      - /etc/localtime:/etc/localtime:ro
+    network_mode: host

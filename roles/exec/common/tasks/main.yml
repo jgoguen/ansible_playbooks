@@ -1,12 +1,33 @@
 ---
 # vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
 
+- name: 'Adding local user {{ user }} to groups'
+  debug: var=unix_groups
+
+- name: Ensure group is present
+  group:
+    name: '{{ item }}'
+    state: present
+  loop: '{{ unix_groups }}'
+
 - name: 'Add local user {{ user }} to groups'
   user:
     name: '{{ user }}'
     shell: '{{ ansible_local.zsh.bin }}'
     append: yes
     groups: '{{ unix_groups }}'
+
+- name: Create mount directories
+  file:
+    path: '{{ item.path }}'
+    mode: 0755
+    state: directory
+  loop: '{{ mounts }}'
+
+- name: Mount extra directories
+  ansible.posix.mount: '{{ item }}'
+  loop: '{{ mounts }}'
+  when: ansible_facts["system"] != "Darwin"
 
 - name: Install fonts
   import_tasks: fonts.yml
@@ -26,6 +47,15 @@
     owner: root
     group: '{{ ansible_local.root_owner.group }}'
     mode: 0644
+
+- name: Create systemd local unit directory
+  file:
+    path: /usr/local/lib/systemd/system
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+    state: directory
+  when: ansible_facts["system"] == "Linux"
 
 - name: Install udev profiles
   import_tasks: udev.yml
