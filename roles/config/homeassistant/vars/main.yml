@@ -14,3 +14,51 @@ homeassistant_iptables_rules:
     protocol: tcp
     destination_port: '8123'
     jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv4
+    protocol: tcp
+    destination_port: '21064'
+    jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv6
+    protocol: tcp
+    destination_port: '21064'
+    jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv4
+    protocol: tcp
+    destination_port: '21066'
+    jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv6
+    protocol: tcp
+    destination_port: '21066'
+    jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv4
+    protocol: tcp
+    destination_port: '21067'
+    jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv6
+    protocol: tcp
+    destination_port: '21067'
+    jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv4
+    protocol: tcp
+    destination_port: '21068'
+    jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv6
+    protocol: tcp
+    destination_port: '21068'
+    jump: ACCEPT
