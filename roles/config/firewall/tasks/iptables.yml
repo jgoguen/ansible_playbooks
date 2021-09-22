@@ -23,7 +23,7 @@
 
 - name: 'Set FW DROP policy for {{ item }} chain'
   set_fact:
-    iptables_policies: '{{ iptables_policies | combine({"{{ item }}": "DROP"}) }}'
+    iptables_policies: '{{ iptables_policies | combine({item: "DROP"}) }}'
   loop:
     - INPUT
     - FORWARD
