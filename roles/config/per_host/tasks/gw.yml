@@ -42,7 +42,7 @@
 
 - name: Set OpenBSD gateway sysctls
   set_fact:
-    sysctls: '{{ sysctls + gw_sysctls }}'
+    sysctls: '{{ sysctls | combine(gw_sysctls) }}'
 
 - name: Set dynamic DNS hosts
   set_fact:

@@ -178,82 +178,44 @@ snap_packages:
 
 sysctl:
   linux:
-    - name: 'fs.inotify.max_user_watches'
-      value: 5000000
-    - name: 'fs.protected_hardlinks'
-      value: 1
-    - name: 'fs.protected_symlinks'
-      value: 1
-    - name: 'fs.suid_dumpable'
-      value: 0
-    - name: 'kernel.dmesg_restrict'
-      value: 1
-    - name: 'kernel.hardlockup_panic'
-      value: 1
-    - name: 'kernel.kptr_restrict'
-      value: 1
-    - name: 'kernel.nmi_watchdog'
-      value: 0
-    - name: 'kernel.sysrq'
-      value: 1
-    - name: 'net.ipv4.conf.all.accept_redirects'
-      value: 0
-    - name: 'net.ipv4.conf.all.accept_source_route'
-      value: 0
-    - name: 'net.ipv4.conf.all.rp_filter'
-      value: 0
-    - name: 'net.ipv4.conf.all.secure_redirects'
-      value: 0
-    - name: 'net.ipv4.conf.all.send_redirects'
-      value: 0
-    - name: 'net.ipv4.conf.default.accept_redirects'
-      value: 0
-    - name: 'net.ipv4.conf.default.accept_source_route'
-      value: 0
-    - name: 'net.ipv4.conf.default.rp_filter'
-      value: 0
-    - name: 'net.ipv4.conf.default.secure_redirects'
-      value: 0
-    - name: 'net.ipv4.conf.default.send_redirects'
-      value: 0
-    - name: 'net.ipv4.icmp_echo_ignore_broadcasts'
-      value: 1
-    - name: 'net.ipv4.icmp_ignore_bogus_error_responses'
-      value: 1
-    - name: 'net.ipv4.tcp_mtu_probing'
-      value: 1
-    - name: 'net.ipv4.tcp_syncookies'
-      value: 1
-    - name: 'net.ipv4.tcp_tw_reuse'
-      value: 1
-    - name: 'net.ipv4.tcp_fastopen'
-      value: 3
-    - name: 'net.ipv6.conf.all.accept_redirects'
-      value: 0
-    - name: 'net.ipv6.conf.all.accept_source_route'
-      value: 0
-    - name: 'net.ipv6.conf.all.addr_gen_mode'
-      value: 3
-    - name: 'net.ipv6.conf.all.use_tempaddr'
-      value: 2
-    - name: 'net.ipv6.conf.default.accept_redirects'
-      value: 0
-    - name: 'net.ipv6.conf.default.accept_source_route'
-      value: 0
-    - name: 'net.ipv6.conf.default.addr_gen_mode'
-      value: 3
-    - name: 'net.ipv6.conf.default.use_tempaddr'
-      value: 2
-    - name: 'vm.dirty_bytes'
-      value: 4194304
-    - name: 'vm.dirty_background_bytes'
-      value: 4194304
-    - name: 'vm.min_free_kbytes'
-      value: 209715
-    - name: 'vm.swappiness'
-      value: 5
-    - name: 'vm.vfs_cache_pressure'
-      value: 50
+    'fs.inotify.max_user_watches': 5000000
+    'fs.protected_hardlinks': 1
+    'fs.protected_symlinks': 1
+    'fs.suid_dumpable': 0
+    'kernel.dmesg_restrict': 1
+    'kernel.hardlockup_panic': 1
+    'kernel.kptr_restrict': 1
+    'kernel.nmi_watchdog': 0
+    'kernel.sysrq': 1
+    'net.ipv4.conf.all.accept_redirects': 0
+    'net.ipv4.conf.all.accept_source_route': 0
+    'net.ipv4.conf.all.rp_filter': 0
+    'net.ipv4.conf.all.secure_redirects': 0
+    'net.ipv4.conf.all.send_redirects': 0
+    'net.ipv4.conf.default.accept_redirects': 0
+    'net.ipv4.conf.default.accept_source_route': 0
+    'net.ipv4.conf.default.rp_filter': 0
+    'net.ipv4.conf.default.secure_redirects': 0
+    'net.ipv4.conf.default.send_redirects': 0
+    'net.ipv4.icmp_echo_ignore_broadcasts': 1
+    'net.ipv4.icmp_ignore_bogus_error_responses': 1
+    'net.ipv4.tcp_mtu_probing': 1
+    'net.ipv4.tcp_syncookies': 1
+    'net.ipv4.tcp_tw_reuse': 1
+    'net.ipv4.tcp_fastopen': 3
+    'net.ipv6.conf.all.accept_redirects': 0
+    'net.ipv6.conf.all.accept_source_route': 0
+    'net.ipv6.conf.all.addr_gen_mode': 3
+    'net.ipv6.conf.all.use_tempaddr': 2
+    'net.ipv6.conf.default.accept_redirects': 0
+    'net.ipv6.conf.default.accept_source_route': 0
+    'net.ipv6.conf.default.addr_gen_mode': 3
+    'net.ipv6.conf.default.use_tempaddr': 2
+    'vm.dirty_bytes': 4194304
+    'vm.dirty_background_bytes': 4194304
+    'vm.min_free_kbytes': 209715
+    'vm.swappiness': 5
+    'vm.vfs_cache_pressure': 50
   darwin: []
   openbsd: []
 

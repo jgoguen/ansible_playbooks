@@ -146,7 +146,7 @@ all:
         services:
           start: []
           stop: []
-        sysctls: []
+        sysctls: {}
         dhcpd_config:
           domain_name: ''
           lease:

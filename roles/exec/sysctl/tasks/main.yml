@@ -3,10 +3,10 @@
 
 - name: Set sysctl values
   sysctl:
-    name: '{{ item.name }}'
+    name: '{{ item.key }}'
     value: '{{ item.value }}'
     state: present
     sysctl_file: /etc/sysctl.conf
     reload: yes
     sysctl_set: yes
-  loop: '{{ sysctls }}'
+  loop: '{{ sysctls | dict2items }}'

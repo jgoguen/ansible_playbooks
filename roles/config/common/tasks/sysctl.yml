@@ -3,4 +3,4 @@
 
 - name: Queue sysctl changes
   set_fact:
-    sysctls: '{{ sysctls + sysctl[ansible_facts["system"]|lower] }}'
+    sysctls: '{{ sysctls | combine(sysctl[ansible_facts["system"]|lower]) }}'

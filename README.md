@@ -99,7 +99,6 @@ currently defined:
 
 - `backup`: This host will be configured to serve a backup directory over Samba,
   with Time Machine support enabled for macOS clients.
-- `db`: This host will be a PostgreSQL database server.
 - `desktop`: This host will be a client desktop/laptop system. Setting this
   `false` implies this host will be a server.
 - `devel`: This host may be used for development and should have appropriate
@@ -113,8 +112,6 @@ currently defined:
 - `mqttd`: This host will be a MQTT server. Mosquitto on OpenBSD is assumed.
 - `sshfs_client`: This host will mount a remote file system over SSH.
 - `storage`: This host will provide storage to other hosts.
-- `unifi`: This host will be a UniFi controller. It is assumed that the OpenBSD
-  `unifi` port will be built.
 
 ### `certbot_hosts`
 
@@ -196,7 +193,7 @@ may be referenced in `pf_rules` as `&lt;name&gt;`.
 
 ### `sysctls`
 
-`sysctls` defines a list of `name` and `value` hashes for each sysctl to set.
+`sysctls` defines a dictionary mapping sysctl name to value.
 
 ### `dhcpd_config`
 
