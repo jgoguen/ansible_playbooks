@@ -8,5 +8,4 @@
 /roles/config/postgresql/vars/main.yml filter=git-crypt diff=git-crypt
 /roles/config/unbound/vars/main.yml filter=git-crypt diff=git-crypt
 /roles/exec/docker/templates/*.caddyfile.j2 filter=git-crypt diff=git-crypt
-/roles/exec/dyndns/vars/main.yml filter=git-crypt diff=git-crypt
 .gitattributes !filter !diff

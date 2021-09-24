@@ -4,8 +4,8 @@
 # Distributing IPv6 via rad needs dhcpcd to get IPv6 from upstream
 - name: Queue gateway packages for install
   set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + ["dhcpcd"] }) }}'
+    packages: '{{ packages | combine({"install": packages["install"] + ["dhcpcd", "ddclient"] }) }}'
 
 - name: Queue gateway services for start
   set_fact:
-    services: '{{ services | combine({"start": services["start"] + ["dhcpcd", "rad"]}) }}'
+    services: '{{ services | combine({"start": services["start"] + ["dhcpcd", "rad", "ddclient"]}) }}'

@@ -5,4 +5,4 @@
   import_tasks: gw.yml
   when:
     - roles["gw"]
-    - - ansible_facts["system"] == "OpenBSD"
+    - ansible_facts["system"] == "OpenBSD"
