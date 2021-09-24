@@ -28,7 +28,7 @@ else
 	ROOT_HOME="$(/usr/bin/getent passwd root | /usr/bin/cut -d ':' -f 6)"
 fi
 for collection in ansible.posix kewlfft.aur community.general; do
-	${SUDO_CMD} /usr/bin/test -d "${ROOT_HOME}/.ansible/collections/ansible_collections/$(printf '%s' "${collection}" | tr '.' '/')"; rv=$?
+	${SUDO_CMD} test -d "${ROOT_HOME}/.ansible/collections/ansible_collections/$(printf '%s' "${collection}" | tr '.' '/')"; rv=$?
 	if [ "${rv}" -ne 0 ]; then
 		${SUDO_CMD} "${ANSIBLE_GALAXY_BIN}" collection install "${collection}"
 	fi
