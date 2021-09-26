@@ -1,0 +1,129 @@
+---
+# vim: set filetype=ansible syntax=yaml ts=2 sts=2 sw=2 expandtab autoindent:
+
+- name: Create pihole local storage
+  file:
+    path: /usr/local/etc/pihole
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+    state: directory
+  check_mode: false
+
+- name: Create pihole Docker directories
+  file:
+    path: '/usr/local/etc/pihole/{{ item }}'
+    state: directory
+  check_mode: false
+  loop:
+    - etc
+    - dnsmasq.d
+
+- name: Create root .ssh directory
+  file:
+    path: '{{ ansible_local.root_owner.home }}/.ssh'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0700
+    state: directory
+  check_mode: false
+
+- name: Install pihole sync key
+  copy:
+    src: '{{ item }}'
+    dest: '{{ ansible_local.root_owner.home }}/.ssh/{{ item }}'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0600
+  loop:
+    - 'pihole'
+    - 'pihole.pub'
+
+- name: Install SSH config
+  copy:
+    src: ssh_config
+    dest: /root/.ssh/config
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0600
+
+- name: Check out pihole config
+  git:
+    repo: 'pihole-config-repo:jgoguen/pihole-configs.git'
+    dest: /usr/local/bin/my-pihole-lists
+    accept_hostkey: true
+    key_file: /root/.ssh/pihole
+    update: false
+
+- name: Install pihole sync script
+  get_url:
+    url: https://raw.githubusercontent.com/jgoguen/pihole-cloudsync/master/pihole-cloudsync
+    dest: /usr/local/bin/pihole-cloudsync
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+
+- name: Init cloud sync if needed
+  command:
+    cmd: /usr/local/bin/pihole-cloudsync --initpull
+    creates: /usr/local/etc/pihole/etc/gravity.db
+
+- name: Install pihole-cloudsync push service
+  template:
+    src: pihole-cloudsync-push.service.j2
+    dest: /usr/local/lib/systemd/system/pihole-cloudsync.service
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload systemd
+  when: pihole_primary
+
+- name: Install pihole-cloudsync pull service
+  template:
+    src: pihole-cloudsync-pull.service.j2
+    dest: /usr/local/lib/systemd/system/pihole-cloudsync.service
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload systemd
+  when: not pihole_primary
+
+- name: Install pihole-cloudsync timer
+  template:
+    src: pihole-cloudsync.timer.j2
+    dest: /usr/local/lib/systemd/system/pihole-cloudsync.timer
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload systemd
+
+- name: Check out pihole whitelist
+  git:
+    repo: 'https://github.com/anudeepND/whitelist.git'
+    dest: /var/local/pihole-whitelist
+  when: pihole_primary
+
+- name: Install pihole whitelist service
+  template:
+    src: pihole-whitelist.service.j2
+    dest: /usr/local/lib/systemd/system/pihole-whitelist.service
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload systemd
+  when: pihole_primary
+
+- name: Install pihole-whitelist timer
+  template:
+    src: pihole-whitelist.timer.j2
+    dest: /usr/local/lib/systemd/system/pihole-whitelist.timer
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload systemd
+  when: pihole_primary

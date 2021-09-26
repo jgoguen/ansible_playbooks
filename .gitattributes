@@ -5,7 +5,10 @@
 /roles/config/massive-decks/vars/main.yml filter=git-crypt diff=git-crypt
 /roles/config/per_host/vars/* filter=git-crypt diff=git-crypt
 /roles/config/per_host/vars/sample_vars.yml -filter -diff
+/roles/config/pihole/vars/main.yml filter=git-crypt diff=git-crypt
 /roles/config/postgresql/vars/main.yml filter=git-crypt diff=git-crypt
 /roles/config/unbound/vars/main.yml filter=git-crypt diff=git-crypt
 /roles/exec/docker/templates/*.caddyfile.j2 filter=git-crypt diff=git-crypt
+/roles/exec/pihole/files/* filter=git-crypt diff=git-crypt
+/roles/exec/sshfs/files/* filter=git-crypt diff=git-crypt
 .gitattributes !filter !diff

@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=pihole cloud sync
+Requires=docker-compose@pihole
+After=docker-compose@pihole
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/pihole-cloudsync --pull
