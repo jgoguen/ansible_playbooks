@@ -10,3 +10,9 @@
   when:
     - ansible_facts["system"] == "Linux"
     - roles["desktop"]
+
+- name: Configure dhcpcd.conf for Debian servers
+  import_tasks: dhcpcd.yml
+  when:
+    - not roles["desktop"]
+    - ansible_facts["distribution"] == "Debian"

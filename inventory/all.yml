@@ -139,6 +139,13 @@ all:
         bsd_interfaces: {}
         # Gateway definitions in /etc/mygate
         bsd_gateway: []
+        # Maps interface name to network config
+        # Example:
+        #  eth0:
+        #    ip: '192.168.0.100/24'
+        #    ip6: 'fe80::beef:100/64'
+        #    gateway: 192.168.0.1
+        linux_interfaces: {}
         pf_variables: {}
         # Maps table name to contents
         pf_tables: {}
