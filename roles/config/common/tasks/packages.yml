@@ -101,6 +101,25 @@
     - ansible_facts["distribution"] == "Fedora"
     - roles["devel"]
 
+- name: Queue Debian packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + debian_packages["common"] }) }}'
+  when: ansible_facts["distribution"] == "Debian"
+
+- name: Queue Debian desktop packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + debian_packages["desktop"] }) }}'
+  when:
+    - ansible_facts["distribution"] == "Debian"
+    - roles["desktop"]
+
+- name: Queue Debian development packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + debian_packages["devel"] }) }}'
+  when:
+    - ansible_facts["distribution"] == "Debian"
+    - roles["devel"]
+
 - name: Queue adding local user to mock group
   set_fact:
     unix_groups: '{{ unix_groups + ["mock"] }}'

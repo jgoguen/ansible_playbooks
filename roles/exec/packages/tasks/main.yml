@@ -25,6 +25,17 @@
   when: ansible_facts["distribution"] == "Fedora"
   check_mode: false
 
+- name: Install Debian repo keys
+  get_url:
+    url: '{{ item.url }}'
+    dest: '/etc/apt/trusted.gpg.d/{{ item.file }}'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  loop: '{{ repo_keys }}'
+  when: ansible_facts["distribution"] == "Debian"
+  check_mode: false
+
 - name: Enabling repos
   debug: var=repos
 
@@ -32,6 +43,16 @@
   yum_repository: '{{ item }}'
   loop: '{{ repos }}'
   when: ansible_facts["distribution"] == "Fedora"
+  check_mode: false
+
+- name: Enable Debian repositories
+  apt_repository:
+    repo: '{{ item.repo }}'
+    filename: '{{ item.file }}'
+    mode: 0644
+  loop: '{{ repos }}'
+  when: ansible_facts["distribution"] == "Debian"
+  check_mode: false
 
 # RPMFusion packages need to come from the upstream URL since they won't be
 # accessible on initial install. But then the appstream packages can come from
@@ -78,6 +99,7 @@
     name: dnf-plugins-core
     state: installed
   when: ansible_facts["distribution"] == "Fedora"
+  check_mode: false
 
 - name: Enabling remote repos
   debug: var=remote_repos
@@ -88,6 +110,26 @@
     creates: '/etc/yum.repos.d/{{ item.file }}'
   loop: '{{ remote_repos }}'
   when: ansible_facts["distribution"] == "Fedora"
+  check_mode: false
+
+- name: Enabling Debian remote repositories
+  get_url:
+    url: '{{ item.url }}'
+    dest: '/etc/apt/sources.list.d/{{ item.file }}'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - update apt cache
+  loop: '{{ remote_repos }}'
+  when: ansible_facts["distribution"] == "Debian"
+  check_mode: false
+
+# This is a really big hammer, but it's the only way to make sure the remote
+# Debian repos are in the cache before we look for packages
+- name: Flush handlers
+  meta: flush_handlers
+  check_mode: false
 
 - name: Installing packages
   debug: var=packages.install
@@ -97,6 +139,7 @@
     name: '{{ packages.install }}'
     state: present
   when: ansible_facts["system"] != "Darwin"
+  check_mode: false
 
 - name: Install packages via Homebrew
   homebrew:
@@ -120,6 +163,11 @@
 - name: Installing Snap packages
   debug: var=packages.snap
 
+- name: Stat /var/lib/snapd/snap
+  stat:
+    path: /var/lib/snapd/snap
+  register: snap_path
+
 - name: Create Snap classic confinement symlink
   file:
     src: /var/lib/snapd/snap
@@ -127,7 +175,9 @@
     owner: root
     group: '{{ ansible_local.root_owner.group }}'
     state: link
-  when: ansible_facts["system"] == "Linux"
+  when:
+    - ansible_facts["system"] == "Linux"
+    - snap_path.stat.exists
 
 - name: Install Snap packages
   snap:

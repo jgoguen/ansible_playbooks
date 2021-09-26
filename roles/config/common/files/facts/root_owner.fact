@@ -13,9 +13,26 @@ if [ "${OS}" = "Darwin" ]; then
 elif [ "${OS}" = "OpenBSD" ]; then
   GRPNAME="wheel"
   SUDO_GROUP="wheel"
+elif [ -f /etc/debian_version ]; then
+  GRPNAME="root"
+	SUDO_GROUP="sudo"
 else
 	GRPNAME="root"
 	SUDO_GROUP="wheel"
 fi
 
-printf '{"user": "root", "group": "%s", "sudo": "%s"}' "${GRPNAME}" "${SUDO_GROUP}"
+UNAME_BIN="$(command -pv uname)"
+if [ -z "${UNAME_BIN}" ]; then
+	printf 'Required tool uname not found\n' >&2
+	exit 1
+fi
+
+OSTYPE="$("${UNAME_BIN}" | /usr/bin/tr '[:upper:]' '[:lower:]')"
+
+if [ "${OSTYPE}" = "darwin" ]; then
+	ROOT_HOME="$(/usr/bin/dscl . -read /Users/root NFSHomeDirectory | /usr/bin/awk '{print $NF}')"
+else
+	ROOT_HOME="$(/usr/bin/getent passwd root | /usr/bin/cut -d ':' -f 6)"
+fi
+
+printf '{"user": "root", "group": "%s", "sudo": "%s", "home": "%s"}' "${GRPNAME}" "${SUDO_GROUP}" "${ROOT_HOME}"

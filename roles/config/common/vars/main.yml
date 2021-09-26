@@ -6,10 +6,8 @@ common_packages:
     - jq
     - neovim
     - nmap
-    - pinentry
     - ripgrep
     - wget
-    - xz
     - zsh
     - zsh-syntax-highlighting
   desktop:
@@ -18,9 +16,6 @@ common_packages:
 
 linux_packages:
   common:
-    - adobe-source-code-pro-fonts
-    - adobe-source-sans-pro-fonts
-    - adobe-source-serif-pro-fonts
     - cpio
     - ethtool
     - fontconfig
@@ -58,12 +53,14 @@ openbsd_packages:
     - neovim
     - py3-neovim
     - node
+    - pinentry
     - 'python%3.8'
     - 'rsync--'
     - sqlite3
     - 'unzip--'
     - xdg-user-dirs
     - xdg-utils
+    - xz
     - zip
   desktop: []
   devel:
@@ -71,19 +68,23 @@ openbsd_packages:
 
 arch_packages:
   common:
+    - adobe-source-code-pro-fonts
+    - adobe-source-sans-pro-fonts
+    - adobe-source-serif-pro-fonts
     # Normally this is a development package, but it's needed for AUR packages
     - base-devel
     - iptables
-    - jq
     - lsb-release
     - man-db
     - openssh
+    - pinentry
     - python
     - python-colorama
     - python-msgpack
     - python-pycryptodomex
     - python-pynvim
     - sqlite
+    - xz
     - zsh-completions
   desktop:
     - flatpak
@@ -98,11 +99,28 @@ arch_packages:
   aur:
     - snapd
 
+debian_packages:
+  common:
+    - apt-transport-https
+    - ca-certificates
+    - debian-archive-keyring
+    - flatpak
+    - lsb-release
+    - pinentry-curses
+    - snapd
+    - xz-utils
+  desktop: []
+  devel: []
+
 fedora_packages:
   common:
+    - adobe-source-code-pro-fonts
+    - adobe-source-sans-pro-fonts
+    - adobe-source-serif-pro-fonts
     - bind-utils
     - lsb
     - onedrive
+    - pinentry
     - python3
     - python3-ansible-lint
     - python3-colorama
@@ -112,6 +130,7 @@ fedora_packages:
     - python3-neovim
     - snapd
     - sqlite
+    - xz
   desktop:
     - desktop-file-utils
     - fedora-workstation-repositories
@@ -157,10 +176,12 @@ macos_packages:
   - lunchy
   - mtr
   - nodejs
+  - pinentry
   - python3
   - shellcheck
   - sqlite
   - vale
+  - xz
   - zsh-autosuggestions
   - zsh-completions
 
@@ -183,9 +204,7 @@ sysctl:
     'fs.protected_symlinks': 1
     'fs.suid_dumpable': 0
     'kernel.dmesg_restrict': 1
-    'kernel.hardlockup_panic': 1
     'kernel.kptr_restrict': 1
-    'kernel.nmi_watchdog': 0
     'kernel.sysrq': 1
     'net.ipv4.conf.all.accept_redirects': 0
     'net.ipv4.conf.all.accept_source_route': 0
@@ -218,6 +237,10 @@ sysctl:
     'vm.vfs_cache_pressure': 50
   darwin: []
   openbsd: []
+
+sysctl_not_debian:
+  'kernel.hardlockup_panic': 1
+  'kernel.nmi_watchdog': 0
 
 coprs_wanted:
   - user: jgoguen

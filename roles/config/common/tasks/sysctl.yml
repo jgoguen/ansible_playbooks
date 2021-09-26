@@ -4,3 +4,10 @@
 - name: Queue sysctl changes
   set_fact:
     sysctls: '{{ sysctls | combine(sysctl[ansible_facts["system"]|lower]) }}'
+
+- name: Queue Linux sysctls for non-Debian
+  set_fact:
+    sysctls: '{{ sysctls | combine(sysctl_not_debian) }}'
+  when:
+    - ansible_facts["distribution"] != "Debian"
+    - ansible_facts["system"] == "Linux"

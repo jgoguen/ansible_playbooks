@@ -58,6 +58,8 @@ elif [ -f /etc/fedora-release ] || [ -f /etc/redhat-release ]; then
 	${SUDO_CMD} /usr/bin/dnf install --refresh -y ansible curl git-core git-crypt libxml2 lsb unzip
 elif [ -f /etc/arch-release ]; then
 	${SUDO_CMD} /usr/bin/pacman -Sy --needed ansible curl git git-crypt libxml2 unzip
+elif [ -f /etc/debian_version ]; then
+	${SUDO_CMD} /usr/bin/apt install -y ansible curl git git-crypt libxml2-utils unzip
 elif [ "${OSTYPE}" = "openbsd" ]; then
 	${SUDO_CMD} /usr/sbin/pkg_add -ru ansible curl git git-crypt gnupg libxml unzip
 fi
@@ -113,6 +115,9 @@ case "${MACHINE}" in
 		;;
 	arm*)
 		MACHINE="arm"
+		;;
+	aarch64)
+		MACHINE="arm64"
 		;;
 esac
 
