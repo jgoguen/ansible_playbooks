@@ -14,3 +14,15 @@ jellyfin_iptables_rules:
     protocol: udp
     destination_port: '7359'
     jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv4
+    protocol: tcp
+    destination_port: '8096'
+    jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv6
+    protocol: tcp
+    destination_port: '8096'
+    jump: ACCEPT
