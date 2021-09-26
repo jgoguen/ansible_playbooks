@@ -7,4 +7,5 @@ After=docker-compose@pihole
 
 [Service]
 Type=oneshot
+Environment=HOME={{ ansible_local.root_owner.home }}
 ExecStart=/usr/local/bin/pihole-cloudsync --push
