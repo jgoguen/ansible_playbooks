@@ -6,7 +6,11 @@ import platform
 import shutil
 import subprocess
 
-INFO = {
+from typing import Dict
+from typing import List
+from typing import Union
+
+INFO: Dict[str, Union[str, List[str]]] = {
     "bin": "",
     "insiders_bin": "",
     "extensions": [],
@@ -26,18 +30,18 @@ if platform.platform().startswith("macOS"):
     if os.access(code_insiders_bin, os.X_OK | os.R_OK):
         INFO["insiders_bin"] = code_insiders_bin
 else:
-    INFO["bin"] = shutil.which("code")
-    INFO["insiders_bin"] = shutil.which("code-insiders")
+    INFO["bin"] = shutil.which("code") or ""
+    INFO["insiders_bin"] = shutil.which("code-insiders") or ""
 
 if INFO["bin"] != "":
-    cmd = subprocess.run([INFO["bin"], "--list-extensions"], capture_output=True)
+    cmd = subprocess.run([str(INFO["bin"]), "--list-extensions"], capture_output=True)
     INFO["extensions"] = [
         e for e in cmd.stdout.decode("UTF-8").split("\n") if e.strip() != ""
     ]
 
 if INFO["insiders_bin"] != "":
     cmd = subprocess.run(
-        [INFO["insiders_bin"], "--list-extensions"], capture_output=True
+        [str(INFO["insiders_bin"]), "--list-extensions"], capture_output=True
     )
     INFO["insiders_extensions"] = [
         e for e in cmd.stdout.decode("UTF-8").split("\n") if e.strip() != ""
