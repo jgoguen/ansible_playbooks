@@ -1,0 +1,23 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: Create root .ssh directory
+  file:
+    path: '{{ ansible_local.root_owner.home }}/.ssh'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0700
+    state: directory
+  check_mode: false
+
+- name: Install root storage key
+  copy:
+    src: '{{ item }}'
+    dest: '{{ ansible_local.root_owner.home }}/.ssh/{{ item }}'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0600
+  loop:
+    - 'storage'
+    - 'storage.pub'
+    - 'storage-cert.pub'
