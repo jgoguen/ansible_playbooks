@@ -11,6 +11,25 @@ subnet {{ subnet["base"] }} netmask {{ subnet["subnet"] }} {
 	option routers {{ subnet["router"] }};
 	range {{ subnet["start"] }} {{ subnet["end"] }};
 
+{% if "groups" in subnet %}
+{% for group in subnet["groups"] %}
+	group {
+{% if "options" in group %}
+{% for opt in group["options"] %}
+		option {{ opt }} {{ group["options"][opt] }};
+{% endfor %}
+{% endif %}
+
+{% for host in group["hosts"] %}
+		host {{ host }} {
+			hardware ethernet {{ group["hosts"][host]["mac"] }};
+			fixed-address {{ group["hosts"][host]["address"] }};
+		}
+{% endfor %}
+	}
+{% endfor %}
+{% endif %}
+
 {% for host in subnet["hosts"] %}
 	host {{ host }} {
 		hardware ethernet {{ subnet["hosts"][host]["mac"] }};
