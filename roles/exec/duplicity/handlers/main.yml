@@ -1,0 +1,7 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: reload systemd
+  systemd:
+    daemon_reload: true
+  changed_when: false

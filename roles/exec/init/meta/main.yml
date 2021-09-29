@@ -18,6 +18,7 @@ dependencies:
   - role: exec/sudo
   - role: exec/sshd
   - role: exec/backup
+  - role: exec/duplicity
   - role: exec/firefox
   - role: exec/unbound
   - role: exec/mqtt

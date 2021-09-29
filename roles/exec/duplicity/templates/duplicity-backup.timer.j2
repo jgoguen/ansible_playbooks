@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=duplicity backup timer
+Wants=network-online.target
+Requires=mnt-storage.mount
+After=mnt-storage.mount
+
+[Timer]
+OnCalendar=*-*-* *:00:00
+RandomizedDelaySec=15min
+
+[Install]
+WantedBy=timers.target

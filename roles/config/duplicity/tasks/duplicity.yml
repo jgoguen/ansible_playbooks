@@ -1,0 +1,10 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+
+- name: Queue duplicity install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + ["duplicity"] }) }}'
+
+- name: Queue duplicity backup start
+  set_fact:
+    services: '{{ services | combine({"start": services["start"] + ["duplicity-backup.timer"]}) }}'

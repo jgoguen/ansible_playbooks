@@ -13,5 +13,6 @@ dependencies:
   - role: config/docker
   - role: config/unbound
   - role: config/mqtt
+  - role: config/duplicity
   - role: config/sshd
   - role: config/vscode
