@@ -16,11 +16,13 @@ all:
           dhcpd: false
           dns: false
           docker: false
+          duplicity: false
           gw: false
           mqttd: false
           sshfs_client: false
           storage: false
         antibody_installer: "{{ lookup('env', 'TMPDIR') | default('/tmp', True) }}/antibody_install"
+        backup_dirs: []
         certbot_hosts: []
         dyndns_hosts: []
         packages:
@@ -663,7 +665,8 @@ all:
           # one needs to be its own auth-zone stanza in unbound.conf
           auth-zone: []
         dns_servers:
-          - 10.10.0.20
+          - 10.10.0.24
+          - 10.10.0.23
         ntp_servers:
           - time1.facebook.com
           - time2.facebook.com
