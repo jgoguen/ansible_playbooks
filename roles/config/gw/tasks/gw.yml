@@ -8,4 +8,4 @@
 
 - name: Queue gateway services for start
   set_fact:
-    services: '{{ services | combine({"start": services["start"] + ["dhcpcd", "rad", "ddclient"]}) }}'
+    services: '{{ services | combine({"start": services["start"] + ["dhcpcd", "rad", "ddclient", "dhcpd"]}) }}'
