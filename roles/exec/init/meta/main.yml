@@ -3,11 +3,11 @@
 
 dependencies:
   - role: exec/packages
+  - role: exec/sysctl
   - role: exec/firewall
+  - role: exec/networking
   - role: exec/sshfs
   - role: exec/common
-  - role: exec/sysctl
-  - role: exec/networking
   - role: exec/ntp
   - role: exec/desktop
   - role: exec/certbot
