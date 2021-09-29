@@ -32,7 +32,7 @@ slaac hwaddr
 interface {{ iface }}
 static ip_address={{ linux_interfaces[iface]["ip"] }}
 static ip6_address={{ linux_interfaces[iface]["ip6"] }}
-static routers={{ linux_interfaces[iface]["ip6"] }}
+static routers={{ linux_interfaces[iface]["gateway"] }}
 static domain_name_servers={{ dns_servers | join(" ") }}
 
 {% endfor %}
