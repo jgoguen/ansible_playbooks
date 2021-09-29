@@ -50,8 +50,8 @@
     - reload caddy
 
 - name: Load docker-compose role vars
-  include_vars: 'roles/config/{{ item.service }}/vars/main.yml'
-  loop: '{{ docker_services }}'
+  include_vars: '{{ item }}'
+  loop: '{{ docker_services | map(attribute="service") | map("format_map", "roles/config/{0}/vars/main") | map("fileglob") | list | flatten }}'
 
 - name: Install docker-compose file
   template:
@@ -77,6 +77,5 @@
 
 - name: Install extra Docker service requirements
   include_role:
-    name: 'exec/{{ item.service }}'
-  ignore_errors: true
-  loop: '{{ docker_services }}'
+    name: '{{ item }}'
+  loop: '{{ docker_services | map(attribute="service") | map("format_map", "roles/exec/{0}") | map("fileglob") | list | flatten }}'
