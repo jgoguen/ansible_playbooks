@@ -51,7 +51,7 @@
 
 - name: Load docker-compose role vars
   include_vars: '{{ item }}'
-  loop: '{{ docker_services | map(attribute="service") | map("format_map", "roles/config/{0}/vars/main") | map("fileglob") | list | flatten }}'
+  loop: '{{ docker_services | map(attribute="service") | map("format_map", "roles/config/{0}/vars/main.yml") | map("fileglob") | list | flatten }}'
 
 - name: Install docker-compose file
   template:
