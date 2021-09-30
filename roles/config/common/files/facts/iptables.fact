@@ -14,7 +14,7 @@ elif [ -d /etc/sysconfig ]; then
     IPTABLES_DIR='/etc/sysconfig'
 fi
 
-if [ -f /etc/debian-release ]; then
+if [ -f /etc/debian_version ]; then
     IPTABLES_FILE_V4='rules.v4'
     IPTABLES_FILE_V6='rules.v6'
 else
