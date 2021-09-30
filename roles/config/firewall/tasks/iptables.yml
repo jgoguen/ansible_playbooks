@@ -10,6 +10,11 @@
     packages: '{{ packages | combine({"install": packages["install"] + ["iptables-services"] }) }}'
   when: ansible_facts["distribution"] == "Fedora"
 
+- name: Queue iptables-persistent installation
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + ["iptables-persistent"] }) }}'
+  when: ansible_facts["distribution"] == "Debian"
+
 - name: Queue removal of conflicting packages
   set_fact:
     packages: '{{ packages | combine({"remove": packages["remove"] + ["ufw", "firewalld"] }) }}'
