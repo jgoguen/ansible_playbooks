@@ -14,7 +14,6 @@ dependencies:
   - role: exec/gw
   - role: exec/dns
   - role: exec/dhcpd
-  - role: exec/dyndns
   - role: exec/sudo
   - role: exec/sshd
   - role: exec/backup
