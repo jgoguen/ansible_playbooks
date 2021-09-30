@@ -13,6 +13,9 @@ table <martians> { \
 	::/128 ::/96 ::1/128 ::ffff:0:0/96 100::/64 2001:10::/28 2001:2::/48 \
 	2001:db8::/32 3ffe::/16 fec0::/10 fc00::/7 \
 }
+table <dns> { \
+  {{ ((dns_servers | map("format_map", "{0}/32") | list) + (rad_config["dns"] | map("format_map", "{0}/128") | list)) | join(" ") }} \
+}
 
 {% for table in pf_tables %}
 table <{{ table }}> { {{ pf_tables[table] | join(" ") }} }
