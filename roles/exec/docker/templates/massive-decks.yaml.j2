@@ -12,8 +12,6 @@ services:
     container_name: mdserver
     # Make sure you always deploy the same tag for client and server.
     image: "massivedecks/server:latest"
-    depends_on:
-      - storage
     environment:
       NODE_ENV: production
     networks:
@@ -28,7 +26,7 @@ services:
     container_name: mdclient
     image: "massivedecks/client:latest"
     depends_on:
-      - server
+      - mdserver
     ports:
       - "9989:8080"
     networks:
