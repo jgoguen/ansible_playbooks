@@ -4,26 +4,10 @@
 
 version: "3"
 
-networks:
-  joplin:
-
 services:
-  joplindb:
-    image: "postgres:13"
-    container_name: joplindb
-    environment:
-      POSTGRES_USER: joplin
-      POSTGRES_PASSWORD: {{ joplin_pg_passwd }}
-      POSTGRES_DB: joplin
-    networks:
-      - joplin
-    volumes:
-      - '{{ storage_mnt_base }}/joplin/pgdata:/var/lib/postgresql/data'
   joplin:
     image: joplin/server:latest
     container_name: joplin
-    depends_on:
-      - joplindb
     environment:
       APP_PORT: '22300'
       APP_BASE_URL: {{ joplin_base_url }}
@@ -31,8 +15,6 @@ services:
       POSTGRES_USER: joplin
       POSTGRES_PASSWORD: {{ joplin_pg_passwd }}
       POSTGRES_DATABASE: joplin
-      POSTGRES_HOST: joplindb
+      POSTGRES_HOST: db.intern.jgoguen.ca
     ports:
       - '22300:22300'
-    networks:
-      - joplin
