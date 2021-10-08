@@ -3,6 +3,7 @@
 /roles/**/*.jgoguen.ca.zone filter=git-crypt diff=git-crypt
 /roles/config/joplin/vars/main.yml filter=git-crypt diff=git-crypt
 /roles/config/massive-decks/vars/main.yml filter=git-crypt diff=git-crypt
+/roles/config/mealie/vars/main.yml filter=git-crypt diff=git-crypt
 /roles/config/per_host/vars/* filter=git-crypt diff=git-crypt
 /roles/config/per_host/vars/sample_vars.yml -filter -diff
 /roles/config/pihole/vars/main.yml filter=git-crypt diff=git-crypt

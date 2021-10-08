@@ -1,0 +1,21 @@
+---
+# {{ ansible_managed }}
+# vim: set filetype=yaml ts=2 sts=2 sw=2 expandtab autoindent:
+
+version: "3"
+
+services:
+  mealie:
+    image: hkotel/mealie
+    container_name: mealie
+    environment:
+      DB_ENGINE: postgres
+      POSTGRES_USER: mealie
+      POSTGRES_PASSWORD: "{{ mealie_pg_password }}"
+      POSTGRES_SERVER: db.intern.jgoguen.ca
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: mealie
+      WEB_CONCURRENCY: 2
+    ports:
+      - "9080:80"
+    restart: unless-stopped
