@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+{% for section in networkmanager_config %}
+[{{ section }}]
+{% for key in networkmanager_config[section] %}
+{{ key }}={{ networkmanager_config[section][key] }}
+{% endfor %}
+
+{% endfor %}
