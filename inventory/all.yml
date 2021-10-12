@@ -31,6 +31,7 @@ all:
           aur: []
           snap: []
           flatpak: []
+          pip: []
         mounts: []
         storage_mnt_base: /mnt/storage
         repos: []

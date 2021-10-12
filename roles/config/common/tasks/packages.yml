@@ -167,3 +167,7 @@
   when:
     - roles["desktop"]
     - ansible_facts["system"] == "Linux"
+
+- name: Queue pip packages for install
+  set_fact:
+    packages: '{{ packages | combine({"pip": packages["pip"] + pip_packages}) }}'

@@ -83,6 +83,7 @@ arch_packages:
     - python-msgpack
     - python-pycryptodomex
     - python-pynvim
+    - python-setuptools
     - sqlite
     - xz
     - zsh-completions
@@ -94,6 +95,7 @@ arch_packages:
   devel:
     - go
     - go-tools
+    - gopls
     - npm
     - python-black
   aur:
@@ -107,10 +109,12 @@ debian_packages:
     - flatpak
     - lsb-release
     - pinentry-curses
+    - python3-setuptools
     - snapd
     - xz-utils
   desktop: []
-  devel: []
+  devel:
+    - gopls
 
 fedora_packages:
   common:
@@ -128,6 +132,7 @@ fedora_packages:
     - python3-msgpack
     - python3-pycryptodomex
     - python3-neovim
+    - python3-setuptools
     - snapd
     - sqlite
     - xz
@@ -159,6 +164,7 @@ fedora_packages:
   devel:
     - golang
     - golang-godoc
+    - golang-x-tools-gopls
     - mock
     - python3-black
     - rpm-build
@@ -172,6 +178,7 @@ macos_packages:
   - flake8
   - fortune
   - golang
+  - gopls
   - gpg2
   - lunchy
   - mtr
@@ -196,6 +203,10 @@ snap_packages:
   - name: snap-store
     channel: stable
     classic: no
+
+pip_packages:
+  - esphome
+  - vim-vint
 
 sysctl:
   linux:

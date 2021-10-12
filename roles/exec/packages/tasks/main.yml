@@ -219,3 +219,13 @@
   become: yes
   become_user: '{{ user }}'
   when: ansible_facts["system"] == "Darwin"
+
+- name: Installing PIP packages
+  debug: var=packages.pip
+
+- name: PIP packages
+  pip:
+    executable: pip3
+    name: '{{ packages["pip"] }}'
+  become: yes
+  become_user: '{{ user }}'
