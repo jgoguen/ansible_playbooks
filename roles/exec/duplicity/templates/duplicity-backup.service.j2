@@ -8,4 +8,6 @@ After=mnt-storage.mount
 [Service]
 Type=oneshot
 Environment=HOME=/home/{{ user }}
+ExecStartPre=-/usr/bin/docker exec -it -u postgres pgsql -- /usr/bin/pg_dumpall --clean --file /var/lib/postgresql/data/db-backup-all.sql
 ExecStart=/usr/bin/duplicity --full-if-older-than 1W --encrypt-key 75E259BA34917C792560A53AE9F9F8EA7E062F78 {% for dir in backup_dirs %}--include {{ dir }} {% endfor %} --exclude '**' / onedrive://Backups/{{ ansible_facts["hostname"] }}
+ExecStartPost=-/usr/bin/duplicity remove-all-but-n-full --encrypt-key 75E259BA34917C792560A53AE9F9F8EA7E062F78 --force onedrive://Backups/{{ ansible_facts["hostname"] }}
