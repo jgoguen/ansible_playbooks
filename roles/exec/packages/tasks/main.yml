@@ -225,7 +225,15 @@
 
 - name: PIP packages
   pip:
-    executable: pip3
+    executable: '{{ lookup("first_found", locations) }}'
     name: '{{ packages["pip"] }}'
   become: yes
   become_user: '{{ user }}'
+  vars:
+    locations:
+      - /usr/local/bin/pip3
+      - /usr/local/bin/pip3.9
+      - /usr/local/bin/pip3.8
+      - /usr/bin/pip3
+      - /usr/bin/pip3.9
+      - /usr/bin/pip3.8
