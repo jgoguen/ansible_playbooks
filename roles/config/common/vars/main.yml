@@ -55,6 +55,7 @@ openbsd_packages:
     - node
     - pinentry
     - 'python%3.8'
+    - py3-pip
     - 'rsync--'
     - sqlite3
     - 'unzip--'
