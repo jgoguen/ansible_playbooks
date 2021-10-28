@@ -35,4 +35,4 @@ for collection in ansible.posix kewlfft.aur community.general; do
 done
 
 cd "$(dirname "${0}")" || exit 1
-${SUDO_CMD} "$(command -v ansible-playbook)" -i inventory hosts.yml --diff "$@"
+${SUDO_CMD} "$(command -v ansible-playbook)" -i inventory hosts.yml --become-method "$(basename ${SUDO_CMD})" --diff "$@"
