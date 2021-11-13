@@ -9,6 +9,7 @@
 /roles/config/pihole/vars/main.yml filter=git-crypt diff=git-crypt
 /roles/config/postgresql/vars/main.yml filter=git-crypt diff=git-crypt
 /roles/config/unbound/vars/main.yml filter=git-crypt diff=git-crypt
+/roles/exec/common/files/fonts/* filter=git-crypt diff=git-crypt
 /roles/exec/docker/templates/*.caddyfile.j2 filter=git-crypt diff=git-crypt
 /roles/exec/pihole/files/* filter=git-crypt diff=git-crypt
 /roles/exec/sshfs/files/* filter=git-crypt diff=git-crypt
