@@ -3,8 +3,10 @@
 [Unit]
 Description=duplicity backup timer
 Wants=network-online.target
+{% if roles["sshfs_client"] or roles["storage"] %}
 Requires=mnt-storage.mount
 After=mnt-storage.mount
+{% endif %}
 
 [Timer]
 OnCalendar=*-*-* *:00:00

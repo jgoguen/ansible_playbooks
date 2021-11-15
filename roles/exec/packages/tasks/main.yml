@@ -91,14 +91,14 @@
       - '{{ item.user }}/{{ item.name }}'
     creates: '/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:{{ item.user }}:{{ item.name }}.repo'
     warn: false
-  when: ansible_facts["distribution"] == "Fedora"
+  when: ansible_facts["distribution"] != "Debian"
   loop: '{{ coprs }}'
 
-- name: Fedora needs dnf-plugins-core
+- name: Fedora/CentOS needs dnf-plugins-core
   package:
     name: dnf-plugins-core
     state: installed
-  when: ansible_facts["distribution"] == "Fedora"
+  when: ansible_facts["distribution"] != "Debian"
   check_mode: false
 
 - name: Enabling remote repos
@@ -237,3 +237,4 @@
       - /usr/bin/pip3
       - /usr/bin/pip3.9
       - /usr/bin/pip3.8
+  when: ansible_facts["distribution"] != "CentOS"

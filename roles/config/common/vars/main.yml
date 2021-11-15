@@ -6,7 +6,6 @@ common_packages:
     - jq
     - neovim
     - nmap
-    - ripgrep
     - wget
     - zsh
     - zsh-syntax-highlighting
@@ -31,7 +30,6 @@ linux_packages:
     - unzip
     - xdg-user-dirs
     - xdg-utils
-    - zsh-autosuggestions
   desktop:
     - bluez
     - bluez-tools
@@ -46,6 +44,13 @@ linux_packages:
   devel:
     - clang
 
+centos_packages:
+  common:
+    - flatpak
+    - systemd-timesyncd
+  desktop: []
+  devel: []
+
 openbsd_packages:
   common:
     - 'gnupg--%gnupg2'
@@ -56,6 +61,7 @@ openbsd_packages:
     - pinentry
     - 'python%3.8'
     - py3-pip
+    - ripgrep
     - 'rsync--'
     - sqlite3
     - 'unzip--'
@@ -85,8 +91,10 @@ arch_packages:
     - python-pycryptodomex
     - python-pynvim
     - python-setuptools
+    - ripgrep
     - sqlite
     - xz
+    - zsh-autosuggestions
     - zsh-completions
   desktop:
     - flatpak
@@ -111,8 +119,10 @@ debian_packages:
     - lsb-release
     - pinentry-curses
     - python3-setuptools
+    - ripgrep
     - snapd
     - xz-utils
+    - zsh-autosuggestions
   desktop: []
   devel:
     - gopls
@@ -134,9 +144,11 @@ fedora_packages:
     - python3-pycryptodomex
     - python3-neovim
     - python3-setuptools
+    - ripgrep
     - snapd
     - sqlite
     - xz
+    - zsh-autosuggestions
   desktop:
     - desktop-file-utils
     - fedora-workstation-repositories
@@ -186,6 +198,7 @@ macos_packages:
   - nodejs
   - pinentry
   - python3
+  - ripgrep
   - shellcheck
   - sqlite
   - vale

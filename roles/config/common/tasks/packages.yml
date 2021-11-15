@@ -39,6 +39,25 @@
     - ansible_facts["system"] == "Linux"
     - roles["devel"]
 
+- name: Queue CentOS packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + centos_packages["common"] }) }}'
+  when: ansible_facts["distribution"] == "CentOS"
+
+- name: Queue CentOS desktop packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + centos_packages["desktop"] }) }}'
+  when:
+    - ansible_facts["distribution"] == "CentOS"
+    - roles["desktop"]
+
+- name: Queue CentOS devel packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + centos_packages["devel"] }) }}'
+  when:
+    - ansible_facts["distribution"] == "CentOS"
+    - roles["devel"]
+
 - name: Queue OpenBSD packages for install
   set_fact:
     packages: '{{ packages | combine({"install": packages["install"] + openbsd_packages["common"] }) }}'

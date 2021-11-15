@@ -1,0 +1,25 @@
+---
+# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+
+- name: unifi is a Docker server
+  set_fact:
+    roles: '{{ roles | combine({"docker": true, "duplicity": true}) }}'
+
+- name: Load unifi vars
+  include_vars: unifi.yml
+
+- name: Queue COPRs for UniFi
+  set_fact:
+    coprs: '{{ coprs + unifi_coprs }}'
+
+- name: Set Docker services
+  set_fact:
+    docker_services: '{{ docker_services + unifi_docker_services }}'
+
+- name: Set backup directories
+  set_fact:
+    backup_dirs: '{{ backup_dirs + unifi_backup_dirs }}'
+
+- name: Do not override DNS servers
+  set_fact:
+    dns_servers: []

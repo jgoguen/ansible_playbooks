@@ -49,6 +49,15 @@
   notify:
     - reload caddy
 
+- name: Install Caddy config directory
+  file:
+    path: /etc/caddy/Caddyfile.d
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+    state: directory
+  when: docker_services|selectattr("install_proxy")|select|list|length > 0
+
 - name: Load docker-compose role vars
   include_vars: '{{ item }}'
   loop: '{{ docker_services | map(attribute="service") | map("format_map", "roles/config/{0}/vars/main.yml") | map("fileglob") | list | flatten }}'

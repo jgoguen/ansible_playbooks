@@ -13,4 +13,6 @@
 - name: Queue systemd-resolved start
   set_fact:
     services: '{{ services | combine({"start": services["start"] + ["systemd-resolved"]}) }}'
-  when: ansible_facts["system"] == "Linux"
+  when:
+    - ansible_facts["system"] == "Linux"
+    - dns_servers|length > 0

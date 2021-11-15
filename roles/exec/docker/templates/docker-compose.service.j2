@@ -2,8 +2,10 @@
 
 [Unit]
 Description=Docker Compose Application Service
+{% if roles["sshfs_client"] or roles["storage"] %}
 Requires=docker.service mnt-storage.mount
 After=docker.service mnt-storage.mount
+{% endif %}
 
 [Service]
 User={{ user }}

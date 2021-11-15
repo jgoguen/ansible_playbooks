@@ -11,6 +11,11 @@
     remote_repos: '{{ remote_repos + [{"url": "https://download.docker.com/linux/fedora/docker-ce.repo", "file": "docker-ce.repo"}] }}'
   when: ansible_facts["distribution"] == "Fedora"
 
+- name: Queue Docker CentOS repo install
+  set_fact:
+    remote_repos: '{{ remote_repos + [{"url": "https://download.docker.com/linux/centos/docker-ce.repo", "file": "docker-ce.repo"}] }}'
+  when: ansible_facts["distribution"] == "CentOS"
+
 - name: Queue Docker Debian repo key
   set_fact:
     repo_keys: '{{ repo_keys + [{"url": "https://download.docker.com/linux/debian/gpg", "file": "docker.asc"}] }}'
@@ -28,7 +33,7 @@
     - ansible_facts["distribution"] == "Debian"
     - docker_services|selectattr("install_proxy")|select|list|length > 0
 
-- name: Queue Docker Caddy repo install
+- name: Queue Debian Caddy repo install
   set_fact:
     remote_repos: '{{ remote_repos + [{"url": "https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt", "file": "caddy-stable.list"}] }}'
   when:
@@ -37,7 +42,12 @@
 
 - name: Queue packages needed for Docker
   set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + ["docker-ce", "docker-compose"]}) }}'
+    packages: '{{ packages | combine({"install": packages["install"] + ["docker-ce"]}) }}'
+
+- name: Queue docker-compose package
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + ["docker-compose"]}) }}'
+  when: ansible_facts["distribution"] != "CentOS"
 
 - name: Queue SQLite for Fedora
   set_fact:
