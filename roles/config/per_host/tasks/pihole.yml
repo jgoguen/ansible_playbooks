@@ -19,3 +19,7 @@
 - name: Set secondary pihole
   set_fact:
     pihole_primary: false
+
+- name: Set backup directories
+  set_fact:
+    backup_dirs: '{{ backup_dirs + ["/usr/local/etc/pihole"] }}'
