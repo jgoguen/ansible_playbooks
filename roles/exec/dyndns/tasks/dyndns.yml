@@ -1,10 +1,20 @@
 ---
 # vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
 
+- name: OpenBSD ddclient config path
+  set_fact:
+    ddcient_conf: /etc/ddclient/ddclient.conf
+  when: ansible_facts["system"] == "OpenBSD"
+
+- name: Linux ddclient config path
+  set_fact:
+    ddcient_conf: /etc/ddclient.conf
+  when: ansible_facts["system"] == "Linux"
+
 - name: Install ddclient config
   template:
     src: ddclient.conf
-    dest: /etc/ddclient/ddclient.conf
+    dest: '{{ ddclient_conf }}'
     owner: root
     group: '_ddclient'
     mode: 0640
