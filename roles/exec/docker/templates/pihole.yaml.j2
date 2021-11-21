@@ -8,10 +8,7 @@ services:
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "80:80/tcp"
+    network_mode: host
     environment:
       TZ: 'America/Los_Angeles'
       WEBPASSWORD: '7KoBt2*R2v-G9F7NVLLgTK-TUi9kVDgn.Er'
