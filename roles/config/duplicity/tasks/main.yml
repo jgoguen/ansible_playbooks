@@ -3,4 +3,4 @@
 
 - name: Queue duplicity config
   import_tasks: duplicity.yml
-  when: roles["duplicity"]
+  when: backup_dirs|length > 0

@@ -3,7 +3,7 @@
 
 - name: thor is a Docker server system
   set_fact:
-    roles: '{{ roles | combine({"backup": true, "docker": true, "duplicity": true, "storage": true}) }}'
+    roles: '{{ roles | combine({"backup": true, "docker": true, "storage": true}) }}'
 
 - name: Load thor vars
   include_vars: thor.yml

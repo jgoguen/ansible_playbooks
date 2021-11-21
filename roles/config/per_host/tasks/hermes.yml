@@ -8,10 +8,6 @@
   set_fact:
     roles: '{{ roles | combine({"sshfs_client": false}) }}'
 
-- name: Enable duplicity backups
-  set_fact:
-    roles: '{{ roles | combine({"duplicity": true}) }}'
-
 - name: Load hermes vars
   include_vars: hermes.yml
 

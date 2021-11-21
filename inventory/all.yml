@@ -16,7 +16,6 @@ all:
           dhcpd: false
           dns: false
           docker: false
-          duplicity: false
           gw: false
           mqttd: false
           sshfs_client: false

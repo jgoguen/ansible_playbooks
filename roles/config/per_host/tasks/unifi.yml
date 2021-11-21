@@ -3,7 +3,7 @@
 
 - name: unifi is a Docker server
   set_fact:
-    roles: '{{ roles | combine({"docker": true, "duplicity": true}) }}'
+    roles: '{{ roles | combine({"docker": true}) }}'
 
 - name: Load unifi vars
   include_vars: unifi.yml
