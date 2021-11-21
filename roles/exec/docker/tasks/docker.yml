@@ -87,4 +87,4 @@
 - name: Install extra Docker service requirements
   include_role:
     name: '{{ item }}'
-  loop: '{{ docker_services | map(attribute="service") | map("format_map", "roles/exec/{0}") | map("fileglob") | list | flatten }}'
+  loop: '{{ docker_services | map(attribute="service") | map("format_map", "roles/exec/{0}") | map("direxist") | list | flatten }}'
