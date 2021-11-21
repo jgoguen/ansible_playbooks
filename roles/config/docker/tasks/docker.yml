@@ -42,7 +42,7 @@
 
 - name: Queue packages needed for Docker
   set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + ["docker-ce"]}) }}'
+    packages: '{{ packages | combine({"install": packages["install"] + ["docker.io"]}) }}'
 
 - name: Queue docker-compose package
   set_fact:
