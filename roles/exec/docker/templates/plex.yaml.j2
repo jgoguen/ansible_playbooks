@@ -1,0 +1,23 @@
+---
+# {{ ansible_managed }}
+# vim: set filetype=yaml ts=2 sts=2 sw=2 expandtab autoindent:
+version: "2.1"
+
+services:
+  plex:
+    image: lscr.io/linuxserver/plex
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+    volumes:
+      - {{ storage_mnt_base }}/plex/config:/config
+      - {{ storage_mnt_base }}/plex/tvseries:/tv
+      - {{ storage_mnt_base }}/plex/movies:/movies
+      - {{ storage_mnt_base }}/plex/music_videos:/music_videos
+      - {{ storage_mnt_base }}/plex/music:/music
+      - {{ storage_mnt_base }}/plex/sleep:/sleep
+      - {{ storage_mnt_base }}/plex/books:/books
+    restart: unless-stopped
