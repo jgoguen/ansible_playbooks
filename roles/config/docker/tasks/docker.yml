@@ -40,9 +40,15 @@
     - ansible_facts["distribution"] == "Debian"
     - docker_services|selectattr("install_proxy")|select|list|length > 0
 
-- name: Queue packages needed for Docker
+- name: Queue Linux packages needed for Docker
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + ["docker-ce"]}) }}'
+  when: ansible_facts["distribution"] != "Debian"
+
+- name: Queue Debian packages needed for Docker
   set_fact:
     packages: '{{ packages | combine({"install": packages["install"] + ["docker.io"]}) }}'
+  when: ansible_facts["distribution"] == "Debian"
 
 - name: Queue docker-compose package
   set_fact:
