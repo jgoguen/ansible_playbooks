@@ -3,12 +3,12 @@
 
 - name: OpenBSD ddclient config path
   set_fact:
-    ddcient_conf: /etc/ddclient/ddclient.conf
+    ddclient_conf: /etc/ddclient/ddclient.conf
   when: ansible_facts["system"] == "OpenBSD"
 
 - name: Linux ddclient config path
   set_fact:
-    ddcient_conf: /etc/ddclient.conf
+    ddclient_conf: /etc/ddclient.conf
   when: ansible_facts["system"] == "Linux"
 
 - name: Install ddclient config
