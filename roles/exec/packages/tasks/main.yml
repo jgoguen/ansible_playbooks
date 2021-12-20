@@ -98,7 +98,9 @@
   package:
     name: dnf-plugins-core
     state: installed
-  when: ansible_facts["distribution"] != "Debian"
+  when:
+    - ansible_facts["system"] == "Linux"
+    - ansible_facts["distribution"] != "Debian"
   check_mode: false
 
 - name: Enabling remote repos
