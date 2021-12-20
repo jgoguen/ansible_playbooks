@@ -5,7 +5,7 @@ Description=Docker Compose Application Service
 Requires=docker.service
 After=docker.service
 {% if roles["sshfs_client"] or roles["storage"] %}
-RequiresMountsFor=/mnt/storage/%i
+RequiresMountsFor=/mnt/storage
 {% endif %}
 
 [Service]
