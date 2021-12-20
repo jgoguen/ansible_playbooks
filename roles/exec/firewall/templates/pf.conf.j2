@@ -41,7 +41,10 @@ pass in log quick inet proto icmp to { ($if_lan) 224.0.0.0/8 }
 pass in log quick inet6 proto icmp6 to { ($if_lan) ff02::1/16 fe80::/10 }
 
 block return all
-pass out on $if_lan from ($if_lan) to any
+pass in on $if_lan proto tcp from ($if_lan:network) to ($if_lan) port 22 modulate state
+pass in on egress inet proto udp from port bootps to port bootpc
+pass in on egress inet6 proto udp from fe80::/10 port dhcpv6-server to fe80::/10 port dhcpv6-client no state
+pass out modulate state
 
 {% for rule in pf_rules %}
 {{ rule }}
