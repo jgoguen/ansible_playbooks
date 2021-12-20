@@ -4,10 +4,15 @@
 
 version: "3"
 
+networks:
+  joplin:
+
 services:
   joplin:
     image: joplin/server:latest
     container_name: joplin
+    networks:
+      - joplin
     environment:
       APP_PORT: '22300'
       APP_BASE_URL: {{ joplin_base_url }}

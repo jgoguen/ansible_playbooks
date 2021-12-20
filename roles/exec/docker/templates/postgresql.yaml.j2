@@ -4,10 +4,15 @@
 
 version: '3'
 
+networks:
+  postgres:
+
 services:
   db:
-    image: postgres
+    image: postgres:13
     container_name: pgsql
+    networks:
+      - postgres
     environment:
       POSTGRES_PASSWORD: '{{ postgresql_passwd }}'
       POSTGRES_HOST_AUTH_METHOD: 'scram-sha-256'

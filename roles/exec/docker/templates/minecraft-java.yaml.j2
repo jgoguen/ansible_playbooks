@@ -4,10 +4,15 @@
 
 version: '3.8'
 
+networks:
+  minecraft-java:
+
 services:
   minecraft-java:
     image: itzg/minecraft-server
     container_name: minecraft-java
+    networks:
+      - minecraft-java
     environment:
       EULA: "TRUE"
       ENABLE_ROLLING_LOGS: "true"
