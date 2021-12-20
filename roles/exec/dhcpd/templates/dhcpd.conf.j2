@@ -9,7 +9,7 @@ max-lease-time {{ dhcpd_config["lease"]["max"] }};
 {% for subnet in dhcpd_config["subnets"] %}
 subnet {{ subnet["base"] }} netmask {{ subnet["subnet"] }} {
 	option routers {{ subnet["router"] }};
-	range {{ subnet["start"] }} {{ subnet["end"] }};
+	{% if "start" in subnet and "end" in subnet %}range {{ subnet["start"] }} {{ subnet["end"] }};{% endif %}
 
 {% if "groups" in subnet %}
 {% for group in subnet["groups"] %}
