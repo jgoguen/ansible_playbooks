@@ -15,11 +15,19 @@ services:
       - joplin
     environment:
       APP_PORT: '22300'
+      RUNNING_IN_DOCKER: 1
+      ACCOUNT_TYPES_ENABLED: 1
       APP_BASE_URL: {{ joplin_base_url }}
       DB_CLIENT: pg
       POSTGRES_USER: joplin
       POSTGRES_PASSWORD: {{ joplin_pg_passwd }}
       POSTGRES_DATABASE: joplin
       POSTGRES_HOST: db.intern.jgoguen.ca
+      MAILER_ENABLED: 1
+      MAILER_HOST: {{ joplin_smtp_server }}
+      MAILER_PORT: 465
+      MAILER_AUTH_USER: {{ joplin_smtp_user }}
+      MAILER_AUTH_PASSWORD: {{ joplin_smtp_pass }}
+      MAILER_NOREPLY_EMAIL: {{ joplin_smtp_noreply }}
     ports:
       - '22300:22300'
