@@ -1,5 +1,5 @@
 ---
-# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
 - name: Fetch antibody installer
   get_url:

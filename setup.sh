@@ -1,5 +1,5 @@
 #!/bin/sh
-# vim: syntax=sh:noexpandtab:sts=4:ts=4:sw=4
+# vim: set noexpandtab:
 
 set -eux
 

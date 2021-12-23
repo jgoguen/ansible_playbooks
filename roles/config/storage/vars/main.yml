@@ -1,5 +1,5 @@
 ---
-# vim: filetype=ansible:syntax=yaml:ts=2:sts=2:sw=2:expandtab:autoindent:nospell
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
 storage_mounts:
   - src: UUID=0c21f44b-3161-4753-ae91-ec0022b7f792
