@@ -1,11 +1,76 @@
 ---
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
-- name: 'Install fonts to {{ ansible_local.fonts.dir }}'
+- name: Get nerd-font latest release
+  community.general.github_release:
+    action: latest_release
+    user: ryanoasis
+    repo: nerd-fonts
+  register: nerd_font_release
+  check_mode: false
+
+- name: Set nerd-font version file
+  set_fact:
+    nerd_font_version_file: /etc/ansible/nerd-font-version
+  check_mode: false
+
+- name: Stat nerd-font version file
+  stat:
+    path: '{{ nerd_font_version_file }}'
+  register: nerd_font_stat
+  check_mode: false
+
+- name: Get installed nerd-font release
+  set_fact:
+    nerd_font_installed: "{{ lookup('file', nerd_font_version_file) }}"
+  when: nerd_font_stat.stat.exists
+  check_mode: false
+
+- name: Assume nerd-font no version
+  set_fact:
+    nerd_font_installed: '0'
+  when: not nerd_font_stat.stat.exists
+  check_mode: false
+
+- name: Write nerd-font version
   copy:
-    src: fonts/
-    dest: '{{ ansible_local.fonts.dir }}'
+    content: '{{ nerd_font_release.tag }}'
+    dest: '{{ nerd_font_version_file }}'
     owner: root
     group: '{{ ansible_local.root_owner.group }}'
     mode: 0644
-    directory_mode: 0755
+
+- name: 'Install fonts to {{ ansible_local.fonts.dir }}'
+  unarchive:
+    src: 'https://github.com/ryanoasis/nerd-fonts/releases/download/{{ nerd_font_release.tag }}/{{ item }}.zip'
+    dest: '{{ ansible_local.fonts.dir }}'
+    remote_src: true
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  with_items:
+    - CodeNewRoman
+    - DejaVuSansMono
+    - FiraCode
+    - FiraMono
+    - Hack
+    - SourceCodePro
+  when: nerd_font_installed != nerd_font_release.tag
+
+- name: Check if Fontin is installed
+  shell: 'ls {{ ansible_local.fonts.dir }}/Fontin*'
+  register: fontin_exists
+  ignore_errors: true
+  changed_when: false
+  check_mode: false
+
+- name: Download Fontin
+  unarchive:
+    src: http://www.exljbris.com/dl/fontin2_pc.zip
+    dest: '{{ ansible_local.fonts.dir }}'
+    exclude:
+      - ReadMe.txt
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  when: fontin_exists is failed

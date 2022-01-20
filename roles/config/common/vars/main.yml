@@ -218,10 +218,11 @@ flatpak_packages:
 snap_packages:
   - name: snap-store
     channel: stable
-    classic: no
+    classic: false
 
 pip_packages:
   - esphome
+  - github3.py
   - vim-vint
 
 sysctl:
