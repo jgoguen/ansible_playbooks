@@ -1,6 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: Configure system for unbound
-  import_tasks: unbound.yml
-  when: roles["dns"]

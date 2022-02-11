@@ -634,36 +634,6 @@ all:
             - key: 'Secure Input'
               type: bool
               value: true
-        unbound_config:
-          server:
-            include:
-              - /var/unbound/etc/unbound.conf.d/adblock.conf
-              - /var/unbound/etc/unbound.conf.d/access-control.conf
-              - /var/unbound/etc/unbound.conf.d/private-lan.conf
-            interface:
-              - '127.0.0.1'
-              - '::1'
-            hide-identity: 'yes'
-            hide-version: 'yes'
-            auto-trust-anchor-file: '"/var/unbound/db/root.key"'
-            val-log-level: '2'
-            aggressive-nsec: 'yes'
-            tls-cert-bundle: '"/etc/ssl/cert.pem"'
-            use-syslog: 'yes'
-            log-queries: 'no'
-            log-replies: 'yes'
-            log-local-actions: 'yes'
-            statistics-interval: '0'
-            statistics-cumulative: 'no'
-            extended-statistics: 'yes'
-          remote-control:
-            control-enable: 'yes'
-            control-interface: /var/run/unbound.sock
-          include:
-            - /var/unbound/etc/unbound.conf.d/forward-zone.conf
-          # auth-zone is special, it is an array of name/zonefile pairings. Each
-          # one needs to be its own auth-zone stanza in unbound.conf
-          auth-zone: []
         dns_servers:
           - 10.10.0.24
           - 10.10.0.23

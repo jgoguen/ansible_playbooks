@@ -13,11 +13,13 @@
 - name: Create pihole Docker directories
   file:
     path: '/usr/local/etc/pihole/{{ item }}'
+    mode: 0755
     state: directory
   check_mode: false
   loop:
     - etc
     - dnsmasq.d
+    - unbound
 
 - name: Create root .ssh directory
   file:

@@ -1,18 +1,28 @@
 ---
 # {{ ansible_managed }}
-# vim: set filetype=yaml expandtab sts=2 sw=2 nospell:
+# vim: set ts=2 sts=2 sw=2 expandtab autoindent:
 
 version: "3"
 
 services:
   pihole:
     container_name: pihole
-    image: pihole/pihole:latest
+    build:
+      context: ./unbound
+    cap_add:
+      - NET_ADMIN
     network_mode: host
+    dns:
+      - 127.0.0.1
+      - 8.8.8.8
+    hostname: pi.hole
     environment:
       TZ: 'America/Los_Angeles'
-      WEBPASSWORD: '7KoBt2*R2v-G9F7NVLLgTK-TUi9kVDgn.Er'
+      WEBPASSWORD: '{{ pihole_passwd }}'
+      DNS1: '127.0.0.1#5353'
+      DNS2: '9.9.9.9'
     volumes:
       - '/usr/local/etc/pihole/etc:/etc/pihole/'
       - '/usr/local/etc/pihole/dnsmasq.d:/etc/dnsmasq.d'
+      - '/usr/local/etc/pihole/unbound:/etc/unbound/unbound.conf.d'
     restart: unless-stopped
