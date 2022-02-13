@@ -1,0 +1,21 @@
+---
+# {{ ansible_managed }}
+# vim: set filetype=yaml ts=2 sts=2 sw=2 expandtab autoindent:
+
+version: '3.8'
+
+services:
+  jellyfin:
+    image: ghcr.io/linuxserver/jellyfin
+    container_name: jellyfin
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: {{ timezone }}
+      JELLYFIN_PublishedServerUrl: {{ jellyfin_ip }}
+    volumes:
+      - '{{ storage_mnt_base }}/jellyfin/config:/config'
+      - '{{ storage_mnt_base }}/jellyfin/media:/data'
+    network_mode: host
+    devices:
+      - /dev/dri/card0:/dev/dri
