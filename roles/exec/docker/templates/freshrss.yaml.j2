@@ -1,0 +1,24 @@
+---
+# {{ ansible_managed }}
+# vim: set filetype=yaml expandtab sts=2 sw=2 nospell:
+
+version: "3"
+
+networks:
+	freshrss:
+
+services:
+	freshrss:
+		image: 'freshrss/freshrss:latest'
+		container_name: freshrss
+		networks:
+			- freshrss
+		environment:
+			CRON_MIN: '*/15'
+			TZ: 'America/Los_Angeles'
+		volumes:
+			- '{{ storage_mnt_base }}/freshrss/data:/var/www/FreshRSS/data'
+			- '{{ storage_mnt_base }}/freshrss/extensions:/var/www/FreshRSS/extensions'
+		ports:
+			- '9980:80'
+		restart: unless-stopped
