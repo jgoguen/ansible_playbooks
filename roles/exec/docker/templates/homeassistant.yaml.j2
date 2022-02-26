@@ -12,3 +12,5 @@ services:
       - '{{ storage_mnt_base }}/homeassistant/config:/config'
       - /etc/localtime:/etc/localtime:ro
     network_mode: host
+    devices:
+      - '/dev/serial/by-id/usb-dresden_elektronik_ingenieurtechnik_GmbH_ConBee_II_DE2488058-if00:/dev/ttyACM0'
