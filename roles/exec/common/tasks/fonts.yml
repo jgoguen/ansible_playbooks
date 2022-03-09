@@ -67,6 +67,7 @@
 - name: Download Fontin
   unarchive:
     src: http://www.exljbris.com/dl/fontin2_pc.zip
+    remote_src: true
     dest: '{{ ansible_local.fonts.dir }}'
     exclude:
       - ReadMe.txt
