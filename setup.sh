@@ -157,7 +157,14 @@ fi
 # This is janky as fuck screen-scraping to get the package URL, here's hoping
 # AgileBits doesn't decide to make minor changes to the page!
 if [ ! -f /usr/local/bin/op ]; then
-	OP_URL="$(${CURL_BIN} -fsSL https://app-updates.agilebits.com/product_history/CLI 2>/dev/null | ${XMLLINT_BIN} --html --dtdattr --xpath "string(//article[not(@class='beta')][1]/div[@class='cli-archs']/p[@class='system ${OSTYPE}']/a[text()='${MACHINE}']/@href)" - 2>/dev/null)"
+	if [ "${OSTYPE}" = "darwin" ]; then
+		OS_ATTR="apple"
+		MACHINE_ATTR="universal"
+	else
+		OS_ATTR="${OSTYPE}"
+		MACHINE_ATTR="${MACHINE}"
+	fi
+	OP_URL="$(${CURL_BIN} -fsSL https://app-updates.agilebits.com/product_history/CLI 2>/dev/null | ${XMLLINT_BIN} --html --dtdattr --xpath "string(//article[not(@class='beta')][1]/div[@class='cli-archs']/p[@class='system ${OS_ATTR}']/a[text()='${MACHINE_ATTR}']/@href)" - 2>/dev/null)"
 	${CURL_BIN} -fsSL "${OP_URL}" >"${TEMPDIR}/op.zip"
 
 	if [ "${OSTYPE}" = "darwin" ]; then
