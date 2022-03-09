@@ -379,14 +379,14 @@ all:
               type: int
               value: 2
             - key: TrackpadPinch
-              type: bool
-              value: true
+              type: int
+              value: 1
             - key: TrackpadRightClick
               type: bool
               value: true
             - key: TrackpadRotate
-              type: bool
-              value: true
+              type: int
+              value: 1
             - key: TrackpadThreeFingerHorizSwipeGesture
               type: int
               value: 2
@@ -482,14 +482,14 @@ all:
               type: int
               value: 2
             - key: TrackpadPinch
-              type: bool
-              value: true
+              type: int
+              value: 1
             - key: TrackpadRightClick
               type: bool
               value: true
             - key: TrackpadRotate
-              type: bool
-              value: true
+              type: int
+              value: 1
             - key: TrackpadThreeFingerHorizSwipeGesture
               type: int
               value: 2
