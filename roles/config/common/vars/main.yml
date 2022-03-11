@@ -187,26 +187,45 @@ fedora_packages:
     - rpmlint
     - ShellCheck
 
+npm_packages:
+  common: []
+  desktop: []
+  devel:
+    - '@ansible/ansible-language-server'
+    - bash-language-server
+    - typescript
+    - typescript-language-server
+    - vim-language-server
+    - vscode-langservers-extracted
+    - yaml-language-server
+
 macos_packages:
-  - antibody
-  - black
-  - flake8
-  - fortune
-  - golang
-  - gopls
-  - gpg2
-  - lunchy
-  - mtr
-  - nodejs
-  - pinentry
-  - python3
-  - ripgrep
-  - shellcheck
-  - sqlite
-  - vale
-  - xz
-  - zsh-autosuggestions
-  - zsh-completions
+  common:
+    - antibody
+    - fortune
+    - fzf
+    - golang
+    - gpg2
+    - lunchy
+    - mtr
+    - nodejs
+    - pinentry
+    - python3
+    - ripgrep
+    - sqlite
+    - vale
+    - xz
+    - zsh-autosuggestions
+    - zsh-completions
+  desktop: []
+  devel:
+    - ansible-lint
+    - black
+    - flake8
+    - gopls
+    - lua-language-server
+    - shellcheck
+    - yamllint
 
 flatpak_packages:
   - com.discordapp.Discord
@@ -221,9 +240,12 @@ snap_packages:
     classic: false
 
 pip_packages:
-  - esphome
-  - github3.py
-  - vim-vint
+  common: []
+  desktop: []
+  devel:
+    - esphome
+    - github3.py
+    - vim-vint
 
 sysctl:
   linux:

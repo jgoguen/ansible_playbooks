@@ -7,6 +7,11 @@ all:
       hosts:
         localhost:
       vars:
+        macos_pkg_urls:
+          - url: 'https://download.visualstudio.microsoft.com/download/pr/a5e0f5da-6088-451c-a341-b751c0d418c7/9fe3a31273888fe23cbe71cac32fa35c/dotnet-sdk-6.0.201-osx-x64.pkg'
+            checksum: 41bef6c3bfd21d04b5dfca0fcb569b17cc5f45ea45112e92c3443536e881f135a036f347796eff372bc60390f9f836c4fbe8a8df7a85a4bec7c3db1e302521cc
+            checksum_algo: 'sha512'
+            not_if_exists: '/usr/local/share/dotnet/dotnet'
         user: 'jgoguen'
         unix_groups: []
         roles:
@@ -31,6 +36,7 @@ all:
           snap: []
           flatpak: []
           pip: []
+          npm: []
         mounts: []
         storage_mnt_base: /mnt/storage
         repos: []
@@ -46,7 +52,7 @@ all:
             'ipv6.ip6-privacy': 2
             'wifi.cloned-mac-address': stable
           device:
-            'wifi.scan-rand-mac-address': yes
+            'wifi.scan-rand-mac-address': true
         iptables_policies:
           INPUT: ACCEPT
           FORWARD: ACCEPT
@@ -249,12 +255,12 @@ all:
             - key: allowsignedenabled
               type: int
               value: 0
-              become: no
+              become: false
           '/Library/Preferences/com.apple.loginwindow':
             - key: AdminHostInfo
               type: string
               value: HostName
-              become: no
+              become: false
 
           NSGlobalDomain:
             - key: AppleActionOnDoubleClick
@@ -542,7 +548,7 @@ all:
           'com.apple.menuextra.battery':
             - key: ShowPercent
               type: string
-              value: YES
+              value: 'YES'
 
           'com.apple.menuextra.clock':
             - key: DateFormat
@@ -618,7 +624,7 @@ all:
             - key: DoNotOfferNewDisksForBackup
               type: bool
               value: true
-              become: yes
+              become: true
 
           'com.google.Chrome':
             - key: PMPrintingExpandedStateForPrint2

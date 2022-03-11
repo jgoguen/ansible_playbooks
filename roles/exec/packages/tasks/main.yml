@@ -147,7 +147,7 @@
   homebrew:
     name: '{{ packages.install }}'
     state: present
-  become: yes
+  become: true
   become_user: '{{ user }}'
   when: ansible_facts["system"] == "Darwin"
 
@@ -158,7 +158,7 @@
   kewlfft.aur.aur:
     name: '{{ packages.aur }}'
     state: present
-  become: yes
+  become: true
   become_user: aur_builder
   when: ansible_facts["distribution"] == "Archlinux"
 
@@ -218,7 +218,7 @@
   homebrew:
     name: '{{ packages.remove }}'
     state: absent
-  become: yes
+  become: true
   become_user: '{{ user }}'
   when: ansible_facts["system"] == "Darwin"
 
@@ -229,7 +229,7 @@
   pip:
     executable: '{{ lookup("first_found", locations) }}'
     name: '{{ packages["pip"] }}'
-  become: yes
+  become: true
   become_user: '{{ user }}'
   vars:
     locations:
@@ -240,3 +240,19 @@
       - /usr/bin/pip3.9
       - /usr/bin/pip3.8
   when: ansible_facts["distribution"] != "CentOS"
+
+- name: Installing NPM packages
+  debug: var=packages.npm
+
+- name: NPM packages
+  community.general.npm:
+    name: '{{ item }}'
+    global: true
+  loop: '{{ packages["npm"] }}'
+
+- name: Install macOS pkg installers
+  include_tasks: macos_pkg.yml
+  loop: '{{ macos_pkg_urls }}'
+  when:
+    - ansible_facts["system"] == "Darwin"
+    - roles["desktop"]

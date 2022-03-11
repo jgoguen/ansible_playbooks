@@ -1,0 +1,37 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: 'Check if guard file "{{ item.not_if_exists }}" exists'
+  stat:
+    path: '{{ item.not_if_exists }}'
+  register: guard_file_exists
+
+- name: Create temporary diretory
+  tempfile:
+    state: directory
+  register: pkg_tempdir
+  when: not guard_file_exists.stat.exists
+
+- name: Record URL basename
+  set_fact:
+    pkg_basename: '{{ item.url | basename }}'
+  when: not guard_file_exists.stat.exists
+
+- name: Download pkg file
+  get_url:
+    url: '{{ item.url }}'
+    dest: '{{ pkg_tempdir.path }}/{{ pkg_basename }}'
+    checksum: '{{ item.checksum_algo }}:{{ item.checksum }}'
+  when: not guard_file_exists.stat.exists
+
+- name: Install pkg
+  command:
+    cmd: '/usr/sbin/installer -package "{{ pkg_tempdir.path }}/{{ pkg_basename }}" -target /'
+    creates: '{{ item.not_if_exists }}'
+  when: not guard_file_exists.stat.exists
+
+- name: Remove temporary directory
+  file:
+    path: '{{ pkg_tempdir.path }}'
+    state: absent
+  when: not guard_file_exists.stat.exists

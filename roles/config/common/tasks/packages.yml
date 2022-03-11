@@ -146,6 +146,34 @@
     - ansible_facts["distribution"] == "Fedora"
     - roles["devel"]
 
+- name: Queue NPM packages for install
+  set_fact:
+    packages: '{{ packages | combine({"npm": packages["npm"] + npm_packages["common"]}) }}'
+
+- name: Queue desktop NPM packages for install
+  set_fact:
+    packages: '{{ packages | combine({"npm": packages["npm"] + npm_packages["desktop"]}) }}'
+  when: roles["desktop"]
+
+- name: Queue development NPM packages for install
+  set_fact:
+    packages: '{{ packages | combine({"npm": packages["npm"] + npm_packages["devel"]}) }}'
+  when: roles["devel"]
+
+- name: Queue pip packages for install
+  set_fact:
+    packages: '{{ packages | combine({"pip": packages["pip"] + pip_packages["common"]}) }}'
+
+- name: Queue desktop pip packages for install
+  set_fact:
+    packages: '{{ packages | combine({"pip": packages["pip"] + pip_packages["desktop"]}) }}'
+  when: roles["desktop"]
+
+- name: Queue development pip packages for install
+  set_fact:
+    packages: '{{ packages | combine({"pip": packages["pip"] + pip_packages["devel"]}) }}'
+  when: roles["devel"]
+
 - name: Queue ShellCheck for install on Arch (x86 only)
   set_fact:
     packages: '{{ packages | combine({"install": packages["install"] + ["shellcheck"]}) }}'
@@ -163,8 +191,22 @@
 
 - name: Queue macOS packages for install
   set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + macos_packages }) }}'
+    packages: '{{ packages | combine({"install": packages["install"] + macos_packages["common"]}) }}'
   when: ansible_facts["system"] == "Darwin"
+
+- name: Queue macOS desktop packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + macos_packages["desktop"]}) }}'
+  when:
+    - roles["desktop"]
+    - ansible_facts["system"] == "Darwin"
+
+- name: Queue macOS development packages for install
+  set_fact:
+    packages: '{{ packages | combine({"install": packages["install"] + macos_packages["devel"]}) }}'
+  when:
+    - roles["devel"]
+    - ansible_facts["system"] == "Darwin"
 
 - name: Queue desktop Snap packages for install
   set_fact:
@@ -186,7 +228,3 @@
   when:
     - roles["desktop"]
     - ansible_facts["system"] == "Linux"
-
-- name: Queue pip packages for install
-  set_fact:
-    packages: '{{ packages | combine({"pip": packages["pip"] + pip_packages}) }}'

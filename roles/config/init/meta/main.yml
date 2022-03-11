@@ -2,8 +2,8 @@
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
 dependencies:
-  - role: config/common
   - role: config/per_host
+  - role: config/common
   - role: config/sudo
   - role: config/sshfs
   - role: config/gw
