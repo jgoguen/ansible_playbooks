@@ -210,6 +210,7 @@ macos_packages:
     - mtr
     - nodejs
     - pinentry
+    - pinentry-mac
     - python3
     - ripgrep
     - sqlite
