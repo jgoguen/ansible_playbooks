@@ -74,43 +74,6 @@ openbsd_packages:
   devel:
     - shellcheck
 
-arch_packages:
-  common:
-    - adobe-source-code-pro-fonts
-    - adobe-source-sans-pro-fonts
-    - adobe-source-serif-pro-fonts
-    # Normally this is a development package, but it's needed for AUR packages
-    - base-devel
-    - iptables
-    - lsb-release
-    - man-db
-    - openssh
-    - pinentry
-    - python
-    - python-colorama
-    - python-msgpack
-    - python-pycryptodomex
-    - python-pynvim
-    - python-setuptools
-    - ripgrep
-    - sqlite
-    - xz
-    - zsh-autosuggestions
-    - zsh-completions
-  desktop:
-    - flatpak
-    - foomatic-db-nonfree
-    - foomatic-db-nonfree-ppds
-    - imagemagick
-  devel:
-    - go
-    - go-tools
-    - gopls
-    - npm
-    - python-black
-  aur:
-    - snapd
-
 debian_packages:
   common:
     - apt-transport-https

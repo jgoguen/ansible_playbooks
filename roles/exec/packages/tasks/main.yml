@@ -1,19 +1,6 @@
 ---
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
-- name: Create AUR builder user
-  user:
-    name: aur_builder
-    group: wheel
-  when: ansible_facts["distribution"] == "Archlinux"
-
-- name: Ensure AUR builder user is in sudoers
-  lineinfile:
-    path: /etc/sudoers
-    line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
-    validate: /usr/sbin/visudo --check --file=%s
-  when: ansible_facts["distribution"] == "Archlinux"
-
 - name: Enabling repo keys
   debug: var=repo_keys
 
@@ -150,17 +137,6 @@
   become: true
   become_user: '{{ user }}'
   when: ansible_facts["system"] == "Darwin"
-
-- name: Installing AUR packages
-  debug: var=packages.aur
-
-- name: Install AUR packages
-  kewlfft.aur.aur:
-    name: '{{ packages.aur }}'
-    state: present
-  become: true
-  become_user: aur_builder
-  when: ansible_facts["distribution"] == "Archlinux"
 
 - name: Installing Snap packages
   debug: var=packages.snap

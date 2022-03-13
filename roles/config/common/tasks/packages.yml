@@ -77,30 +77,6 @@
     - ansible_facts["system"] == "OpenBSD"
     - roles["devel"]
 
-- name: Queue Arch packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + arch_packages["common"] }) }}'
-  when: ansible_facts["distribution"] == "Archlinux"
-
-- name: Queue Arch desktop packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + arch_packages["desktop"] }) }}'
-  when:
-    - ansible_facts["distribution"] == "Archlinux"
-    - roles["desktop"]
-
-- name: Queue Arch development packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + arch_packages["devel"] }) }}'
-  when:
-    - ansible_facts["distribution"] == "Archlinux"
-    - roles["devel"]
-
-- name: Queue Arch AUR packages for install
-  set_fact:
-    packages: '{{ packages | combine({"aur": packages["aur"] + arch_packages["aur"]}) }}'
-  when: ansible_facts["distribution"] == "Archlinux"
-
 - name: Queue Fedora packages for install
   set_fact:
     packages: '{{ packages | combine({"install": packages["install"] + fedora_packages["common"] }) }}'
@@ -173,21 +149,6 @@
   set_fact:
     packages: '{{ packages | combine({"pip": packages["pip"] + pip_packages["devel"]}) }}'
   when: roles["devel"]
-
-- name: Queue ShellCheck for install on Arch (x86 only)
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + ["shellcheck"]}) }}'
-  when:
-    - ansible_facts["distribution"] == "Archlinux"
-    - not ansible_facts["machine"].startswith("arm")
-    - roles["devel"]
-
-- name: Queue vale for install on Arch (x86 only)
-  set_fact:
-    packages: '{{ packages | combine({"aur": packages["aur"] + ["vale"]}) }}'
-  when:
-    - ansible_facts["distribution"] == "Archlinux"
-    - not ansible_facts["machine"].startswith("arm")
 
 - name: Queue macOS packages for install
   set_fact:

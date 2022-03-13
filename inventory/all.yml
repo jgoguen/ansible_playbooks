@@ -32,7 +32,6 @@ all:
         packages:
           install: []
           remove: []
-          aur: []
           snap: []
           flatpak: []
           pip: []

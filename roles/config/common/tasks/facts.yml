@@ -21,16 +21,6 @@
   notify:
     - rerun setup
 
-- name: Install package names fact script
-  copy:
-    src: facts/packages.fact
-    dest: /etc/ansible/facts.d/packages.fact
-    owner: root
-    mode: 0755
-  check_mode: false
-  notify:
-    - rerun setup
-
 - name: Install firefox facts script
   copy:
     src: facts/firefox.fact

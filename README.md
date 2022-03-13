@@ -4,10 +4,7 @@ This repository contains my Ansible playbooks for setting up a new laptop,
 desktop, or server. In contrast to most system configuration setups, some
 different assumptions are made here:
 
-- Servers are mostly OpenBSD on the current stable release or occasionally Arch
-  Linux.
-  - OpenBSD is preferred, so the setup of an Arch Linux server may not yet be
-    fully automated.
+- Servers are OpenBSD on the current stable release or CentOS.
 - Laptop and desktop clients may be Fedora or macOS.
 - Servers are normally accessed using a non-root user.
 - Each system is a fresh OS install with a non-root user with `sudo`/`doas`
@@ -131,12 +128,13 @@ and the IPv6 address is assumed to have a `/64` netmask.
 - `install`: A list of packages which will be installed. If packages are already
   present, they will not be upgraded to the latest version.
 - `remove`: A list of packages which will be removed.
-- `aur`: A list of packages to install from the Arch User Repository.
 - `snap` A list of hashes defining a Snap name, the channel to install from, and
   whether to allow classic confinement.
   - Example: `[{"name": "1password", "channel": "beta", "classic": false}, {"name": "wesnoth", "channel": "stable", "classic": true}]`
 - `flatpak`: A list of Flatpak package identifiers to install. Packages are
   assumed to be available on Flathub.
+- `pip`: A list of packages to install from PyPI.
+- `npm`: A list of NPM packages to install.
 
 ### `coprs`
 

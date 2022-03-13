@@ -27,7 +27,7 @@ if [ "${OSTYPE}" = "darwin" ]; then
 else
 	ROOT_HOME="$(/usr/bin/getent passwd root | /usr/bin/cut -d ':' -f 6)"
 fi
-for collection in ansible.posix kewlfft.aur community.general community.postgresql; do
+for collection in ansible.posix community.general community.postgresql; do
 	${SUDO_CMD} test -d "${ROOT_HOME}/.ansible/collections/ansible_collections/$(printf '%s' "${collection}" | tr '.' '/')"; rv=$?
 	if [ "${rv}" -ne 0 ]; then
 		${SUDO_CMD} "${ANSIBLE_GALAXY_BIN}" collection install "${collection}"
