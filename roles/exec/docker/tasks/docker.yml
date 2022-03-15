@@ -58,6 +58,20 @@
     state: directory
   when: docker_services|selectattr("install_proxy")|select|list|length > 0
 
+- name: Install Watchtower docker-compose file
+  template:
+    src: watchtower.yaml.j2
+    dest: '{{ storage_mnt_base }}/docker-compose/watchtower.yaml'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: 0644
+
+- name: Enable Watchtower service
+  service:
+    name: 'docker-compose@watchtower'
+    enabled: true
+    state: started
+
 - name: Load docker-compose role vars
   include_vars: '{{ item }}'
   loop: '{{ docker_services | map(attribute="service") | map("format_map", "roles/config/{0}/vars/main.yml") | map("fileglob") | list | flatten }}'

@@ -22,3 +22,5 @@ services:
     ports:
       - '9980:80'
     restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true

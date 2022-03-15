@@ -31,3 +31,5 @@ services:
       MAILER_NOREPLY_EMAIL: {{ joplin_smtp_noreply }}
     ports:
       - '22300:22300'
+    labels:
+      - com.centurylinklabs.watchtower.enable=true

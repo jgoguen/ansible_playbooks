@@ -21,6 +21,8 @@ services:
     volumes:
       - '{{ storage_mnt_base }}/massive-decks/config.json5:/md/config.json5:ro'
     restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
 
   mdclient:
     container_name: mdclient
@@ -32,3 +34,5 @@ services:
     networks:
       - massivedecks
     restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true

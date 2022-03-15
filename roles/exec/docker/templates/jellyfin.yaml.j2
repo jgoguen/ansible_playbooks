@@ -19,3 +19,5 @@ services:
     network_mode: host
     devices:
       - /dev/dri/card0:/dev/dri
+    labels:
+      - com.centurylinklabs.watchtower.enable=true

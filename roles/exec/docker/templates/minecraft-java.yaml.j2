@@ -32,3 +32,5 @@ services:
       - '25565:25565'
     tty: true
     stdin_open: true
+    labels:
+      - com.centurylinklabs.watchtower.enable=true

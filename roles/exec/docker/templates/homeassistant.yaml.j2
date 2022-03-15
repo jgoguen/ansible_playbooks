@@ -14,3 +14,5 @@ services:
     network_mode: host
     devices:
       - '/dev/serial/by-id/usb-dresden_elektronik_ingenieurtechnik_GmbH_ConBee_II_DE2488058-if00:/dev/ttyACM0'
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
