@@ -204,7 +204,7 @@
 - name: PIP packages
   pip:
     executable: '{{ lookup("first_found", locations) }}'
-    name: '{{ packages["pip"] }}'
+    name: '{{ item }}'
   become: true
   become_user: '{{ user }}'
   vars:
@@ -215,6 +215,7 @@
       - /usr/bin/pip3
       - /usr/bin/pip3.9
       - /usr/bin/pip3.8
+  loop: '{{ packages["pip"] }}'
   when: ansible_facts["distribution"] != "CentOS"
 
 - name: Installing NPM packages
