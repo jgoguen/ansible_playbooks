@@ -177,6 +177,7 @@ macos_packages:
     - python3
     - ripgrep
     - sqlite
+    - thefuck
     - vale
     - xz
     - zsh-autosuggestions
