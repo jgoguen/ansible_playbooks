@@ -81,6 +81,7 @@ debian_packages:
     - 'bat'
     - ca-certificates
     - debian-archive-keyring
+    - exa
     - flatpak
     - lsb-release
     - pinentry-curses
@@ -101,6 +102,7 @@ fedora_packages:
     - adobe-source-serif-pro-fonts
     - bat
     - bind-utils
+    - exa
     - lsb
     - onedrive
     - pinentry
@@ -169,6 +171,7 @@ macos_packages:
   common:
     - antibody
     - bat
+    - exa
     - fortune
     - fzf
     - golang
