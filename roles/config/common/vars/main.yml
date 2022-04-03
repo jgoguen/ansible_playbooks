@@ -54,6 +54,7 @@ centos_packages:
 
 openbsd_packages:
   common:
+    - 'bat'
     - 'gnupg--%gnupg2'
     - 'mtr--'
     - neovim
@@ -77,6 +78,7 @@ openbsd_packages:
 debian_packages:
   common:
     - apt-transport-https
+    - 'bat'
     - ca-certificates
     - debian-archive-keyring
     - flatpak
@@ -97,6 +99,7 @@ fedora_packages:
     - adobe-source-code-pro-fonts
     - adobe-source-sans-pro-fonts
     - adobe-source-serif-pro-fonts
+    - bat
     - bind-utils
     - lsb
     - onedrive
@@ -165,6 +168,7 @@ npm_packages:
 macos_packages:
   common:
     - antibody
+    - bat
     - fortune
     - fzf
     - golang
