@@ -102,6 +102,7 @@ fedora_packages:
     - adobe-source-serif-pro-fonts
     - bat
     - bind-utils
+    - bottom
     - exa
     - lsb
     - onedrive
@@ -172,6 +173,7 @@ macos_packages:
   common:
     - antibody
     - bat
+    - bottom
     - exa
     - fortune
     - fzf
@@ -269,3 +271,5 @@ sysctl_not_debian:
 coprs_wanted:
   - user: jgoguen
     name: universal-ctags
+  - user: atim
+    name: bottom
