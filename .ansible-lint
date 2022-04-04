@@ -1,0 +1,5 @@
+---
+# vim: set filetype=yaml expandtab sts=2 sw=2 nospell:
+
+skip_list:
+  - fqcn-builtins
