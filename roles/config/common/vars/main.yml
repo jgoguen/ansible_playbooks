@@ -115,6 +115,7 @@ fedora_packages:
     - python3-neovim
     - python3-setuptools
     - ripgrep
+    - sd
     - snapd
     - sqlite
     - xz
@@ -183,6 +184,7 @@ macos_packages:
     - pinentry-mac
     - python3
     - ripgrep
+    - sd
     - sqlite
     - thefuck
     - vale
