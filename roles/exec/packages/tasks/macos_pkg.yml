@@ -22,6 +22,9 @@
     url: '{{ item.url }}'
     dest: '{{ pkg_tempdir.path }}/{{ pkg_basename }}'
     checksum: '{{ item.checksum_algo }}:{{ item.checksum }}'
+    owner: '{{ ansible_local.root_owner.user }}'
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0600
   when: not guard_file_exists.stat.exists
 
 - name: Install pkg
