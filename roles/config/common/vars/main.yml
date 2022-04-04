@@ -107,6 +107,7 @@ fedora_packages:
     - lsb
     - onedrive
     - pinentry
+    - procs
     - python3
     - python3-ansible-lint
     - python3-colorama
@@ -184,6 +185,7 @@ macos_packages:
     - nodejs
     - pinentry
     - pinentry-mac
+    - procs
     - python3
     - ripgrep
     - sd
