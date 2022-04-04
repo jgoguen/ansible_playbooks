@@ -50,7 +50,9 @@
       - /usr/bin/dnf
       - install
       - '-y'
-      - "http://download1.rpmfusion.org/{{ item }}/fedora/rpmfusion-{{ item }}-release-{{ ansible_facts['lsb']['major_release'] }}.noarch.rpm"
+      - >-
+        http://download1.rpmfusion.org/{{ item }}/fedora/rpmfusion-{{ item }}-release-
+        {{ ansible_facts['lsb']['major_release'] }}.noarch.rpm
     creates: '/etc/yum.repos.d/rpmfusion-{{ item }}.repo'
   loop:
     - free
