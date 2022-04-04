@@ -218,7 +218,8 @@ snap_packages:
     classic: false
 
 pip_packages:
-  common: []
+  common:
+    - httpie
   desktop: []
   devel:
     - esphome
