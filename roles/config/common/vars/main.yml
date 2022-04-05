@@ -7,6 +7,7 @@ common_packages:
     - jq
     - neovim
     - nmap
+    - rust
     - wget
     - zsh
     - zsh-syntax-highlighting
@@ -225,6 +226,12 @@ pip_packages:
     - esphome
     - github3.py
     - vim-vint
+
+cargo_packages:
+  common:
+    - xh
+  desktop: []
+  devel: []
 
 sysctl:
   linux:

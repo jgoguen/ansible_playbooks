@@ -150,6 +150,20 @@
     packages: '{{ packages | combine({"pip": packages["pip"] + pip_packages["devel"]}) }}'
   when: roles["devel"]
 
+- name: Queue cargo packages for install
+  set_fact:
+    packages: '{{ packages | combine({"cargo": packages["cargo"] + cargo_packages["common"]}) }}'
+
+- name: Queue desktop cargo packages for install
+  set_fact:
+    packages: '{{ packages | combine({"cargo": packages["cargo"] + cargo_packages["desktop"]}) }}'
+  when: roles["desktop"]
+
+- name: Queue development cargo packages for install
+  set_fact:
+    packages: '{{ packages | combine({"cargo": packages["cargo"] + cargo_packages["devel"]}) }}'
+  when: roles["devel"]
+
 - name: Queue macOS packages for install
   set_fact:
     packages: '{{ packages | combine({"install": packages["install"] + macos_packages["common"]}) }}'

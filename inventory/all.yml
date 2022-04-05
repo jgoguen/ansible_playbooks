@@ -36,6 +36,7 @@ all:
           flatpak: []
           pip: []
           npm: []
+          cargo: []
         mounts: []
         storage_mnt_base: /mnt/storage
         repos: []
