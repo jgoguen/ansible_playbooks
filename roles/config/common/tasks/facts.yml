@@ -71,6 +71,16 @@
   notify:
     - rerun setup
 
+- name: Install user facts script
+  template:
+    src: facts/user.fact
+    dest: /etc/ansible/facts.d/user.fact
+    owner: root
+    mode: 0755
+  check_mode: false
+  notify:
+    - rerun setup
+
 - name: Flush handlers
   meta: flush_handlers
   check_mode: false

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+OS="$(command -p uname)"
+HOMEDIR=''
+
+if [ "${OS}" = "Darwin" ]; then
+	HOMEDIR="$(/usr/bin/dscl . -read /Users/{{ user }} NFSHomeDirectory | /usr/bin/awk '{print $NF}')"
+else
+	HOMEDIR="$(/usr/bin/getent passwd {{ user }} | /usr/bin/cut -d ':' -f 6)"
+fi
+
+printf '{"homedir": "%s"}' "${HOMEDIR}"
