@@ -7,7 +7,6 @@ common_packages:
     - jq
     - neovim
     - nmap
-    - rust
     - wget
     - zsh
     - zsh-syntax-highlighting
@@ -49,6 +48,7 @@ linux_packages:
 centos_packages:
   common:
     - flatpak
+    - rust
     - systemd-timesyncd
   desktop: []
   devel: []
@@ -65,6 +65,7 @@ openbsd_packages:
     - 'python%3.8'
     - py3-pip
     - ripgrep
+    - rust
     - 'rsync--'
     - sqlite3
     - 'unzip--'
@@ -81,6 +82,7 @@ debian_packages:
     - apt-transport-https
     - 'bat'
     - ca-certificates
+    - cargo
     - debian-archive-keyring
     - exa
     - flatpak
@@ -118,6 +120,7 @@ fedora_packages:
     - python3-neovim
     - python3-setuptools
     - ripgrep
+    - rust
     - sd
     - snapd
     - sqlite
@@ -189,6 +192,7 @@ macos_packages:
     - procs
     - python3
     - ripgrep
+    - rust
     - sd
     - sqlite
     - thefuck
@@ -228,10 +232,10 @@ pip_packages:
     - vim-vint
 
 cargo_packages:
-  common:
-    - xh
+  common: []
   desktop: []
-  devel: []
+  devel:
+    - xh
 
 sysctl:
   linux:
