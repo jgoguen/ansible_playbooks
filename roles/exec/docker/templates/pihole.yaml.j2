@@ -14,13 +14,11 @@ services:
     network_mode: host
     dns:
       - 127.0.0.1
-      - 8.8.8.8
     hostname: pi.hole
     environment:
       TZ: 'America/Los_Angeles'
       WEBPASSWORD: '{{ pihole_passwd }}'
       DNS1: '127.0.0.1#5353'
-      DNS2: '9.9.9.9'
     volumes:
       - '/usr/local/etc/pihole/etc:/etc/pihole/'
       - '/usr/local/etc/pihole/dnsmasq.d:/etc/dnsmasq.d'
