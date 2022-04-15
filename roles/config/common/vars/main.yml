@@ -55,6 +55,7 @@ centos_packages:
 
 openbsd_packages:
   common:
+    - avahi
     - 'bat'
     - 'gnupg--%gnupg2'
     - 'mtr--'

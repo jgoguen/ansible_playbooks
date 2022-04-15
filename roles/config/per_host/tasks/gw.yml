@@ -54,4 +54,4 @@
 
 - name: Queue services to start
   set_fact:
-    services: '{{ services | combine({"start": ["slaacd"]}) }}'
+    services: '{{ services | combine({"start": ["slaacd", "messagebus", "avahi_daemon"]}) }}'
