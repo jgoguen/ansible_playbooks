@@ -26,3 +26,19 @@
 - name: Store if network time is being used for later
   set_fact:
     darwin_using_ntp: '{{ using_ntp.stdout | regex_findall("^Network Time: (.+)$") | first }}'
+
+- name: Set network time server
+  command:
+    argv:
+      - /usr/sbin/systemsetup
+      - '-setnetworktimeserver'
+      - '{{ ntp_servers[0] }}'
+  when: darwin_ntp_server != ntp_servers[0]
+
+- name: Set using network time
+  command:
+    argv:
+      - /usr/sbin/systemsetup
+      - '-setusingnetworktime'
+      - 'on'
+  when: darwin_using_ntp != "On"

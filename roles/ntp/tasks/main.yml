@@ -1,0 +1,5 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: 'Configure NTP for {{ ansible_facts["system"] }}'
+  include_tasks: '{{ ansible_facts["system"]|lower }}.yml'

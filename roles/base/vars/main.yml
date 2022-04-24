@@ -18,8 +18,7 @@ packages:
     - unzip
     - xdg-user-dirs
     - xdg-utils
-  centos:
-    - systemd-timesyncd
+  centos: []
   debian:
     - apt-transport-https
     - bat

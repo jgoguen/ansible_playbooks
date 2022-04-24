@@ -18,7 +18,7 @@
     mode: 0644
 
 - name: 'Configure OpenSSHd for {{ ansible_facts["system"] }}'
-  import_tasks: '{{ ansible_facts["system"]|lower }}.yml'
+  include_tasks: '{{ ansible_facts["system"]|lower }}.yml'
 
 - name: Check if SSH certificates may be used
   stat:

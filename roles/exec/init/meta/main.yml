@@ -7,7 +7,6 @@ dependencies:
   - role: exec/firewall
   - role: exec/networking
   - role: exec/common
-  - role: exec/ntp
   - role: exec/desktop
   - role: exec/certbot
   - role: exec/gw

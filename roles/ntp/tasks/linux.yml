@@ -1,0 +1,29 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Remove conflicting NTP packages
+  package:
+    name: chrony
+    state: absent
+
+- name: Install systemd-timesyncd on CentOS
+  package:
+    name: systemd-timesyncd
+    state: present
+  when: ansible_facts["distribution"] == "CentOS"
+
+- name: Install timesyncd.conf
+  template:
+    src: timesyncd.conf.j2
+    dest: /etc/systemd/timesyncd.conf
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload timesyncd
+
+- name: Start systemd-timesyncd
+  service:
+    name: systemd-timesyncd
+    enabled: true
+    state: started
