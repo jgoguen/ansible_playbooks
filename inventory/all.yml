@@ -25,7 +25,6 @@ all:
           storage: false
         antibody_installer: "{{ lookup('env', 'TMPDIR') | default('/tmp', True) }}/antibody_install"
         backup_dirs: []
-        certbot_hosts: []
         dyndns_hosts: []
         packages:
           install: []

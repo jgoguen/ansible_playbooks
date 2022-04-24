@@ -6,7 +6,6 @@ dependencies:
   - role: exec/networking
   - role: exec/common
   - role: exec/desktop
-  - role: exec/certbot
   - role: exec/gw
   - role: exec/dns
   - role: exec/dhcpd

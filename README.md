@@ -108,11 +108,6 @@ currently defined:
   also configure `rad` for SLAAC advertisement.
 - `storage`: This host will provide storage to other hosts.
 
-### `certbot_hosts`
-
-`certbot_hosts` is a list of host names which the OpenBSD `acme-client` will
-attempt to retrieve/renew certificates for.
-
 ### `dyndns_hosts`
 
 `dyndns_hosts` is a list of host namess which the host will send updates for.
