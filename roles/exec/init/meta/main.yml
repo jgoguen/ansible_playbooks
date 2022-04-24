@@ -16,7 +16,6 @@ dependencies:
   - role: exec/backup
   - role: exec/duplicity
   - role: exec/firefox
-  - role: exec/mqtt
   - role: exec/dyndns
   - role: exec/docker
   - role: exec/services

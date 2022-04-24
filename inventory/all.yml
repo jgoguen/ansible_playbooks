@@ -22,7 +22,6 @@ all:
           dns: false
           docker: false
           gw: false
-          mqttd: false
           storage: false
         antibody_installer: "{{ lookup('env', 'TMPDIR') | default('/tmp', True) }}/antibody_install"
         backup_dirs: []

@@ -9,6 +9,5 @@ dependencies:
   - role: config/firewall
   - role: config/backup
   - role: config/docker
-  - role: config/mqtt
   - role: config/duplicity
   - role: config/vscode

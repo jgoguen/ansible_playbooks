@@ -1,8 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: reload mosquitto
-  service:
-    name: mosquitto
-    state: restarted
-  changed_when: false
