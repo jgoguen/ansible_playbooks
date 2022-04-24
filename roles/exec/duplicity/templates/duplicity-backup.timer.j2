@@ -3,7 +3,7 @@
 [Unit]
 Description=duplicity backup timer
 Wants=network-online.target
-{% if roles["sshfs_client"] or roles["storage"] %}
+{% if roles["storage"] %}
 RequiresMountsFor=/mnt/storage
 {% endif %}
 

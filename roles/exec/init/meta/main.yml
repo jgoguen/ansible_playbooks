@@ -6,7 +6,6 @@ dependencies:
   - role: exec/sysctl
   - role: exec/firewall
   - role: exec/networking
-  - role: exec/sshfs
   - role: exec/common
   - role: exec/ntp
   - role: exec/desktop
@@ -15,7 +14,6 @@ dependencies:
   - role: exec/dns
   - role: exec/dhcpd
   - role: exec/sudo
-  - role: exec/sshd
   - role: exec/backup
   - role: exec/duplicity
   - role: exec/firefox

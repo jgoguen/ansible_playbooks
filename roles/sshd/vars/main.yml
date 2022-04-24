@@ -14,6 +14,3 @@ sshd_iptables_rules:
     protocol: tcp
     destination_port: '22'
     jump: ACCEPT
-
-sshd_pf_rules:
-  - 'pass in on $if_lan proto tcp from ($if_lan:network) to ($if_lan) port 22 modulate state'

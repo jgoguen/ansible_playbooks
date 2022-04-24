@@ -1,6 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: Configure SSHFS
-  import_tasks: sshfs.yml
-  when: roles["sshfs_client"]

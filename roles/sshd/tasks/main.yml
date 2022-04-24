@@ -2,5 +2,5 @@
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
 - name: Configure SSHd
-  import_tasks: sshd.yml
+  include_tasks: sshd.yml
   when: not roles["desktop"]

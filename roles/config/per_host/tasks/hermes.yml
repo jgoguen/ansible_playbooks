@@ -4,10 +4,6 @@
 - name: Include pihole config
   include_tasks: pihole.yml
 
-- name: Do not require SSHFS mounts
-  set_fact:
-    roles: '{{ roles | combine({"sshfs_client": false}) }}'
-
 - name: Load hermes vars
   include_vars: hermes.yml
 

@@ -5,7 +5,6 @@ dependencies:
   - role: config/per_host
   - role: config/common
   - role: config/sudo
-  - role: config/sshfs
   - role: config/gw
   - role: config/ntp
   - role: config/firewall
@@ -13,5 +12,4 @@ dependencies:
   - role: config/docker
   - role: config/mqtt
   - role: config/duplicity
-  - role: config/sshd
   - role: config/vscode

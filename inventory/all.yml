@@ -23,7 +23,6 @@ all:
           docker: false
           gw: false
           mqttd: false
-          sshfs_client: false
           storage: false
         antibody_installer: "{{ lookup('env', 'TMPDIR') | default('/tmp', True) }}/antibody_install"
         backup_dirs: []
@@ -154,6 +153,9 @@ all:
         #    ip6: 'fe80::beef:100/64'
         #    gateway: 192.168.0.1
         linux_interfaces: {}
+        # Enable specific rules in pf.conf
+        pf_sections:
+          sshd: false
         pf_variables: {}
         # Maps table name to contents
         pf_tables: {}

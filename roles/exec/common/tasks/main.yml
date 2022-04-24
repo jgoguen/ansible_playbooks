@@ -42,14 +42,6 @@
     mode: 0644
   when: not roles["dns"]
 
-- name: Install SSH global known hosts
-  copy:
-    src: ssh_known_hosts
-    dest: /etc/ssh/ssh_known_hosts
-    owner: root
-    group: '{{ ansible_local.root_owner.group }}'
-    mode: 0644
-
 - name: Create systemd local unit directory
   file:
     path: /usr/local/lib/systemd/system

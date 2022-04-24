@@ -2,7 +2,7 @@
 
 [Unit]
 Description=duplicity backup
-{% if roles["sshfs_client"] or roles["storage"] %}
+{% if roles["storage"] %}
 RequiresMountsFor=/mnt/storage
 {% endif %}
 

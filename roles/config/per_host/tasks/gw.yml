@@ -3,7 +3,7 @@
 
 - name: gw is a gateway system
   set_fact:
-    roles: '{{ roles | combine({"gw": true, "ssh": true, "dhcpd": true}) }}'
+    roles: '{{ roles | combine({"gw": true, "dhcpd": true}) }}'
 
 - name: Load gw vars
   include_vars: gw.yml

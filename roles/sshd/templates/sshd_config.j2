@@ -1,13 +1,18 @@
 # {{ ansible_managed }}
 
+# SSH version 2 protocol only
+Protocol 2
+
+# Configure listening sockets
 ListenAddress 0.0.0.0
 ListenAddress ::
 Port 22
-Protocol 2
+
+# Set host key identifying this server to clients
 HostKey /etc/ssh/ssh_host_ed25519_key
-HostKey /etc/ssh/ssh_host_ecdsa_key
 {% if ssh_host_cert_present %}HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub{% endif %}
 
+# Configure user logins
 LoginGraceTime 30s
 PermitRootLogin no
 PubkeyAuthentication yes
@@ -16,11 +21,15 @@ ChallengeResponseAuthentication no
 PrintMotd no
 TrustedUserCAKeys /etc/ssh/user_ca.pub
 
-{% if ansible_facts["system"] != "OpenBSD" %}UsePAM yes{% endif %}
+{% if ansible_facts["system"] == "Linux" -%}
+# Enable using PAM authentication
+UsePAM yes
+{%- endif %}
 
+# Enable certain forwarding features
 AllowAgentForwarding yes
 AllowTcpForwarding yes
 AllowStreamLocalForwarding yes
 GatewayPorts yes
 
-Subsystem sftp internal-sftp
+Subsystem sftp /usr/libexec/sftp-server

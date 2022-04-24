@@ -17,6 +17,9 @@
     group: '{{ ansible_local.root_owner.group }}'
     mode: 0644
 
+- name: 'Configure OpenSSHd for {{ ansible_facts["system"] }}'
+  import_tasks: '{{ ansible_facts["system"]|lower }}.yml'
+
 - name: Check if SSH certificates may be used
   stat:
     path: /etc/ssh/ssh_host_ed25519_key-cert.pub
@@ -39,3 +42,10 @@
     validate: /usr/sbin/sshd -t -f %s
   notify:
     - reload sshd
+
+- name: Start OpenSSHd
+  service:
+    name: sshd
+    enabled: yes
+    state: started
+  when: ansible_facts["system"] != "Darwin"
