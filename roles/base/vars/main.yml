@@ -1,0 +1,86 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+packages:
+  all:
+    - jq
+    - neovim
+    - wget
+    - zsh
+    - zsh-syntax-highlighting
+  linux:
+    - fontconfig
+    - fortune-mod
+    - gnupg
+    - rsync
+    - sudo
+    - tmux
+    - unzip
+    - xdg-user-dirs
+    - xdg-utils
+  centos:
+    - systemd-timesyncd
+  debian:
+    - apt-transport-https
+    - bat
+    - ca-certificates
+    - debian-archive-keyring
+    - exa
+    - lsb-release
+    - pinentry-curses
+    - python3-pip
+    - python3-setuptools
+    - ripgrep
+    - xz-utils
+    - zsh-autosuggestions
+  fedora:
+    - bat
+    - bind-utils
+    - exa
+    - lsb
+    - pinentry
+    - python3
+    - python3-neovim
+    - ripgrep
+    - sd
+    - xz
+    - zsh-autosuggestions
+  macos:
+    - bat
+    - bottom
+    - exa
+    - fortune
+    - gpg2
+    - lunchy
+    - pinentry
+    - pinentry-mac
+    - python3
+    - ripgrep
+    - sd
+    - vale
+    - xz
+    - zsh-autosuggestions
+    - zsh-completions
+  openbsd:
+    - avahi
+    - bat
+    - 'gnupg--%gnupg2'
+    - neovim
+    - py3-neovim
+    - pinentry
+    - 'python%3.10'
+    - py3-pip
+    - ripgrep
+    - rust
+    - 'rsync--'
+    - sqlite3
+    - 'unzip--'
+    - xdg-user-dirs
+    - xdg-utils
+    - xz
+    - zip
+  npm: []
+  pip:
+    - httpie
+    - thefuck
+  cargo: []

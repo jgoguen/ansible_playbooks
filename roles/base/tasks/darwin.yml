@@ -1,0 +1,9 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Install packages for macOS via Homebrew
+  homebrew:
+    name: '{{ packages.macos }}'
+    state: present
+  become: true
+  become_user: '{{ user }}'

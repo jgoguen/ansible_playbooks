@@ -2,35 +2,11 @@
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
 common_packages:
-  common:
-    - htop
-    - jq
-    - neovim
-    - nmap
-    - wget
-    - zsh
-    - zsh-syntax-highlighting
   desktop:
     - youtube-dl
   devel: []
 
 linux_packages:
-  common:
-    - cpio
-    - ethtool
-    - fontconfig
-    - fortune-mod
-    - gnupg
-    - mtr
-    - nodejs
-    - rsync
-    - sudo
-    - sysstat
-    - tcpdump
-    - tmux
-    - unzip
-    - xdg-user-dirs
-    - xdg-utils
   desktop:
     - bluez
     - bluez-tools
@@ -54,79 +30,16 @@ centos_packages:
   devel: []
 
 openbsd_packages:
-  common:
-    - avahi
-    - 'bat'
-    - 'gnupg--%gnupg2'
-    - 'mtr--'
-    - neovim
-    - py3-neovim
-    - node
-    - pinentry
-    - 'python%3.8'
-    - py3-pip
-    - ripgrep
-    - rust
-    - 'rsync--'
-    - sqlite3
-    - 'unzip--'
-    - xdg-user-dirs
-    - xdg-utils
-    - xz
-    - zip
   desktop: []
   devel:
     - shellcheck
 
 debian_packages:
-  common:
-    - apt-transport-https
-    - 'bat'
-    - ca-certificates
-    - cargo
-    - debian-archive-keyring
-    - exa
-    - flatpak
-    - lsb-release
-    - pinentry-curses
-    - python3-pip
-    - python3-setuptools
-    - ripgrep
-    - snapd
-    - xz-utils
-    - zsh-autosuggestions
   desktop: []
   devel:
     - gopls
 
 fedora_packages:
-  common:
-    - adobe-source-code-pro-fonts
-    - adobe-source-sans-pro-fonts
-    - adobe-source-serif-pro-fonts
-    - bat
-    - bind-utils
-    - bottom
-    - exa
-    - lsb
-    - onedrive
-    - pinentry
-    - procs
-    - python3
-    - python3-ansible-lint
-    - python3-colorama
-    - python3-flake8
-    - python3-msgpack
-    - python3-pycryptodomex
-    - python3-neovim
-    - python3-setuptools
-    - ripgrep
-    - rust
-    - sd
-    - snapd
-    - sqlite
-    - xz
-    - zsh-autosuggestions
   desktop:
     - desktop-file-utils
     - fedora-workstation-repositories
@@ -164,7 +77,6 @@ fedora_packages:
     - ShellCheck
 
 npm_packages:
-  common: []
   desktop: []
   devel:
     - '@ansible/ansible-language-server'
@@ -176,31 +88,6 @@ npm_packages:
     - yaml-language-server
 
 macos_packages:
-  common:
-    - antibody
-    - bat
-    - bottom
-    - exa
-    - fortune
-    - fzf
-    - golang
-    - gpg2
-    - lunchy
-    - mtr
-    - nodejs
-    - pinentry
-    - pinentry-mac
-    - procs
-    - python3
-    - ripgrep
-    - rust
-    - sd
-    - sqlite
-    - thefuck
-    - vale
-    - xz
-    - zsh-autosuggestions
-    - zsh-completions
   desktop: []
   devel:
     - ansible-lint
@@ -224,8 +111,6 @@ snap_packages:
     classic: false
 
 pip_packages:
-  common:
-    - httpie
   desktop: []
   devel:
     - esphome
@@ -233,7 +118,6 @@ pip_packages:
     - vim-vint
 
 cargo_packages:
-  common: []
   desktop: []
   devel:
     - xh
@@ -284,7 +168,5 @@ sysctl_not_debian:
   'kernel.nmi_watchdog': 0
 
 coprs_wanted:
-  - user: jgoguen
-    name: universal-ctags
   - user: atim
     name: bottom

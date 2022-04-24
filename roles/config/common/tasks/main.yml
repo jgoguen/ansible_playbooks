@@ -1,9 +1,6 @@
 ---
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
-- name: Install facts scripts
-  import_tasks: facts.yml
-
 - name: Queue package installations
   import_tasks: packages.yml
 

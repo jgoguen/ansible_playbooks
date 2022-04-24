@@ -1,24 +1,6 @@
 ---
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
-- name: Create user cargo directory
-  file:
-    path: '{{ ansible_local.user.homedir }}/.cargo'
-    owner: '{{ user }}'
-    group: '{{ ansible_local.root_owner.group }}'
-    mode: 0755
-    state: directory
-
-- name: Ensuring minimal Cargo.toml
-  community.general.ini_file:
-    owner: '{{ user }}'
-    group: '{{ ansible_local.root_owner.group }}'
-    mode: 0644
-    path: '{{ ansible_local.user.homedir }}/.cargo/config.toml'
-    section: net
-    option: 'git-fetch-with-cli'
-    value: 'true'
-
 - name: Enabling repo keys
   debug: var=repo_keys
 

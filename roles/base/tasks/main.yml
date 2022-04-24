@@ -1,0 +1,70 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Install facts scripts
+  import_tasks: facts.yml
+
+- name: Create user cargo directory
+  file:
+    path: '{{ ansible_local.user.homedir }}/.cargo'
+    owner: '{{ user }}'
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+    state: directory
+
+- name: Ensuring minimal Cargo.toml
+  community.general.ini_file:
+    owner: '{{ user }}'
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+    path: '{{ ansible_local.user.homedir }}/.cargo/config.toml'
+    section: net
+    option: 'git-fetch-with-cli'
+    value: 'true'
+
+- name: Install packages for all platforms
+  package:
+    name: '{{ packages.all }}'
+    state: present
+  when: ansible_facts["system"] != "Darwin"
+  check_mode: false
+
+- name: Install packages for all platforms via Homebrew
+  homebrew:
+    name: '{{ packages.all }}'
+    state: present
+  become: true
+  become_user: '{{ user }}'
+  when: ansible_facts["system"] == "Darwin"
+
+- name: 'Platform configuration for {{ ansible_facts["system"] }}'
+  include_tasks: '{{ ansible_facts["system"]|lower }}.yml'
+
+- name: Install PIP packages for all platforms
+  pip:
+    executable: '{{ lookup("first_found", locations) }}'
+    name: '{{ item }}'
+  become: true
+  become_user: '{{ user }}'
+  vars:
+    locations:
+      - /usr/local/bin/pip3
+      - /usr/local/bin/pip3.9
+      - /usr/local/bin/pip3.8
+      - /usr/bin/pip3
+      - /usr/bin/pip3.9
+      - /usr/bin/pip3.8
+  loop: '{{ packages.pip }}'
+
+- name: Install Cargo packages for all platforms
+  community.general.cargo:
+    name: '{{ item }}'
+  become: true
+  become_user: '{{ user }}'
+  loop: '{{ packages.cargo }}'
+
+- name: Install NPM packages for all platforms
+  community.general.npm:
+    name: '{{ item }}'
+    global: true
+  loop: '{{ packages.npm }}'

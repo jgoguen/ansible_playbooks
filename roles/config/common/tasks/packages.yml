@@ -6,10 +6,6 @@
     coprs: '{{ coprs + coprs_wanted }}'
   when: ansible_facts["distribution"] == "Fedora"
 
-- name: Queue common packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + common_packages["common"] }) }}'
-
 - name: Queue common desktop packages for install
   set_fact:
     packages: '{{ packages | combine({"install": packages["install"] + common_packages["desktop"] }) }}'
@@ -19,11 +15,6 @@
   set_fact:
     packages: '{{ packages | combine({"install": packages["install"] + common_packages["devel"] }) }}'
   when: roles["devel"]
-
-- name: Queue linux packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + linux_packages["common"] }) }}'
-  when: ansible_facts["system"] == "Linux"
 
 - name: Queue linux desktop packages for install
   set_fact:
@@ -39,11 +30,6 @@
     - ansible_facts["system"] == "Linux"
     - roles["devel"]
 
-- name: Queue CentOS packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + centos_packages["common"] }) }}'
-  when: ansible_facts["distribution"] == "CentOS"
-
 - name: Queue CentOS desktop packages for install
   set_fact:
     packages: '{{ packages | combine({"install": packages["install"] + centos_packages["desktop"] }) }}'
@@ -57,11 +43,6 @@
   when:
     - ansible_facts["distribution"] == "CentOS"
     - roles["devel"]
-
-- name: Queue OpenBSD packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + openbsd_packages["common"] }) }}'
-  when: ansible_facts["system"] == "OpenBSD"
 
 - name: Queue OpenBSD desktop packages for install
   set_fact:
@@ -77,11 +58,6 @@
     - ansible_facts["system"] == "OpenBSD"
     - roles["devel"]
 
-- name: Queue Fedora packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + fedora_packages["common"] }) }}'
-  when: ansible_facts["distribution"] == "Fedora"
-
 - name: Queue Fedora desktop packages for install
   set_fact:
     packages: '{{ packages | combine({"install": packages["install"] + fedora_packages["desktop"] }) }}'
@@ -95,11 +71,6 @@
   when:
     - ansible_facts["distribution"] == "Fedora"
     - roles["devel"]
-
-- name: Queue Debian packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + debian_packages["common"] }) }}'
-  when: ansible_facts["distribution"] == "Debian"
 
 - name: Queue Debian desktop packages for install
   set_fact:
@@ -122,10 +93,6 @@
     - ansible_facts["distribution"] == "Fedora"
     - roles["devel"]
 
-- name: Queue NPM packages for install
-  set_fact:
-    packages: '{{ packages | combine({"npm": packages["npm"] + npm_packages["common"]}) }}'
-
 - name: Queue desktop NPM packages for install
   set_fact:
     packages: '{{ packages | combine({"npm": packages["npm"] + npm_packages["desktop"]}) }}'
@@ -135,10 +102,6 @@
   set_fact:
     packages: '{{ packages | combine({"npm": packages["npm"] + npm_packages["devel"]}) }}'
   when: roles["devel"]
-
-- name: Queue pip packages for install
-  set_fact:
-    packages: '{{ packages | combine({"pip": packages["pip"] + pip_packages["common"]}) }}'
 
 - name: Queue desktop pip packages for install
   set_fact:
@@ -150,10 +113,6 @@
     packages: '{{ packages | combine({"pip": packages["pip"] + pip_packages["devel"]}) }}'
   when: roles["devel"]
 
-- name: Queue cargo packages for install
-  set_fact:
-    packages: '{{ packages | combine({"cargo": packages["cargo"] + cargo_packages["common"]}) }}'
-
 - name: Queue desktop cargo packages for install
   set_fact:
     packages: '{{ packages | combine({"cargo": packages["cargo"] + cargo_packages["desktop"]}) }}'
@@ -163,11 +122,6 @@
   set_fact:
     packages: '{{ packages | combine({"cargo": packages["cargo"] + cargo_packages["devel"]}) }}'
   when: roles["devel"]
-
-- name: Queue macOS packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + macos_packages["common"]}) }}'
-  when: ansible_facts["system"] == "Darwin"
 
 - name: Queue macOS desktop packages for install
   set_fact:
@@ -203,8 +157,3 @@
   when:
     - roles["desktop"]
     - ansible_facts["system"] == "Linux"
-
-- name: Queue thefuck for install on non-macOS systems
-  set_fact:
-    packages: '{{ packages | combine({"pip": packages["pip"] + ["thefuck"]}) }}'
-  when: ansible_facts["system"] != "Darwin"
