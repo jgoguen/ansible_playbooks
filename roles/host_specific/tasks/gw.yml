@@ -11,3 +11,19 @@
     validate: /sbin/pfctl -nf /etc/pf.conf
   notify:
     - reload pf
+
+- name: Set sysctl dictionary
+  set_fact:
+    sysctls:
+      'net.inet.ip.forwarding': '1'
+      'net.inet6.ip6.forwarding': '1'
+
+- name: Set sysctl values for gw
+  sysctl:
+    name: '{{ item.key }}'
+    value: '{{ item.value }}'
+    state: present
+    sysctl_file: /etc/sysctl.conf
+    reload: yes
+    sysctl_set: yes
+  loop: '{{ sysctls | dict2items }}'

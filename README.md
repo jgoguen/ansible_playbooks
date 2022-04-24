@@ -187,10 +187,6 @@ may be referenced in `pf_rules` as `&lt;name&gt;`.
 - `start`: Services in this list will be enabled and started.
 - `stop`: Services in this list will be stopped and disabled.
 
-### `sysctls`
-
-`sysctls` defines a dictionary mapping sysctl name to value.
-
 ### `dhcpd_config`
 
 `dhcpd_config` defines the `dhcpd` configuration:

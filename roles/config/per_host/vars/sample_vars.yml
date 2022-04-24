@@ -10,12 +10,6 @@ bsd_interfaces:
     - 'inet6 fd01:2345:6789:abcd::1 64'
     - 'up'
 
-sample_sysctls:
-  - name: 'net.inet.ip.forwarding'
-    value: '1'
-  - name: 'net.inet6.ip6.forwarding'
-    value: '1'
-
 ipv4_address: '10.0.0.4'
 ipv6_address: 'fd01:2345:6789:abcd::4'
 

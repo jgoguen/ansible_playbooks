@@ -36,14 +36,6 @@
   set_fact:
     pf_tables: '{{ pf_tables | combine(gw_pf_tables) }}'
 
-- name: Set PF rules
-  set_fact:
-    pf_rules: '{{ pf_rules + gw_pf_rules }}'
-
-- name: Set OpenBSD gateway sysctls
-  set_fact:
-    sysctls: '{{ sysctls | combine(gw_sysctls) }}'
-
 - name: Set dynamic DNS hosts
   set_fact:
     dyndns_hosts: '{{ dyndns_hosts + gw_hosts }}'
