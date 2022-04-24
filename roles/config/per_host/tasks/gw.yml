@@ -26,7 +26,7 @@
 
 - name: Set PF LAN interface
   set_fact:
-    pf_variables: '{{ pf_variables | combine({"if_lan": "em1"}) }}'
+    pf_lan_interface: 'em1'
 
 - name: Set additional PF variables
   set_fact:

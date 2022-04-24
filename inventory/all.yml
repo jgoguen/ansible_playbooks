@@ -51,10 +51,6 @@ all:
             'wifi.cloned-mac-address': stable
           device:
             'wifi.scan-rand-mac-address': true
-        iptables_policies:
-          INPUT: ACCEPT
-          FORWARD: ACCEPT
-          OUTPUT: ACCEPT
         iptables_rules:
           - action: insert
             rule_num: '1'
@@ -154,7 +150,11 @@ all:
         linux_interfaces: {}
         # Enable specific rules in pf.conf
         pf_sections:
+          block_martians: false
+          httpd: false
+          nat: false
           sshd: false
+        pf_lan_interface: ''
         pf_variables: {}
         # Maps table name to contents
         pf_tables: {}
@@ -650,6 +650,17 @@ all:
           - time3.facebook.com
           - time4.facebook.com
           - time5.facebook.com
+        ntp_server_addresses:
+          - 129.134.28.123
+          - 129.134.29.123
+          - 129.134.25.123
+          - 129.134.26.123
+          - 129.134.27.123
+          - '2a03:2880:ff0b::123'
+          - '2a03:2880:ff0c::123'
+          - '2a03:2880:ff08::123'
+          - '2a03:2880:ff09::123'
+          - '2a03:2880:ff0a::123'
         psql_conf:
           listen_addresses: "'*'"
           password_encryption: "'scram-sha-256'"

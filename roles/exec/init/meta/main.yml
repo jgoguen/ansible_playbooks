@@ -4,7 +4,6 @@
 dependencies:
   - role: exec/packages
   - role: exec/sysctl
-  - role: exec/firewall
   - role: exec/networking
   - role: exec/common
   - role: exec/desktop

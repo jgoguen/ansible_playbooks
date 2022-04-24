@@ -1,0 +1,64 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Remove conflicting packages
+  package:
+    name:
+      - ufw
+      - firewalld
+    state: absent
+
+- name: Install iptables
+  package:
+    name: iptables
+    state: present
+
+- name: Install iptables-services
+  package:
+    name: iptables-services
+    state: present
+  when: ansible_facts["distribution"] != "Debian"
+
+- name: Install iptables-persistent
+  package:
+    name: iptables-persistent
+    state: present
+  when: ansible_facts["distribution"] == "Debian"
+
+- name: Start iptables
+  service:
+    name: '{{ item }}'
+    enabled: true
+    state: started
+  loop:
+    - iptables
+    - ip6tables
+
+- name: Update iptables
+  iptables: '{{ item }}'
+  notify:
+    - save iptables
+    - save ip6tables
+  loop: '{{ iptables_rules }}'
+
+- name: Set iptables chain policies
+  iptables:
+    chain: '{{ item }}'
+    policy: DROP
+    ip_version: ipv4
+  notify:
+    - save iptables
+  loop:
+    - INPUT
+    - FORWARD
+
+- name: Set ip6tables chain policies
+  iptables:
+    chain: '{{ item }}'
+    policy: DROP
+    ip_version: ipv6
+  notify:
+    - save iptables
+  loop:
+    - INPUT
+    - FORWARD

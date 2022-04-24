@@ -1,0 +1,50 @@
+# Ansible managed
+
+# Isolate the VLANs
+block drop out on $if_iot from !($if_iot:network) to ($if_iot:network)
+block drop out on $if_uiot from !($if_uiot:network) to ($if_uiot:network)
+block drop out on $if_work from !($if_work:network) to ($if_work:network)
+block drop in on $if_uiot from any to !($if_uiot:network)
+
+# Allow ICMP to all interfaces (WAN/egress and LAN are in the main ruleset)
+pass in quick inet proto icmp to { ($if_iot) ($if_uiot) ($if_work) }
+pass in quick inet6 proto icmp6 to { ($if_iot) ($if_uiot) ($if_work) }
+
+# Expose internal services to the public Internet
+pass in log on egress inet proto tcp from any to (egress) port 80 rdr-to $web_v4 port 80 modulate state
+pass in log on egress inet6 proto tcp from any to (egress) port 80 rdr-to $web_v6 port 80 modulate state
+pass in log on egress inet proto tcp from any to (egress) port 443 rdr-to $web_v4 port 443 modulate state
+pass in log on egress inet6 proto tcp from any to (egress) port 443 rdr-to $web_v6 port 443 modulate state
+pass in log on egress inet proto tcp from any to (egress) port 22 rdr-to $ssh_v4 port 22 modulate state
+pass in log on egress inet6 proto tcp from any to (egress) port 22 rdr-to $ssh_v6 port 22 modulate state
+
+# Permit outbound traffic to the public Internet
+pass in on { $if_lan $if_iot $if_work } from any to !<martians> modulate state
+
+# Permit traffic from the main VLAN to other VLANs
+pass in on $if_lan from ($if_lan:network) to { ($if_iot:network) ($if_uiot:network) } modulate state
+pass out on { $if_iot $if_uiot } from ($if_lan:network)
+
+# IoT and work VLANs get DNS access
+pass in on { $if_iot $if_work } proto { tcp udp } from any to <dns> port 53
+
+# IoT networks are allowed to communicate with Home Assistant
+pass in on { $if_iot $if_uiot } proto tcp from any to <homeassistant> port 8123 modulate state
+
+# All VLANs get NTP access
+pass in proto { tcp udp } to <ntp> port 123 modulate state
+
+# Allow traceroute from LAN
+pass in on $if_lan proto udp from any to any port 33433 >< 33626 keep state
+
+# Allow mDNS and mDNS-SD/SSDP to cross certain VLANs
+pass in log on { $if_lan $if_iot $if_work } inet proto udp from any to 224.0.0.251 port 5353 allow-opts
+pass in log on { $if_lan $if_iot $if_work } inet6 proto udp from any to ff02::fb port 5353 allow-opts
+pass in log on { $if_lan $if_iot $if_work } inet proto udp from any to 239.255.255.250 port 1900 allow-opts
+pass in log on { $if_lan $if_iot $if_work } inet6 proto udp from any to { ff02::c, ff05::c, ff08::c } port 1900 allow-opts
+
+# Allow printing from certain VLANs
+pass in log on $if_uiot inet proto udp from $printer to 224.0.0.251 port 5353 allow-opts
+pass in on { $if_lan $if_work } inet proto tcp from any to $printer port 10443
+pass out on $if_uiot from any to $printer modulate state
+pass out on $if_work from $printer to any modulate state

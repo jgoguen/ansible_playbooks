@@ -1,6 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: Queue iptables rules
-  import_tasks: iptables.yml
-  when: ansible_facts["system"] == "Linux"

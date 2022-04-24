@@ -1,0 +1,13 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Update pf.conf.local
+  copy:
+    src: gw/pf.conf.local
+    dest: /etc/pf.conf.local
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0600
+    validate: /sbin/pfctl -nf /etc/pf.conf
+  notify:
+    - reload pf
