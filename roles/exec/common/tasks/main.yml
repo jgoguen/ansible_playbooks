@@ -13,10 +13,6 @@
   loop: '{{ mounts }}'
   when: ansible_facts["system"] != "Darwin"
 
-- name: Install fonts
-  import_tasks: fonts.yml
-  when: roles["desktop"]
-
 - name: Update /etc/hosts
   template:
     src: hosts.j2

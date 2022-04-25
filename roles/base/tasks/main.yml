@@ -76,3 +76,6 @@
     name: '{{ item }}'
     global: true
   loop: '{{ packages.npm }}'
+
+- name: Install fonts
+  import_tasks: fonts.yml
