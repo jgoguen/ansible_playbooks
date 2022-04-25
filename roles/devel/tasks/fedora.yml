@@ -7,3 +7,10 @@
     state: present
   loop: '{{ packages.fedora }}'
   check_mode: false
+
+- name: 'Add local user {{ user }} to mock group'
+  user:
+    name: '{{ user }}'
+    append: yes
+    groups:
+      - mock

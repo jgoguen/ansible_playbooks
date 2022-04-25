@@ -1,22 +1,6 @@
 ---
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
-- name: 'Adding local user {{ user }} to groups'
-  debug: var=unix_groups
-
-- name: Ensure group is present
-  group:
-    name: '{{ item }}'
-    state: present
-  loop: '{{ unix_groups }}'
-
-- name: 'Add local user {{ user }} to groups'
-  user:
-    name: '{{ user }}'
-    shell: '{{ ansible_local.zsh.bin }}'
-    append: yes
-    groups: '{{ unix_groups }}'
-
 - name: Create mount directories
   file:
     path: '{{ item.path }}'

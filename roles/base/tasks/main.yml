@@ -1,8 +1,31 @@
 ---
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
+- name: Install packages for all platforms
+  package:
+    name: '{{ packages.all }}'
+    state: present
+  when: ansible_facts["system"] != "Darwin"
+  check_mode: false
+
+- name: Install packages for all platforms via Homebrew
+  homebrew:
+    name: '{{ packages.all }}'
+    state: present
+  become: true
+  become_user: '{{ user }}'
+  when: ansible_facts["system"] == "Darwin"
+
 - name: Install facts scripts
   import_tasks: facts.yml
+
+- name: 'Enforce ZSH for {{ user }} and add to sudo/doas group'
+  user:
+    name: '{{ user }}'
+    shell: '{{ ansible_local.zsh.bin }}'
+    append: true
+    groups:
+      - '{{ ansible_local.root_owner.sudo }}'
 
 - name: Create user cargo directory
   file:
@@ -21,21 +44,6 @@
     section: net
     option: 'git-fetch-with-cli'
     value: 'true'
-
-- name: Install packages for all platforms
-  package:
-    name: '{{ packages.all }}'
-    state: present
-  when: ansible_facts["system"] != "Darwin"
-  check_mode: false
-
-- name: Install packages for all platforms via Homebrew
-  homebrew:
-    name: '{{ packages.all }}'
-    state: present
-  become: true
-  become_user: '{{ user }}'
-  when: ansible_facts["system"] == "Darwin"
 
 - name: 'Platform configuration for {{ ansible_facts["system"] }}'
   include_tasks: '{{ ansible_facts["system"]|lower }}.yml'

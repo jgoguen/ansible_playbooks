@@ -85,10 +85,6 @@ facts are configured in `config` roles.
 
 `user` is the username for your local non-root account.
 
-### `unix_groups`
-
-`unix_groups` is a list of UNIX groups to add `user` to.
-
 ### `roles`
 
 `roles` defines a list of roles for a specific host. The following roles are

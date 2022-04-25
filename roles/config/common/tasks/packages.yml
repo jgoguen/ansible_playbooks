@@ -1,13 +1,6 @@
 ---
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
-- name: Queue adding local user to mock group
-  set_fact:
-    unix_groups: '{{ unix_groups + ["mock"] }}'
-  when:
-    - ansible_facts["distribution"] == "Fedora"
-    - roles["devel"]
-
 - name: Queue development NPM packages for install
   set_fact:
     packages: '{{ packages | combine({"npm": packages["npm"] + npm_packages["devel"]}) }}'
