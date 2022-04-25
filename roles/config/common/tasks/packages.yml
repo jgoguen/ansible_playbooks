@@ -1,46 +1,6 @@
 ---
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
-- name: Queue common development packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + common_packages["devel"] }) }}'
-  when: roles["devel"]
-
-- name: Queue linux development packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + linux_packages["devel"] }) }}'
-  when:
-    - ansible_facts["system"] == "Linux"
-    - roles["devel"]
-
-- name: Queue CentOS devel packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + centos_packages["devel"] }) }}'
-  when:
-    - ansible_facts["distribution"] == "CentOS"
-    - roles["devel"]
-
-- name: Queue OpenBSD development packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + openbsd_packages["devel"] }) }}'
-  when:
-    - ansible_facts["system"] == "OpenBSD"
-    - roles["devel"]
-
-- name: Queue Fedora development packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + fedora_packages["devel"] }) }}'
-  when:
-    - ansible_facts["distribution"] == "Fedora"
-    - roles["devel"]
-
-- name: Queue Debian development packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + debian_packages["devel"] }) }}'
-  when:
-    - ansible_facts["distribution"] == "Debian"
-    - roles["devel"]
-
 - name: Queue adding local user to mock group
   set_fact:
     unix_groups: '{{ unix_groups + ["mock"] }}'
@@ -62,13 +22,6 @@
   set_fact:
     packages: '{{ packages | combine({"cargo": packages["cargo"] + cargo_packages["devel"]}) }}'
   when: roles["devel"]
-
-- name: Queue macOS development packages for install
-  set_fact:
-    packages: '{{ packages | combine({"install": packages["install"] + macos_packages["devel"]}) }}'
-  when:
-    - roles["devel"]
-    - ansible_facts["system"] == "Darwin"
 
 - name: Queue desktop Flatpak packages for install
   set_fact:

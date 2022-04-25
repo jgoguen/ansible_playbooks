@@ -1,0 +1,11 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Install development packages for macOS
+  homebrew:
+    name: '{{ item }}'
+    state: present
+  become: true
+  become_user: '{{ user }}'
+  loop: '{{ packages.macos }}'
+  when: ansible_facts["system"] == "Darwin"

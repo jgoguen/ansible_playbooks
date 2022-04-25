@@ -1,0 +1,22 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Install development packages for all platforms
+  package:
+    name: '{{ item }}'
+    state: present
+  loop: '{{ packages.all }}'
+  when: ansible_facts["system"] != "Darwin"
+  check_mode: false
+
+- name: Install development packages for all platforms via Homebrew
+  homebrew:
+    name: '{{ item }}'
+    state: present
+  loop: '{{ packages.all }}'
+  become: true
+  become_user: '{{ user }}'
+  when: ansible_facts["system"] == "Darwin"
+
+- name: 'Platform configuration for {{ ansible_facts["system"] }} for development'
+  include_tasks: '{{ ansible_facts["system"]|lower }}.yml'

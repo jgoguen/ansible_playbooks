@@ -1,0 +1,9 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Install development packages for Fedora
+  package:
+    name: '{{ item }}'
+    state: present
+  loop: '{{ packages.fedora }}'
+  check_mode: false

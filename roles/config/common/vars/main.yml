@@ -1,36 +1,6 @@
 ---
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
-common_packages:
-  devel: []
-
-linux_packages:
-  devel:
-    - clang
-
-centos_packages:
-  devel: []
-
-openbsd_packages:
-  devel:
-    - shellcheck
-
-debian_packages:
-  devel:
-    - gopls
-
-fedora_packages:
-  devel:
-    - golang
-    - golang-godoc
-    - golang-x-tools-gopls
-    - mock
-    - python3-black
-    - rpm-build
-    - rpmdevtools
-    - rpmlint
-    - ShellCheck
-
 npm_packages:
   devel:
     - '@ansible/ansible-language-server'
@@ -40,16 +10,6 @@ npm_packages:
     - vim-language-server
     - vscode-langservers-extracted
     - yaml-language-server
-
-macos_packages:
-  devel:
-    - ansible-lint
-    - black
-    - flake8
-    - gopls
-    - lua-language-server
-    - shellcheck
-    - yamllint
 
 flatpak_packages:
   - com.discordapp.Discord

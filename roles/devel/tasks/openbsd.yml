@@ -1,0 +1,9 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Install development packages for OpenBSD
+  package:
+    name: '{{ item }}'
+    state: present
+  loop: '{{ packages.openbsd }}'
+  check_mode: false

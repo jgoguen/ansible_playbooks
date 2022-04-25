@@ -1,0 +1,29 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+packages:
+  all: []
+  linux:
+    - clang
+  centos: []
+  debian: []
+  fedora:
+    - golang
+    - golang-godoc
+    - golang-x-tools-gopls
+    - mock
+    - python3-black
+    - rpm-build
+    - rpmdevtools
+    - rpmlint
+    - ShellCheck
+  openbsd:
+    - shellcheck
+  macos:
+    - ansible-lint
+    - black
+    - flake8
+    - gopls
+    - lua-language-server
+    - shellcheck
+    - yamllint
