@@ -2,69 +2,24 @@
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
 common_packages:
-  desktop:
-    - youtube-dl
   devel: []
 
 linux_packages:
-  desktop:
-    - bluez
-    - bluez-tools
-    - cups
-    - cups-filters
-    - cups-pdf
-    - cups-pk-helper
-    - firefox
-    - fontconfig
-    - foomatic-db
-    - foomatic-db-ppds
   devel:
     - clang
 
 centos_packages:
-  common:
-    - flatpak
-    - rust
-    - systemd-timesyncd
-  desktop: []
   devel: []
 
 openbsd_packages:
-  desktop: []
   devel:
     - shellcheck
 
 debian_packages:
-  desktop: []
   devel:
     - gopls
 
 fedora_packages:
-  desktop:
-    - desktop-file-utils
-    - fedora-workstation-repositories
-    - gstreamer1
-    - gstreamer1-libav
-    - gstreamer1-plugins-bad-free
-    - gstreamer1-plugins-bad-free-extras
-    - gstreamer1-plugins-base
-    - gstreamer1-plugins-good
-    - gstreamer1-plugins-good-extras
-    - gstreamer1-plugins-ugly
-    - gstreamer1-plugins-ugly-free
-    - gvfs-afc
-    - gvfs-fuse
-    - gvfs-goa
-    - gvfs-gphoto2
-    - gvfs-mtp
-    - gvfs-smb
-    - ImageMagick
-    - inotify-tools
-    - libnotify
-    - PackageKit-gstreamer-plugin
-    - wl-clipboard
-    - xclip
-    - xdg-user-dirs-gtk
   devel:
     - golang
     - golang-godoc
@@ -77,7 +32,6 @@ fedora_packages:
     - ShellCheck
 
 npm_packages:
-  desktop: []
   devel:
     - '@ansible/ansible-language-server'
     - bash-language-server
@@ -88,7 +42,6 @@ npm_packages:
     - yaml-language-server
 
 macos_packages:
-  desktop: []
   devel:
     - ansible-lint
     - black
@@ -105,23 +58,12 @@ flatpak_packages:
   - org.glimpse_editor.Glimpse
   - org.libreoffice.LibreOffice
 
-snap_packages:
-  - name: snap-store
-    channel: stable
-    classic: false
-
 pip_packages:
-  desktop: []
   devel:
     - esphome
     - github3.py
     - vim-vint
 
 cargo_packages:
-  desktop: []
   devel:
     - xh
-
-coprs_wanted:
-  - user: atim
-    name: bottom
