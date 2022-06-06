@@ -44,3 +44,9 @@ packages:
     - xdg-user-dirs-gtk
   openbsd: []
   macos: []
+
+macos_pkg_urls:
+  - url: 'https://download.visualstudio.microsoft.com/download/pr/a5e0f5da-6088-451c-a341-b751c0d418c7/9fe3a31273888fe23cbe71cac32fa35c/dotnet-sdk-6.0.201-osx-x64.pkg'
+    checksum: 41bef6c3bfd21d04b5dfca0fcb569b17cc5f45ea45112e92c3443536e881f135a036f347796eff372bc60390f9f836c4fbe8a8df7a85a4bec7c3db1e302521cc
+    checksum_algo: 'sha512'
+    not_if_exists: '/usr/local/share/dotnet/dotnet'

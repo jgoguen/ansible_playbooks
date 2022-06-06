@@ -1,0 +1,32 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Configure sshd
+  include_role:
+    name: sshd
+
+- name: Configure Docker
+  include_role:
+    name: docker
+
+- name: Configure caddy
+  include_role:
+    name: caddy
+
+- name: Configure postgresql
+  include_role:
+    name: docker_postgresql
+  vars:
+    postgresql_passwd: '{{ postgresql_password }}'
+
+- name: Configure feed
+  include_role:
+    name: docker_feed
+
+- name: Configure jellyfin
+  include_role:
+    name: docker_jellyfin
+
+- name: Configure Home Assistant support
+  include_role:
+    name: homeassistant_support

@@ -1,0 +1,69 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Define Jellyfin iptables rules
+  set_fact:
+    jellyfin_iptables_rules:
+      - action: append
+        chain: INPUT
+        ip_version: ipv4
+        protocol: udp
+        destination_port: '7359'
+        jump: ACCEPT
+      - action: append
+        chain: INPUT
+        ip_version: ipv6
+        protocol: udp
+        destination_port: '7359'
+        jump: ACCEPT
+      - action: append
+        chain: INPUT
+        ip_version: ipv4
+        protocol: tcp
+        destination_port: '8096'
+        jump: ACCEPT
+      - action: append
+        chain: INPUT
+        ip_version: ipv6
+        protocol: tcp
+        destination_port: '8096'
+        jump: ACCEPT
+
+- name: Include Jellyfin iptables rules
+  set_fact:
+    iptables_rules: '{{ iptables_rules + jellyfin_iptables_rules }}'
+
+- name: 'Create jellyfin directory {{ item }}'
+  file:
+    path: '/opt/{{ item }}/jellyfin'
+    owner: '{{ user }}'
+    group: docker
+    mode: 0750
+    state: directory
+  loop:
+    - docker-compose
+    - docker-data
+
+- name: Install docker-compose file
+  template:
+    src: jellyfin.yaml.j2
+    dest: '/opt/docker-compose/jellyfin/docker-compose.yaml'
+    owner: '{{ user }}'
+    group: 'docker'
+    mode: 0644
+  notify:
+    - reload jellyfin
+
+- name: Install caddy proxy definition
+  template:
+    src: jellyfin.caddyfile.j2
+    dest: /etc/caddy/Caddyfile.d/jellyfin.caddyfile
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload caddy
+
+- name: Enable jellyfin service
+  community.docker.docker_compose:
+    project_src: /opt/docker-compose/jellyfin

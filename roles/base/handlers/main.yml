@@ -1,5 +1,21 @@
 ---
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
-- name: rerun setup
-  setup:
+- name: reload systemd
+  systemd:
+    daemon_reload: true
+  changed_when: false
+
+- name: reload udev
+  command:
+    argv:
+      - /usr/bin/udevadm
+      - control
+      - '--reload'
+  changed_when: false
+
+- name: reload resolved
+  service:
+    name: systemd-resolved
+    state: restarted
+  changed_when: no

@@ -8,4 +8,4 @@
   become: true
   become_user: '{{ user }}'
   loop: '{{ packages.macos }}'
-  when: ansible_facts["system"] == "Darwin"
+  check_mode: false

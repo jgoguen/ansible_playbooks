@@ -1,0 +1,26 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Queue backup server iptables rules
+  set_fact:
+    iptables_rules: '{{ iptables_rules + backup_iptables_rules }}'
+
+- name: Install samba
+  package:
+    name: samba
+
+- name: Configure Samba
+  template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload smb
+
+- name: Start samba service
+  service:
+    name: smb
+    state: started
+    enabled: true

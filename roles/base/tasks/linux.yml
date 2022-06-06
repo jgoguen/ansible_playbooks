@@ -62,5 +62,38 @@
     sysctl_set: yes
   loop: '{{ sysctls | dict2items }}'
 
+- name: Create systemd local unit directory
+  file:
+    path: /usr/local/lib/systemd/system
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+    state: directory
+
+- name: Install udev rules
+  template:
+    src: '{{ item }}.udev'
+    dest: '/etc/udev/rules.d/00-{{ item }}.conf'
+    owner: '{{ ansible_local.root_owner.user }}'
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload udev
+  with_items:
+    - tpm
+    - u2f
+
+- name: Install modprobe config
+  template:
+    src: '{{ item }}.conf'
+    dest: '/etc/modprobe.d/{{ item }}.conf'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  with_items:
+    - hid_apple
+    - pcspkr
+    - snd_hda_intel
+
 - name: 'Distro-specific configuration for {{ ansible_facts["distribution"] }}'
   include_tasks: '{{ ansible_facts["distribution"]|lower }}.yml'

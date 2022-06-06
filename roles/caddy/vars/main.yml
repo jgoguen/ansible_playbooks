@@ -1,0 +1,28 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+caddy_iptables_rules:
+  - action: append
+    chain: INPUT
+    ip_version: ipv4
+    protocol: tcp
+    destination_port: '80'
+    jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv4
+    protocol: tcp
+    destination_port: '443'
+    jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv6
+    protocol: tcp
+    destination_port: '80'
+    jump: ACCEPT
+  - action: append
+    chain: INPUT
+    ip_version: ipv6
+    protocol: tcp
+    destination_port: '443'
+    jump: ACCEPT

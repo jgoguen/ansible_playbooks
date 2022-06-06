@@ -1,0 +1,40 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Fedora/CentOS needs dnf-plugins-core
+  package:
+    name: dnf-plugins-core
+    state: installed
+  when:
+    - ansible_facts["system"] == "Linux"
+    - ansible_facts["distribution"] != "Debian"
+  check_mode: false
+
+- name: Enabling Fedora remote repository
+  command: '/usr/bin/dnf config-manager --add-repo {{ repo_url }}'
+  args:
+    creates: '/etc/yum.repos.d/{{ repo_file }}'
+  when:
+    - ansible_facts["system"] == "Linux"
+    - ansible_facts["distribution"] != "Debian"
+  check_mode: false
+
+- name: Enabling Debian remote repositories
+  get_url:
+    url: '{{ repo_url }}'
+    dest: '/etc/apt/sources.list.d/{{ repo_file }}'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - update apt cache
+  when:
+    - ansible_facts["system"] == "Linux"
+    - ansible_facts["distribution"] == "Debian"
+  check_mode: false
+
+# This is a really big hammer, but it's the only way to make sure the remote
+# Debian repos are in the cache before we look for packages
+- name: Flush handlers
+  meta: flush_handlers
+  check_mode: false

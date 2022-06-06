@@ -1,0 +1,75 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Install via repo
+  include_tasks: repo.yml
+  when: not ansible_facts["architecture"].startswith("arm")
+
+- name: Install via script
+  include_tasks: script.yml
+  when: ansible_facts["architecture"].startswith("arm")
+
+- name: 'Add {{ user }} to docker group'
+  user:
+    name: '{{ user }}'
+    append: true
+    groups:
+      - docker
+
+- name: Create /etc/docker
+  file:
+    path: /etc/docker
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+    state: directory
+  check_mode: false
+
+- name: Install Docker daemon config
+  template:
+    src: docker-daemon.json.j2
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload docker
+
+- name: 'Create {{ item }} file storage directory'
+  file:
+    path: '/opt/{{ item }}'
+    owner: '{{ user }}'
+    group: docker
+    mode: 0750
+    state: directory
+  loop:
+    - docker-compose
+    - docker-data
+
+- name: Enable Docker service
+  service:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: Create docker-compose directory for Watchtower
+  file:
+    path: '/opt/docker-compose/watchtower'
+    owner: '{{ user }}'
+    group: docker
+    mode: 0750
+    state: directory
+
+- name: Install Watchtower docker-compose file
+  template:
+    src: watchtower.yaml.j2
+    dest: '/opt/docker-compose/watchtower/docker-compose.yaml'
+    owner: '{{ user }}'
+    group: 'docker'
+    mode: 0644
+  notify:
+    - reload watchtower
+
+- name: Enable Watchtower service
+  community.docker.docker_compose:
+    project_src: /opt/docker-compose/watchtower

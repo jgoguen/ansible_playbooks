@@ -1,6 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: Queue dhcpd service start
-  set_fact:
-    services: '{{ services | combine({"start": services["start"] + ["dhcpd"]}) }}'

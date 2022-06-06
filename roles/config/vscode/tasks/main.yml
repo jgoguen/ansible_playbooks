@@ -1,8 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: Queue VS Code config
-  import_tasks: vscode.yml
-  when:
-    - roles["devel"]
-    - roles["desktop"]

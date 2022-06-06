@@ -1,6 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: Configure system DNS
-  import_tasks: resolved.yml
-  when: ansible_facts["system"] == "Linux"

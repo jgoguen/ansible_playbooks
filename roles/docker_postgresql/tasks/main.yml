@@ -1,0 +1,36 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Queue postgresql iptables rules
+  set_fact:
+    iptables_rules: '{{ iptables_rules + postgresql_iptables_rules }}'
+
+- name: Create postgresql compose directory
+  file:
+    path: /opt/docker-compose/postgresql
+    owner: '{{ user }}'
+    group: docker
+    mode: 0750
+    state: directory
+
+- name: Create postgresql data directory
+  file:
+    path: /opt/docker-data/postgresql
+    owner: 999
+    group: 26
+    mode: 0700
+    state: directory
+
+- name: Install docker-compose file
+  template:
+    src: postgresql.yaml.j2
+    dest: '/opt/docker-compose/postgresql/docker-compose.yaml'
+    owner: '{{ user }}'
+    group: 'docker'
+    mode: 0644
+  notify:
+    - reload postgresql
+
+- name: Enable postgresql service
+  community.docker.docker_compose:
+    project_src: /opt/docker-compose/postgresql

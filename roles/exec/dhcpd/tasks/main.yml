@@ -1,6 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: Configure dhcpd
-  import_tasks: dhcpd.yml
-  when: roles["dhcpd"]

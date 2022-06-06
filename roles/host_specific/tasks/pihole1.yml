@@ -1,0 +1,20 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Set network config
+  set_fact:
+    interfaces: '{{ pihole1_interfaces }}'
+
+- name: Configure sshd
+  include_role:
+    name: sshd
+
+- name: Configure Docker
+  include_role:
+    name: docker
+
+- name: Configure pihole
+  include_role:
+    name: docker_pihole
+  vars:
+    pihole_primary: true

@@ -1,6 +1,91 @@
 ---
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
+- name: Create _pfbadhost user
+  user:
+    name: _pfbadhost
+    shell: /sbin/nologin
+    create_home: false
+    home: /var/empty
+
+- name: Check for pf-badhost script
+  stat:
+    path: /usr/local/bin/pf-badhost
+  register: badhost_script
+
+- name: Download pf-badhost script
+  get_url:
+    url: https://geoghegan.ca/pub/pf-badhost/0.5/pf-badhost.sh
+    dest: /usr/local/bin/pf-badhost
+    owner: root
+    group: bin
+    mode: 0755
+  when: not badhost_script.stat.exists
+
+- name: Ensure pf-badhost.txt exists
+  file:
+    path: /etc/pf-badhost.txt
+    owner: _pfbadhost
+    group: wheel
+    mode: 0640
+
+- name: Ensure pf-badhost log directory exists
+  file:
+    path: /var/log/pf-badhost
+    owner: root
+    group: wheel
+    mode: 0755
+    state: directory
+
+- name: Ensure pf-badhost log files exist
+  file:
+    path: '/var/log/pf-badhost/{{ item }}'
+    owner: _pfbadhost
+    group: wheel
+    mode: 0640
+  loop:
+    - pf-badhost.log
+    - pf-badhost.log.0.gz
+
+- name: Install packages for pf-badhost
+  package:
+    name: '{{ item }}'
+  loop:
+    - ripgrep
+    - mawk
+
+- name: Install aggregate6
+  pip:
+    executable: '{{ lookup("first_found", locations) }}'
+    name: aggregate6
+  vars:
+    locations:
+      - /usr/local/bin/pip3
+      - /usr/local/bin/pip3.9
+      - /usr/local/bin/pip3.8
+      - /usr/bin/pip3
+      - /usr/bin/pip3.9
+      - /usr/bin/pip3.8
+
+- name: doas rules for pf-badhost
+  set_fact:
+    pf_badhost_rules:
+      - 'permit nopass _pfbadhost cmd /sbin/pfctl args -nf /etc/pf.conf'
+      - 'permit nopass _pfbadhost cmd /sbin/pfctl args -t pfbadhost -T replace -f /etc/pf-badhost.txt'
+      - 'permit nopass _pfbadhost cmd /usr/bin/zcat args -f /var/log/authlog /var/log/authlog.0.gz'
+
+- name: Merge doas rules
+  set_fact:
+    doas_rules: '{{ doas_rules + pf_badhost_rules }}'
+
+- name: Set pf-badhost cron job
+  cron:
+    user: _pfbadhost
+    minute: '~'
+    hour: '0~3'
+    name: pf-badhost
+    job: '-s /usr/local/bin/pf-badhost -O openbsd'
+
 - name: Update pf.conf
   template:
     src: pf.conf.j2

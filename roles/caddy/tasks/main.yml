@@ -1,0 +1,54 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Install caddy COPR
+  include_role:
+    name: copr
+  vars:
+    user: '@caddy'
+    name: 'caddy'
+  when: ansible_facts["distribution"] != "Debian"
+
+- name: Install Debian repo key
+  include_role:
+    name: remote_repo
+    tasks_from: keys
+  when: ansible_facts["distribution"] == "Debian"
+  vars:
+    url: https://dl.cloudsmith.io/public/caddy/stable/gpg.key
+    file: caddy-stable.asc
+
+- name: Install Debian repo
+  include_role:
+    name: remote_repo
+  when: ansible_facts["distribution"] == "Debian"
+  vars:
+    repo_url: https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt
+    repo_file: caddy-stable.list
+
+- name: Install caddy
+  package:
+    name: caddy
+    state: present
+
+- name: Install main Caddyfile
+  template:
+    src: caddyfile.j2
+    dest: /etc/caddy/Caddyfile
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload caddy
+
+- name: Install Caddy config directory
+  file:
+    path: /etc/caddy/Caddyfile.d
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+    state: directory
+
+- name: Queue iptables rules for caddy
+  set_fact:
+    iptables_rules: '{{ iptables_rules + caddy_iptables_rules }}'

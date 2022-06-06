@@ -1,0 +1,36 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Queue smokeping iptables rules
+  set_fact:
+    iptables_rules: '{{ iptables_rules + smokeping_iptables_rules }}'
+
+- name: Create smokeping compose directory
+  file:
+    path: /opt/docker-compose/smokeping
+    owner: '{{ user }}'
+    group: docker
+    mode: 0750
+    state: directory
+
+- name: Create smokeping data directory
+  file:
+    path: /opt/docker-data/smokeping
+    owner: '999'
+    group: '26'
+    mode: 0700
+    state: directory
+
+- name: Install docker-compose file
+  template:
+    src: smokeping.yaml.j2
+    dest: '/opt/docker-compose/smokeping/docker-compose.yaml'
+    owner: '{{ user }}'
+    group: 'docker'
+    mode: 0644
+  notify:
+    - reload smokeping
+
+- name: Enable smokeping service
+  community.docker.docker_compose:
+    project_src: /opt/docker-compose/smokeping

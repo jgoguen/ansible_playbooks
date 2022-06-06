@@ -1,0 +1,34 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: 'Create mealie docker-compose directory'
+  file:
+    path: '/opt/docker-compose/mealie'
+    owner: '{{ user }}'
+    group: docker
+    mode: 0750
+    state: directory
+
+- name: Install docker-compose file
+  template:
+    src: mealie.yaml.j2
+    dest: '/opt/docker-compose/mealie/docker-compose.yaml'
+    owner: '{{ user }}'
+    group: 'docker'
+    mode: 0644
+  notify:
+    - reload mealie
+
+- name: Install caddy proxy definition
+  template:
+    src: mealie.caddyfile.j2
+    dest: /etc/caddy/Caddyfile.d/mealie.caddyfile
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload caddy
+
+- name: Enable mealie service
+  community.docker.docker_compose:
+    project_src: /opt/docker-compose/mealie

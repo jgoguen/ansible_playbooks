@@ -1,0 +1,46 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Queue UniFi Controller iptables rules
+  set_fact:
+    iptables_rules: '{{ iptables_rules + unifi_controller_iptables_rules }}'
+
+- name: Create unifi-controller compose directory
+  file:
+    path: '/opt/docker-compose/unifi-controller'
+    owner: '{{ user }}'
+    group: docker
+    mode: 0750
+    state: directory
+
+- name: Create unifi-controller data directory
+  file:
+    path: '/opt/docker-data/unifi-controller'
+    owner: 0
+    group: 0
+    mode: 0750
+    state: directory
+
+- name: Install docker-compose file
+  template:
+    src: unifi-controller.yaml.j2
+    dest: '/opt/docker-compose/unifi-controller/docker-compose.yaml'
+    owner: '{{ user }}'
+    group: 'docker'
+    mode: 0644
+  notify:
+    - reload unifi-controller
+
+- name: Install caddy proxy definition
+  template:
+    src: unifi-controller.caddyfile.j2
+    dest: /etc/caddy/Caddyfile.d/unifi-controller.caddyfile
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload caddy
+
+- name: Enable unifi-controller service
+  community.docker.docker_compose:
+    project_src: /opt/docker-compose/unifi-controller

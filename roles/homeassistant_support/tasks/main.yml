@@ -1,0 +1,12 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Install caddy proxy definition
+  template:
+    src: homeassistant.caddyfile.j2
+    dest: /etc/caddy/Caddyfile.d/homeassistant.caddyfile
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload caddy

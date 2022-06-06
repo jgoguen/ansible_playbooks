@@ -1,7 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: Queue Minecraft Java iptables rules
-  set_fact:
-    iptables_rules: '{{ iptables_rules + minecraft_java_iptables_rules }}'
-  when: install_compose

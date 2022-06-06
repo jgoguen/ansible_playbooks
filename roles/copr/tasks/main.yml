@@ -1,0 +1,14 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: 'Enable COPR {{ user }}/{{ name }}'
+  command:
+    argv:
+      - /usr/bin/dnf
+      - copr
+      - enable
+      - '-y'
+      - '{{ user }}/{{ name }}'
+    creates: '/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:{{ user | replace("@", "group_") }}:{{ name }}.repo'
+    warn: false
+  when: ansible_facts["distribution"] != "Debian"

@@ -1,6 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: Queue sudo config
-  import_tasks: sudo.yml
-  when: ansible_facts["system"] != "OpenBSD"

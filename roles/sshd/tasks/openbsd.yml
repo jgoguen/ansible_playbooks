@@ -1,6 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: Allow SSHd in pf.conf
-  set_fact:
-    pf_sections: '{{ pf_sections | combine({"sshd": true}) }}'

@@ -1,0 +1,34 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: 'Create joplin docker-compose directory'
+  file:
+    path: '/opt/docker-compose/joplin'
+    owner: '{{ user }}'
+    group: docker
+    mode: 0750
+    state: directory
+
+- name: Install docker-compose file
+  template:
+    src: joplin.yaml.j2
+    dest: '/opt/docker-compose/joplin/docker-compose.yaml'
+    owner: '{{ user }}'
+    group: 'docker'
+    mode: 0644
+  notify:
+    - reload joplin
+
+- name: Install caddy proxy definition
+  template:
+    src: joplin.caddyfile.j2
+    dest: /etc/caddy/Caddyfile.d/joplin.caddyfile
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload caddy
+
+- name: Enable joplin service
+  community.docker.docker_compose:
+    project_src: /opt/docker-compose/joplin

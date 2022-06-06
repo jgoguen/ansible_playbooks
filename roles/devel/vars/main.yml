@@ -27,3 +27,16 @@ packages:
     - lua-language-server
     - shellcheck
     - yamllint
+  npm:
+    - '@ansible/ansible-language-server'
+    - bash-language-server
+    - typescript
+    - typescript-language-server
+    - vim-language-server
+    - vscode-langservers-extracted
+    - yaml-language-server
+  pip:
+    - esphome
+    - vim-vint
+  cargo:
+    - xh

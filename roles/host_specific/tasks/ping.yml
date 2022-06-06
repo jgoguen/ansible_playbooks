@@ -1,0 +1,18 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Set interfaces config
+  set_fact:
+    interfaces: '{{ ping_interfaces }}'
+
+- name: Configure sshd
+  include_role:
+    name: sshd
+
+- name: Configure Docker
+  include_role:
+    name: docker
+
+- name: Configure smokeping
+  include_role:
+    name: docker_smokeping

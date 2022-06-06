@@ -1,6 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: Queue storage server mounts
-  set_fact:
-    mounts: '{{ mounts + storage_mounts }}'

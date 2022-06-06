@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+
+dns {
+	nameserver {
+{% for host in rad_config["dns"] %}
+		{{ host }}
+{% endfor %}
+	}
+}
+
+other configuration no
+
+{% for iface in rad_config["interfaces"] %}
+interface {{ iface }}
+{% endfor %}

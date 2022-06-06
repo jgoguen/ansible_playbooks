@@ -1,6 +1,5 @@
 #!/bin/sh
-# vim: set noexpandtab tabstop=2 shiftwidth=2 autoindent:
-# vim: set foldmarker=[[[,]]] foldmethod=marker foldlevel=0:
+# vim: set autoindent foldmarker=[[[,]]] foldmethod=marker foldlevel=0:
 
 set -eux
 
@@ -8,11 +7,21 @@ set -eux
 OP_ADDR="${1:-""}"
 OP_EMAIL="${2:-""}"
 
-if [ -z "${OP_ADDR}" ] || [ -z "${OP_EMAIL}" ]; then
-	printf 'Usage: %s 1password_hostname 1password_email [--check]\n' "${0}" >&2
-	exit 1
+if [ -n "${OP_ADDR}" ]; then
+	shift
 fi
-shift 2
+if [ -n "${OP_EMAIL}" ]; then
+	shift
+fi
+
+while [ -z "${OP_ADDR}" ]; do
+	printf '1Password hostname: '
+	read -r OP_ADDR
+done
+while [ -z "${OP_EMAIL}" ]; do
+	printf '1Password email: '
+	read -r OP_EMAIL
+done
 # ]]]
 
 # Define cleanup on script exit or termination [[[
@@ -95,61 +104,11 @@ elif [ "${OSTYPE}" = "openbsd" ]; then
 fi
 # ]]]
 
-# Locate other tools on the system [[[
-ANSIBLE_GALAXY_BIN="$(command -v ansible-galaxy)"
-if [ -z "${ANSIBLE_GALAXY_BIN}" ]; then
-	printf 'Required tool ansible-galaxy not found\n'
-	exit 1
-fi
-
-CHOWN_BIN="$(command -v chown)"
-if [ -z "${CHOWN_BIN}" ]; then
-	printf 'Required tool chown not found\n' >&2
-	exit 1
-fi
-
-CURL_BIN="$(command -v curl)"
-if [ -z "${CURL_BIN}" ]; then
-	printf 'Required tool curl not found\n' >&2
-	exit 1
-fi
-
-GPG_BIN="$(command -v gpg)"
-if [ -z "${GPG_BIN}" ]; then
-	printf 'Required tool gpg not found\n' >&2
-	exit 1
-fi
-
-MKTEMP_BIN="$(command -v mktemp)"
-if [ -z "${MKTEMP_BIN}" ]; then
-	printf 'Required tool mktemp not found\n' >&2
-	exit 1
-fi
-
-TAR_BIN="$(command -v tar)"
-if [ -z "${TAR_BIN}" ]; then
-	printf 'Required tool tar not found\n' >&2
-	exit 1
-fi
-
-UNZIP_BIN="$(command -v unzip)"
-if [ -z "${UNZIP_BIN}" ]; then
-	printf 'Required tool unzip not found\n' >&2
-	exit 1
-fi
-
-XMLLINT_BIN="$(command -v xmllint)"
-if [ -z "${XMLLINT_BIN}" ]; then
-	printf 'Required tool xmllint not found\n' >&2
-	exit 1
-fi
-# ]]]
-
-TEMPDIR="$("${MKTEMP_BIN}" -d XXXXXXXXXXXXXXXX)"
+TEMPDIR="$(mktemp -d XXXXXXXXXXXXXXXX)"
 
 # Install the OpenBSD ports tree if needed [[[
 if [ "${OSTYPE}" = "openbsd" ] && [ ! -d /usr/ports ]; then
-	${CURL_BIN} "https://cdn.openbsd.org/pub/OpenBSD/$("${UNAME_BIN}" -r)/ports.tar.gz" | ${SUDO_CMD} "${TAR_BIN}" zxphf - -C /usr
+	curl "https://cdn.openbsd.org/pub/OpenBSD/$("${UNAME_BIN}" -r)/ports.tar.gz" | ${SUDO_CMD} tar zxphf - -C /usr
 fi
 # ]]]
 
@@ -164,28 +123,28 @@ if [ ! -f /usr/local/bin/op ]; then
 		OS_ATTR="${OSTYPE}"
 		MACHINE_ATTR="${MACHINE}"
 	fi
-	OP_URL="$(${CURL_BIN} -fsSL https://app-updates.agilebits.com/product_history/CLI 2>/dev/null | ${XMLLINT_BIN} --html --dtdattr --xpath "string(//article[not(@class='beta')][1]/div[@class='cli-archs']/p[@class='system ${OS_ATTR}']/a[text()='${MACHINE_ATTR}']/@href)" - 2>/dev/null)"
-	${CURL_BIN} -fsSL "${OP_URL}" >"${TEMPDIR}/op.zip"
+	OP_URL="$(curl -fsSL https://app-updates.agilebits.com/product_history/CLI2 2>/dev/null | xmllint --html --dtdattr --xpath "string(//article[not(@class='beta')][1]/div[@class='cli-archs']/p[@class='system ${OS_ATTR}']/a[text()='${MACHINE_ATTR}']/@href)" - 2>/dev/null)"
+	curl -fsSL "${OP_URL}" >"${TEMPDIR}/op.zip"
 
 	if [ "${OSTYPE}" = "darwin" ]; then
 		/bin/mv "${TEMPDIR}/op.zip" "${TEMPDIR}/op.pkg"
 		${SUDO_CMD} /usr/sbin/installer -package "${TEMPDIR}/op.pkg" -target /
 	else
-		${UNZIP_BIN} "${TEMPDIR}/op.zip" op
+		unzip "${TEMPDIR}/op.zip" op
 		${SUDO_CMD} /bin/mv ./op /usr/local/bin/op
 	fi
 fi
 # ]]]
 
-eval "$(/usr/local/bin/op signin "${OP_ADDR}" "${OP_EMAIL}")"
-
-/usr/local/bin/op get document qukaq3aej2hftq6t2ojuwvpm6m | ${GPG_BIN} --import
+eval "$(/usr/local/bin/op account add --signin --address "${OP_ADDR}" --email "${OP_EMAIL}")"
+/usr/local/bin/op document get qukaq3aej2hftq6t2ojuwvpm6m | gpg --import
+printf '75E259BA34917C792560A53AE9F9F8EA7E062F78:6:' | gpg --import-ownertrust
 
 if [ ! -d /var/ansible_playbooks ]; then
-	$(command -v git) clone --depth 1 https://github.com/jgoguen/ansible_playbooks.git
+	git clone --depth 1 https://github.com/jgoguen/ansible_playbooks.git
 	${SUDO_CMD} /bin/mv ansible_playbooks /var/
 	cd /var/ansible_playbooks
-	$(command -v git-crypt) unlock
+	git-crypt unlock
 fi
 
 /bin/sh /var/ansible_playbooks/run_ansible.sh "$@"

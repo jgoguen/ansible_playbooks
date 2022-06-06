@@ -1,6 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: Add local user to sudoers group
-  set_fact:
-    unix_groups: '{{ unix_groups + [ansible_local.root_owner.sudo] }}'

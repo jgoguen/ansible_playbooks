@@ -1,0 +1,18 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Configure sshd
+  include_role:
+    name: sshd
+
+- name: Configure Docker
+  include_role:
+    name: docker
+
+- name: Configure caddy
+  include_role:
+    name: caddy
+
+- name: Configure unifi
+  include_role:
+    name: docker_unifi

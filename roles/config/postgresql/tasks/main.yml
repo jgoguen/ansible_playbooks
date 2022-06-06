@@ -1,7 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: Queue PostgreSQL iptables rules
-  set_fact:
-    iptables_rules: '{{ iptables_rules + postgresql_iptables_rules }}'
-  when: install_compose

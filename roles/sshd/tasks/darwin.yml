@@ -1,5 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-# Don't allow remote SSH access to Darwin hosts
-[]

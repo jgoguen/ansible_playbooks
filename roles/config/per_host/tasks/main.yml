@@ -1,5 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: 'Include host-specific config for {{ ansible_facts["hostname"] }}'
-  include_tasks: '{{ ansible_facts["hostname"] }}.yml'

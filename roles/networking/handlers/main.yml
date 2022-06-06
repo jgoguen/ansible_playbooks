@@ -1,0 +1,14 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: reload dhcpcd
+  service:
+    name: dhcpcd
+    state: restarted
+  changed_when: false
+
+- name: reload NetworkManager
+  service:
+    name: NetworkManager
+    state: restarted
+  changed_when: false

@@ -1,0 +1,10 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Desktop system setup
+  import_role:
+    name: desktop
+
+- name: Development system setup
+  import_role:
+    name: devel

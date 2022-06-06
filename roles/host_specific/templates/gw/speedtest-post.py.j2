@@ -1,0 +1,13 @@
+#!/usr/local/bin/python3
+
+import json
+import subprocess
+
+from urllib.request import urlopen
+
+proc = subprocess.run(['/usr/local/bin/speedtest-cli', '--json', '--server', '6468', '--server', '27781', '--server', '34384'], capture_output=True, check=True)
+obj = json.loads(proc.stdout.decode())
+
+s = f'download={obj["download"]}&upload={obj["upload"]}&ping={obj["ping"]}'
+
+urlopen('http://{{ address }}/api/webhook/{{ webhook }}', data=s.encode())

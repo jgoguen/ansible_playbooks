@@ -21,6 +21,8 @@ different assumptions are made here:
   allowed to restart in a disruptive manner if needed.
 - Reboots are not done automatically but are expected to be done promptly when
   needed.
+- Unlike most Ansible setups, systems are expected to reach out and fetch the
+  latest playbooks and run `ansible-playbook` (via `run_ansible.sh`) locally.
 
 ## Setup
 
@@ -32,6 +34,10 @@ arguments:
 % ./setup.sh me.1password.com me@example.com
 ```
 
+Note that `setup.sh` will install
+[1Password CLI2](https://app-updates.agilebits.com/product_history/CLI2) and
+expects `/usr/local/bin/op` to be the version 2 CLI.
+
 The setup script will prompt for `sudo`/`doas` credentials when needed. Each
 command run is printed out so you know what is prompting for your password. The
 setup script will:
@@ -39,41 +45,14 @@ setup script will:
 - Install Homebrew on macOS
 - Install packages needed for Ansible to run successfully
 - Install needed Ansible packages from Ansible Galaxy
-- Retrieve the 1Password CLI from upstream and install it
+- Retrieve the 1Password CLI version 2 from upstream and install it
 - Authenticate to 1Password
-- Fetch the Ansible vault key and Github SSH key from 1Password
+- Fetch the Github SSH key from 1Password
 - Check out this repository from Github
-- Run `ansible-playbook`
+- Run `run_ansible.sh`
 
 When including dotfiles, it is expected these playbooks are run first and the
 system is rebooted before applying dotfiles.
-
-## Playbook organization
-
-Unlike most Ansible setups, systems are expected to reach out and fetch the
-latest playbooks and run `ansible-playbook` locally. Additionally, many systems
-are expected to be configured using these playbooks and those systems may each
-have multiple shared roles. Taken together, the normal Ansible model for
-playbooks does not work well. A system such as Chef is normally better suited
-for this setup, but Chef is not natively available for OpenBSD and compiling
-Ansible and its dependencies can take quite some time on lower-powered or
-Raspberry Pi systems.
-
-To accommodate these various needs, playbooks are assigned under two roles:
-`config` and `exec`. All playbooks under `config` are expected to only set facts
-for later use, they should never make any actual changes to the system. It must
-be safe to run the entire `config` role at any time in any state. The `exec`
-role is where changes are actually made based on the facts set by the `config`
-role. `exec` playbooks must never change facts. The only exception to this is
-when it is simpler to express the configuration for a role in a `vars` file and
-that configuration is static across all hosts; then the `vars` file in the
-`exec` role may hold the configuration instead of setting facts in `config`.
-
-When run, this emulates the Chef two-pass system with API cookbooks fairly well;
-the first (`config`) pass sets up resources, the second (`exec`) pass actually
-modifies the system. Also like Chef, this setup allows `exec` playbooks to
-validate and enforce values which may have been set by multiple other `config`
-playbooks.
 
 ## Configuration
 
@@ -85,123 +64,100 @@ facts are configured in `config` roles.
 
 `user` is the username for your local non-root account.
 
-### `roles`
+### `timezone`
 
-`roles` defines a list of roles for a specific host. The following roles are
-currently defined:
+`timezone` is the timezone to use for your hosts.
 
-- `backup`: This host will be configured to serve a backup directory over Samba,
-  with Time Machine support enabled for macOS clients.
-- `desktop`: This host will be a client desktop/laptop system. Setting this
-  `false` implies this host will be a server.
-- `devel`: This host may be used for development and should have appropriate
-  packages installed.
-- `dhcpd`: This host will be a DHCP server. OpenBSD `dhcpd` is assumed.
-- `dns`: This host will be a DNS server. OpenBSD `unbound` is assumed.
-- `docker`: This host will run Docker containers using `docker-compose` and
-  systemd units to start containers on boot.
-- `gw`: This host will be an Internet gateway. OpenBSD is assumed. This will
-  also configure `rad` for SLAAC advertisement.
-- `storage`: This host will provide storage to other hosts.
+### `dns_servers`
 
-### `dyndns_hosts`
+`dns_servers` is a list of DNS server IP addresses to configure on each host.
 
-`dyndns_hosts` is a list of host namess which the host will send updates for.
-The IPv4 and IPv6 addresses to use will be detected using an external service
-and the IPv6 address is assumed to have a `/64` netmask.
+### `ntp_servers`
 
-### `packages`
+`ntp_servers` is a list of NTP servers to use in `ntpd.conf(5)` or
+`timesyncd.conf`.
 
-`packages` defines a map of package actions to packages.
+### `interfaces`
 
-- `install`: A list of packages which will be installed. If packages are already
-  present, they will not be upgraded to the latest version.
-- `remove`: A list of packages which will be removed.
-- `snap` A list of hashes defining a Snap name, the channel to install from, and
-  whether to allow classic confinement.
-  - Example: `[{"name": "1password", "channel": "beta", "classic": false}, {"name": "wesnoth", "channel": "stable", "classic": true}]`
-- `flatpak`: A list of Flatpak package identifiers to install. Packages are
-  assumed to be available on Flathub.
-- `pip`: A list of packages to install from PyPI.
-- `npm`: A list of NPM packages to install.
+`interfaces` is a mapping of interface name to interface configuration.
 
-### `coprs`
+For OpenBSD, `interfaces` maps interface names to lines in the `hostname.if(5)`
+file:
 
-`coprs` defines a list of hashes defining COPR repositories to enable.
+```yaml
+interfaces:
+  rl0:
+    - inet autoconf
+    - inet6 autoconf
+    - up
+```
 
-Example: `[{"user": "jgoguen", "name": "universal-ctags"}]` will run
-`/usr/bin/dnf copr enable -y jgoguen/universal-ctags`.
+For Linux, `interfaces` maps interface names to basic network config:
 
-### `networkmanager_config`
-
-`networkmanager_config` defines a hash of `NetworkManager.conf` sections to
-a settings hash. Each key of `networkmanager_config` is assumed to be a section
-name in `NetworkManager.conf`. Each settings hash under a section is assumed to
-be the setting name and value.
-
-### `iptables_policies`
-
-`iptables_policies` defines the default policy for the `INPUT`, `FORWARD`, and
-`OUTPUT` chains. Only chains in the `filter` table are supported.
-
-### `iptables_rules`
-
-`iptables_rules` is a list of `iptables` rule hashes. Each rule has is passed
-directly to the Ansible `iptables` module; see
-https://docs.ansible.com/ansible/latest/collections/ansible/builtin/iptables_module.html
-for all valid keys and values.
-
-### `bsd_interfaces`
-
-`bsd_interfaces` maps an interface name to a list of lines to put in the
-corresponding `hostname.if(5)` file on OpenBSD systems.
+```yaml
+interfaces:
+  eth0:
+    ip: '192.168.1.100/24'
+    ip6: 'fe80::beef:100/64'
+    gateway: 192.168.1.1
+```
 
 ### `bsd_gateway`
 
 `bsd_gateway` defines a list of default gateways to put in `/etc/mygate` on
 OpenBSD systems.
 
-### `pf_variables`
+### `pf`
 
-`pf_variables` defines a mapping of variable names to values to put in
-`pf.conf(5)`. Variables defined here may be referenced in `pf_rules` as `$name`.
+`pf` holds configuration for PF. Used keys are:
 
-### `pf_tables`
+#### `anchors`
 
-`pf_tables` maps PF table names to a list of table contents. Tables defined here
-may be referenced in `pf_rules` as `&lt;name&gt;`.
+Maps anchor name to a file to load anchor rules from. Set the file to the empty
+string to create an anchor without loading from a file.
 
-### `services`
+#### `lan_interface`
 
-`services` defines a map from action to service name:
+Set the interface name on the LAN side.
 
-- `start`: Services in this list will be enabled and started.
-- `stop`: Services in this list will be stopped and disabled.
+#### `martians`
 
-### `dhcpd_config`
+Set to true to allow routing to martian addresses.
 
-`dhcpd_config` defines the `dhcpd` configuration:
+#### `nat`
 
-- `dns`: A list of DNS servers to advertise.
-- `domain_name`: The network domain name to advertise.
-- `lease`: Defines the DHCP lease times:
-  - `default`: The time in seconds for the default DHCP lease length.
-  - `max`: The time in seconds for the maximum validity of a DHCP lease.
-- `subnets`: Define a list of specific subnets for the DHCP server to advertise.
-  Each subnet must map to one interface in `bsd_interfaces`.
-  - `base`: The base address of the subnet (e.g. `10.1.0.0`).
-  - `subnet`: The subnet mask (e.g. `255.255.255.0`).
-  - `router`: The subnet gateway address (e.g. `10.1.0.1`).
-  - `start`: The starting address for DHCP leases.
-  - `end`: The last address for DHCP leases.
-  - `hosts`: A map of host name to MAC address and desired static address.
+Set to true to enable NAT-related rules. Should only be used when acting as a
+router.
 
-### `rad_config`
+#### `tables`
 
-`rad_config` defines a basic config for `rad(8)`:
+Map table names to a map of table data.
 
-- `dns`: A list of IPv6 DNS server addresses to advertise in each RA.
-- `interface`: The interface to advertise RAs on.
+```yaml
+tables:
+  dns:
+    const: false
+    persist: true
+    file: /etc/pf.tables.d/pf.dns.conf
+    entries: []
+  ntp:
+    const: true
+    persist: false
+    file: ''
+    entries:
+      - 129.134.28.123
+      - 129.134.29.123
+```
+
+#### `variables`
+
+Maps additional PF macros to their value.
+
+### `dyndns_hosts`
+
+`dyndns_hosts` is a list of host namess which the host will send updates for.
+The IPv4 and IPv6 addresses to use will be detected using an external service
+and the IPv6 address is assumed to have a `/64` netmask.
 
 ### `doas_rules`
 
@@ -225,36 +181,50 @@ may be referenced in `pf_rules` as `&lt;name&gt;`.
     - `nopasswd` is a list of commands the user may execute without entering
       their password.
 
-### `macos_defaults`
+### `networkmanager_config`
 
-`macos_defaults` maps `defaults` CLI domains to a list of setting hashes to
-apply within that domain. Each setting hash must contain:
+`networkmanager_config` defines a hash of `NetworkManager.conf` sections to
+a settings hash. Each key of `networkmanager_config` is assumed to be a section
+name in `NetworkManager.conf`. Each settings hash under a section is assumed to
+be the setting name and value.
 
-- `key`: The setting name.
-- `type`: The type of setting as given to the `defaults` CLI command.
-- `value`: The value of the setting.
-- `become`: `yes`/`no` whether to become `username` to apply this setting.
-  Defaults to `yes` if not given.
+### `iptables_rules`
 
-### `ntp_servers`
+`iptables_rules` is a list of `iptables` rule hashes. Each rule has is passed
+directly to the Ansible `iptables` module; see
+https://docs.ansible.com/ansible/latest/collections/ansible/builtin/iptables_module.html
+for all valid keys and values.
 
-`ntp_servers` is a list of NTP servers to use in `ntpd.conf(5)` or
-`timesyncd.conf`.
+### `dhcpd_config`
 
-### `dns_servers`
+`dhcpd_config` defines the `dhcpd` configuration:
 
-`dns_servers` defines a list of DNS servers to put in `resolved.conf` for the
-`FallbackDNS` setting.
+- `dns`: A list of DNS servers to advertise.
+- `domain_name`: The network domain name to advertise.
+- `lease`: Defines the DHCP lease times:
+  - `default`: The time in seconds for the default DHCP lease length.
+  - `max`: The time in seconds for the maximum validity of a DHCP lease.
+- `subnets`: Define a list of specific subnets for the DHCP server to advertise.
+  Each subnet must map to one interface in `bsd_interfaces`.
+  - `base`: The base address of the subnet (e.g. `10.1.0.0`).
+  - `subnet`: The subnet mask (e.g. `255.255.255.0`).
+  - `router`: The subnet gateway address (e.g. `10.1.0.1`).
+  - `start`: The starting address for DHCP leases.
+  - `end`: The last address for DHCP leases.
+  - `groups`: A list of maps. Contains keys `options` for overriding or adding
+    DHCP options and `hosts` for designating which hosts are in the group.
+  - `hosts`: A map of host name to MAC address and desired static address.
 
-### `unbound_config`
+### `rad_config`
 
-`unbound_config` defines the config for `unbound(8)`. See `inventory/all.yml`
-and `roles/exec/unbound/templates/unbound.conf.j2` for setting definitions.
-Valid keys for this hash are valid setting names in `unbound.conf(5)`.
+`rad_config` defines a basic config for `rad(8)`:
+
+- `dns`: A list of IPv6 DNS server addresses to advertise in each RA.
+- `interfaces`: A list of interface names to advertise RAs on.
 
 ## Role `vars` files
 
 In some cases, configuration may not be static across all hosts but is far
 simpler and cleaner to define as Ansible variables. For these, the relevant
-facts are defines in a `vars` file under the relevant `config` role and is
-merged into the main fact set in a task.
+facts are defines in a `vars` file under the relevant role. There are also some
+roles which require you to pass variables in.

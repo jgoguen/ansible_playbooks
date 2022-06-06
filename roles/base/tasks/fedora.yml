@@ -1,6 +1,30 @@
 ---
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
+# RPMFusion packages need to come from the upstream URL since they won't be
+# accessible on initial install. But then the appstream packages can come from
+# the installed repos.
+- name: Install RPMFusion packages
+  command:
+    argv:
+      - /usr/bin/dnf
+      - install
+      - '-y'
+      - >-
+        http://download1.rpmfusion.org/{{ item }}/fedora/rpmfusion-{{ item }}-release-
+        {{ ansible_facts['lsb']['major_release'] }}.noarch.rpm
+    creates: '/etc/yum.repos.d/rpmfusion-{{ item }}.repo'
+  loop:
+    - free
+    - nonfree
+
+- name: Install RPMFusion appstream packages
+  package:
+    name:
+      - rpmfusion-free-appstream-data
+      - rpmfusion-nonfree-appstream-data
+    state: present
+
 - name: Install packages for Fedora
   package:
     name: '{{ packages.fedora }}'

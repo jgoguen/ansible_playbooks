@@ -16,9 +16,6 @@
   become_user: '{{ user }}'
   when: ansible_facts["system"] == "Darwin"
 
-- name: Install facts scripts
-  import_tasks: facts.yml
-
 - name: 'Enforce ZSH for {{ user }} and add to sudo/doas group'
   user:
     name: '{{ user }}'
@@ -26,6 +23,15 @@
     append: true
     groups:
       - '{{ ansible_local.root_owner.sudo }}'
+
+- name: Update /etc/hosts
+  template:
+    src: hosts.j2
+    dest: /etc/hosts
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  when: not ansible_facts["hostname"].startswith('pihole')
 
 - name: Create user cargo directory
   file:
@@ -76,6 +82,3 @@
     name: '{{ item }}'
     global: true
   loop: '{{ packages.npm }}'
-
-- name: Install fonts
-  import_tasks: fonts.yml

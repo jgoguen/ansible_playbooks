@@ -1,0 +1,21 @@
+---
+# {{ ansible_managed }}
+# vim: set filetype=yaml expandtab sts=2 sw=2 nospell:
+
+version: '3'
+
+networks:
+  watchtower:
+
+services:
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    networks:
+      - watchtower
+    command: '--cleanup --include-stopped --label-enable --rolling-restart'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+    restart: unless-stopped

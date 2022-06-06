@@ -1,0 +1,182 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Queue iptables rules
+  set_fact:
+    iptables_rules: '{{ iptables_rules + pihole_iptables_rules }}'
+
+- name: Disable avahi
+  service:
+    name: '{{ item }}'
+    state: stopped
+    enabled: false
+  loop:
+    - avahi-daemon.socket
+    - avahi-daemon.service
+
+- name: 'Create pihole directory {{ item }}'
+  file:
+    path: '/opt/{{ item }}/pihole'
+    owner: '{{ user }}'
+    group: docker
+    mode: 0750
+    state: directory
+  loop:
+    - docker-compose
+    - docker-data
+
+- name: Create root .ssh directory
+  file:
+    path: '{{ ansible_local.root_owner.home }}/.ssh'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0700
+    state: directory
+  check_mode: false
+
+- name: Install pihole sync key
+  copy:
+    src: '{{ item }}'
+    dest: '{{ ansible_local.root_owner.home }}/.ssh/{{ item }}'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0600
+  loop:
+    - 'pihole'
+    - 'pihole.pub'
+
+- name: Install SSH config
+  copy:
+    src: ssh_config
+    dest: /root/.ssh/config
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0600
+
+- name: Check out pihole config
+  git:
+    repo: 'pihole-config-repo:jgoguen/pihole-configs.git'
+    dest: /var/local/pihole-cloudsync
+    accept_hostkey: true
+    key_file: /root/.ssh/pihole
+    update: false
+
+- name: Check out pihole whitelist
+  git:
+    repo: 'https://github.com/anudeepND/whitelist.git'
+    dest: /var/local/pihole-whitelist
+  when: pihole_primary
+
+- name: Install pihole sync script
+  get_url:
+    url: https://raw.githubusercontent.com/jgoguen/pihole-cloudsync/master/pihole-cloudsync
+    dest: /usr/local/bin/pihole-cloudsync
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+
+- name: Install docker-compose file
+  template:
+    src: pihole.yaml.j2
+    dest: '/opt/docker-compose/pihole/docker-compose.yaml'
+    owner: '{{ user }}'
+    group: 'docker'
+    mode: 0644
+  notify:
+    - rebuild pihole
+    - reload pihole
+
+- name: Create pihold unbound config directory
+  file:
+    path: /opt/docker-data/pihole/unbound
+    owner: '{{ user }}'
+    group: 'docker'
+    mode: 0750
+    state: directory
+
+- name: Install pihole unbound config file
+  copy:
+    src: config/pihole.conf
+    dest: /opt/docker-data/pihole/unbound/pihole.conf
+    owner: '{{ user }}'
+    group: 'docker'
+    mode: 0640
+  notify:
+    - reload pihole
+
+- name: Install pihole unbound contents
+  copy:
+    src: unbound
+    dest: /opt/docker-compose/pihole
+    owner: '{{ user }}'
+    group: 'docker'
+    mode: 0640
+    directory_mode: 0750
+  notify:
+    - rebuild pihole
+    - reload pihole
+
+- name: Install pihole-cloudsync environment file
+  template:
+    src: pihole-cloudsync.env
+    dest: /etc/default/pihole-cloudsync.env
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+
+- name: Install pihole-cloudsync service files
+  template:
+    src: 'pihole-cloudsync@.{{ item }}'
+    dest: '/usr/local/lib/systemd/system/pihole-cloudsync@.{{ item }}'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload systemd
+  loop:
+    - service
+    - timer
+
+- name: Enable pihole service
+  community.docker.docker_compose:
+    project_src: /opt/docker-compose/pihole
+
+- name: Init cloud sync if needed
+  command:
+    cmd: /usr/local/bin/pihole-cloudsync --initpull
+    creates: /opt/docker-data/pihole/etc/gravity.db
+
+- name: Install pihole-whitelist service files
+  template:
+    src: 'pihole-whitelist.{{ item }}.j2'
+    dest: '/usr/local/lib/systemd/system/pihole-whitelist.{{ item }}'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload systemd
+  loop:
+    - service
+    - timer
+  when: pihole_primary
+
+- name: Enable pihole-whitelist
+  service:
+    name: pihole-whitelist.timer
+    state: started
+    enabled: true
+  when: pihole_primary
+
+- name: Enable pihold-cloudsync@push
+  service:
+    name: 'pihole-cloudsync@push.timer'
+    state: started
+    enabled: true
+  when: pihole_primary
+
+- name: Enable pihold-cloudsync@pull
+  service:
+    name: 'pihole-cloudsync@pull.timer'
+    state: started
+    enabled: true
+  when: not pihole_primary

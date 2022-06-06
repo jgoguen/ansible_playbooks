@@ -1,6 +1,38 @@
 ---
 # vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
 
+- name: EPEL config name for CentOS 8
+  set_fact:
+    epel_config: powertools
+  when: ansible_facts['lsb']['major_release'] == '8'
+
+- name: EPEL config name for CentOS 9+
+  set_fact:
+    epel_config: crb
+  when: ansible_facts['lsb']['major_release']|int >= 9
+
+- name: Enable EPEL repo
+  command:
+    argv:
+      - /usr/bin/dnf
+      - config-manager
+      - '--set-enabled'
+      - '{{ epel_config }}'
+
+- name: Enable starship COPR
+  include_role:
+    name: copr
+  vars:
+    user: atim
+    name: starship
+
+- name: Install EPEL packages
+  package:
+    name:
+      - epel-release
+      - epel-next-release
+    state: present
+
 - name: Install packages for CentOS
   package:
     name: '{{ packages.centos }}'

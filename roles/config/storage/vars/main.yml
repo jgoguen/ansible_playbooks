@@ -1,9 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-storage_mounts:
-  - src: UUID=0c21f44b-3161-4753-ae91-ec0022b7f792
-    path: '{{ storage_mnt_base }}'
-    fstype: btrfs
-    opts: 'x-systemd.automount,compress=zstd:'
-    state: mounted

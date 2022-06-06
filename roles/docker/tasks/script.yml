@@ -1,0 +1,24 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Define install script location
+  set_fact:
+    docker_script: '{{ lookup("env", "TMPDIR") | default("/tmp", True) }}/get_docker.sh'
+
+- name: Check if /etc/docker exists
+  stat:
+    path: /etc/docker
+  register: docker_exist
+
+- name: Fetch Docker install script
+  get_url:
+    url: https://get.docker.com
+    dest: '{{ docker_script }}'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0755
+  when: not docker_exist.stat.exists
+
+- name: Install Docker
+  shell: 'sh {{ docker_script }}'
+  when: not docker_exist.stat.exists

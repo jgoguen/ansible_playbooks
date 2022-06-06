@@ -1,6 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: Configure Docker
-  import_tasks: docker.yml
-  when: roles["docker"]

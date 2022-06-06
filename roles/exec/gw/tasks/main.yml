@@ -1,8 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: Configure gateway
-  import_tasks: gw.yml
-  when:
-    - roles["gw"]
-    - ansible_facts["system"] == "OpenBSD"

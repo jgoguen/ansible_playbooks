@@ -1,0 +1,23 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Configure sudoers
+  template:
+    src: sudoers.j2
+    dest: /etc/sudoers
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0440
+    validate: /usr/sbin/visudo --check --file=%s
+
+- name: Add pam_tid to sudo
+  lineinfile:
+    path: /etc/pam.d/sudo
+    state: present
+    create: yes
+    owner: root
+    group: wheel
+    mode: 0444
+    insertbefore: BOF
+    line: 'auth sufficient pam_tid.so'
+  when: ansible_facts["system"] == "Darwin"

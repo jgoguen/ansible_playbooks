@@ -1,0 +1,7 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: reload postgresql
+  community.docker.docker_compose:
+    project_src: /opt/docker-compose/postgresql
+    restarted: true

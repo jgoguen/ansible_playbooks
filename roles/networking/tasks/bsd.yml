@@ -1,0 +1,19 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: 'Configure hostname.{{ item.key }}'
+  template:
+    src: hostname.if.j2
+    dest: '/etc/hostname.{{ item.key }}'
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0640
+  loop: '{{ interfaces | dict2items }}'
+
+- name: Configure default gateway
+  template:
+    src: mygate.j2
+    dest: /etc/mygate
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644

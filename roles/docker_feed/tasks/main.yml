@@ -1,0 +1,42 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Create feed compose directory
+  file:
+    path: '/opt/docker-compose/feed'
+    owner: '{{ user }}'
+    group: docker
+    mode: 0750
+    state: directory
+
+- name: Create feed data directory
+  file:
+    path: '/opt/docker-data/feed'
+    owner: 0
+    group: 0
+    mode: 0750
+    state: directory
+
+- name: Install docker-compose file
+  template:
+    src: feed.yaml.j2
+    dest: '/opt/docker-compose/feed/docker-compose.yaml'
+    owner: '{{ user }}'
+    group: 'docker'
+    mode: 0644
+  notify:
+    - reload feed
+
+- name: Install caddy proxy definition
+  template:
+    src: feed.caddyfile.j2
+    dest: /etc/caddy/Caddyfile.d/feed.caddyfile
+    owner: root
+    group: '{{ ansible_local.root_owner.group }}'
+    mode: 0644
+  notify:
+    - reload caddy
+
+- name: Enable feed service
+  community.docker.docker_compose:
+    project_src: /opt/docker-compose/feed

@@ -1,0 +1,60 @@
+---
+# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
+
+- name: Install Docker repo for Fedora
+  include_role:
+    name: remote_repo
+  vars:
+    repo_url: '{{ docker_fedora_repo["repo_url"] }}'
+    repo_file: '{{ docker_fedora_repo["repo_file"] }}'
+  when: ansible_facts["distribution"] == "Fedora"
+
+- name: Install Docker repo for CentOS
+  include_role:
+    name: remote_repo
+  vars:
+    repo_url: '{{ docker_centos_repo["repo_url"] }}'
+    repo_file: '{{ docker_centos_repo["repo_file"] }}'
+  when: ansible_facts["distribution"] == "CentOS"
+
+- name: Install Debian repo key
+  include_role:
+    name: remote_repo
+    tasks_from: keys
+  when: ansible_facts["distribution"] == "Debian"
+  vars:
+    url: https://download.docker.com/linux/debian/gpg
+    file: docker.asc
+
+- name: Install Debian repo
+  apt_repository:
+    repo: 'deb https://download.docker.com/linux/debian {{ ansible_facts["lsb"]["codename"] }} stable'
+    state: present
+    filename: docker
+  check_mode: false
+  when: ansible_facts["distribution"] == "Debian"
+  notify:
+    - flush handlers
+
+- name: SQLite package name for non-Debian
+  set_fact:
+    sqlite_pkg: sqlite
+  when: ansible_facts["distribution"] != "Debian"
+
+- name: SQLite package name for Debian
+  set_fact:
+    sqlite_pkg: sqlite3
+  when: ansible_facts["distribution"] == "Debian"
+
+- name: Install Docker packages
+  package:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
+      - python3-docker
+      - python3-requests
+      - '{{ sqlite_pkg }}'
+    state: present
+  check_mode: false

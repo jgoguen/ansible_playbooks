@@ -32,4 +32,8 @@ AllowTcpForwarding yes
 AllowStreamLocalForwarding yes
 GatewayPorts yes
 
+{% if ansible_facts["distribution"] == "CentOS" %}
+Subsystem sftp /usr/libexec/openssh/sftp-server
+{% else %}
 Subsystem sftp /usr/libexec/sftp-server
+{% endif %}

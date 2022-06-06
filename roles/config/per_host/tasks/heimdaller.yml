@@ -1,6 +1,0 @@
----
-# vim: set filetype=yaml.ansible expandtab sts=2 sw=2 nospell:
-
-- name: heimdaller is a desktop system
-  set_fact:
-    roles: '{{ roles | combine({"desktop": true, "devel": true}) }}'

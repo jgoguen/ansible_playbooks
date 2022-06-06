@@ -1,16 +1,15 @@
 **/*.passwd filter=git-crypt diff=git-crypt
 **/*.key filter=git-crypt diff=git-crypt
-/roles/**/*.jgoguen.ca.zone filter=git-crypt diff=git-crypt
-/roles/config/joplin/vars/main.yml filter=git-crypt diff=git-crypt
-/roles/config/massive-decks/vars/main.yml filter=git-crypt diff=git-crypt
-/roles/config/mealie/vars/main.yml filter=git-crypt diff=git-crypt
-/roles/config/per_host/vars/* filter=git-crypt diff=git-crypt
-/roles/config/per_host/vars/sample_vars.yml -filter -diff
-/roles/config/pihole/vars/main.yml filter=git-crypt diff=git-crypt
-/roles/config/postgresql/vars/main.yml filter=git-crypt diff=git-crypt
-/roles/config/unbound/vars/main.yml filter=git-crypt diff=git-crypt
-/roles/exec/common/files/fonts/* filter=git-crypt diff=git-crypt
-/roles/exec/docker/templates/*.caddyfile.j2 filter=git-crypt diff=git-crypt
-/roles/exec/pihole/files/* filter=git-crypt diff=git-crypt
-/roles/exec/sshfs/files/* filter=git-crypt diff=git-crypt
+
+/roles/docker/vars/main.yml filter=git-crypt diff=git-crypt
+/roles/docker_*/templates/* filter=git-crypt diff=git-crypt
+/roles/docker_*/vars/main.yml filter=git-crypt diff=git-crypt
+/roles/docker_pihole/files/pihole filter=git-crypt diff=git-crypt
+/roles/docker_pihole/files/pihole.pub filter=git-crypt diff=git-crypt
+/roles/docker_pihole/files/ssh_config filter=git-crypt diff=git-crypt
+/roles/homeassistant_support/templates/* filter=git-crypt diff=git-crypt
+/roles/host_specific/tasks/gw.yml filter=git-crypt diff=git-crypt
+/roles/host_specific/templates/gw/pf.gw.conf.j2 filter=git-crypt diff=git-crypt
+/roles/host_specific/vars/main.yml filter=git-crypt diff=git-crypt
+
 .gitattributes !filter !diff
