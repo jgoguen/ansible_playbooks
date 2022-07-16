@@ -7,7 +7,7 @@ def resolve_all_ips(host: str) -> list[str]:
     try:
         addr_infos = socket.getaddrinfo(host, None, socket.AF_UNSPEC)
         all_addrs = {info[-1][0] for info in addr_infos}
-        return list(all_addrs)
+        return sorted(list(all_addrs))
     except socket.gaierror:
         return []
 
@@ -17,7 +17,7 @@ def resolve_hosts_to_ips(hosts: list[str]) -> list[str]:
     for host in hosts:
         all_addrs.update(resolve_all_ips(host))
 
-    return list(all_addrs)
+    return sorted(list(all_addrs))
 
 
 class FilterModule(object):
