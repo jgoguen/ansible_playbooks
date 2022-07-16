@@ -14,5 +14,5 @@
 - name: Enable rad service
   service:
     name: rad
-    enabled: yes
+    enabled: true
     state: started

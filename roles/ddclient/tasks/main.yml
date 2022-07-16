@@ -28,5 +28,5 @@
 - name: Enable ddclient service
   service:
     name: ddclient
-    enabled: yes
+    enabled: true
     state: started

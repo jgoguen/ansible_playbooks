@@ -47,6 +47,6 @@
 - name: Start OpenSSHd
   service:
     name: sshd
-    enabled: yes
+    enabled: true
     state: started
   when: ansible_facts["system"] != "Darwin"

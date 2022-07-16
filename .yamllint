@@ -7,3 +7,4 @@ rules:
     level: warning
 
   comments-indentation: disable
+  new-line-at-end-of-file: disable

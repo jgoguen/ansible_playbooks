@@ -18,4 +18,4 @@
   service:
     name: systemd-resolved
     state: restarted
-  changed_when: no
+  changed_when: false

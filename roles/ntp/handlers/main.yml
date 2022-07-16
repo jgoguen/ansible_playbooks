@@ -5,10 +5,10 @@
   service:
     name: ntpd
     state: restarted
-  changed_when: no
+  changed_when: false
 
 - name: reload timesyncd
   service:
     name: systemd-timesyncd
     state: restarted
-  changed_when: no
+  changed_when: false

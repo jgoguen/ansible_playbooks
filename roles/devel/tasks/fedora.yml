@@ -11,6 +11,6 @@
 - name: 'Add local user {{ user }} to mock group'
   user:
     name: '{{ user }}'
-    append: yes
+    append: true
     groups:
       - mock

@@ -49,7 +49,7 @@
 - name: Enable Docker service
   service:
     name: docker
-    enabled: yes
+    enabled: true
     state: started
 
 - name: Create docker-compose directory for Watchtower
